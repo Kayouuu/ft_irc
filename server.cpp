@@ -43,10 +43,7 @@ int main(int argc, char const* argv[])
         perror("bind failed");
         exit(EXIT_FAILURE);
     }
- 
- while (1)
- {
-	 /* code */
+
     if (listen(server_fd, 3) < 0) {
         perror("listen");
         exit(EXIT_FAILURE);
@@ -59,25 +56,24 @@ int main(int argc, char const* argv[])
         perror("accept");
         exit(EXIT_FAILURE);
     }
+ 
+ while (1)
+ {
 	bzero(buffer, 1024);
 	while (recv(new_socket, buffer, 1024, 0) >= 0)
 	{
 		tmp = buffer;
-    	// printf("[%s]\n", buffer);
 		std::cout << tmp << std::endl;
 		int	size;
 		if ((size = tmp.find("NICK ", 0)) == 0)
 			tmp_user.setNick(tmp.substr(5));
 		if ((size = tmp.find("USER ", 0)) == 0)
 		{
-			std::cout << tmp.find(" ", 5) << std::endl;
 			tmp_user.setUser(tmp.substr(5, tmp.find(" ", 5) - 5));
 			break ;
 		}
 		
 	}
-
-	std::cout << "salut " << tmp_user.getUser() << "]" <<  std::endl;
 	users[tmp_user.getNick()] = tmp_user;
 	std::string	msg = "001 " + tmp_user.getNick() + ":Welcome";// to the Internet Relay Network " + tmp_user.getNick() + "!" + tmp_user.getUser() + "@" + "127.0.0.1";
 
