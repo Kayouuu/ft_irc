@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/25 13:29:27 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/01/25 15:44:26 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define SERVER_HPP
 
 #include <sys/socket.h>
+#include <sys/select.h>
 #include <netinet/in.h>
 #include <iostream>
 
@@ -21,22 +22,24 @@
 
 class Server
 {
-private:
-	int					server_fd;
-	int					all_connections[MAX_CONNECTIONS];
-	fd_set				fdset;
-	struct sockaddr_in	address;
+	// TODO Users array	(vector) + function getUserByNickname()
+	// TODO Channel class + Channel array (vector)
 
-	const int			port;
-	const std::string	password;
-public:
-	Server(int port, std::string password);
-	~Server();
+	private:
+		int					_server_fd;
+		int					_all_connections[MAX_CONNECTIONS];
+		struct sockaddr_in	_address;
+		const int			_port;
+		const std::string	_password;
 
-	bool	starting();
-	bool	run();
-	bool	acceptClient();
-	bool	manageClient();
+		bool	acceptClient();
+		bool	manageClient();
+	public:
+		Server(int port, std::string password);
+		~Server();
+
+		bool	starting();
+		bool	run();
 	
 
 };
