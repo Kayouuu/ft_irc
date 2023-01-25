@@ -2,3 +2,4 @@ a.out
 srcs/*.o
 .vscode/settings.json
 .vscode/
+test.cpp
