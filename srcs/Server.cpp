@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/26 15:56:43 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/01/26 16:53:19 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@ Server::~Server() { }
 
 bool	Server::starting()
 {
+	_connected_clients = 0;
 	this->_server_fd = socket(AF_INET, SOCK_STREAM, 0); // TOCOMMENT + TODO explicit error msg
 	if (this->_server_fd < 0)
 		return (false);
+	std::cout << "salut" << std::endl;
 	// TOCOMMENT
 	this->_address.sin_family = AF_INET;
 	this->_address.sin_addr.s_addr = INADDR_ANY;
@@ -29,7 +31,7 @@ bool	Server::starting()
 	if (bind(_server_fd, (struct sockaddr*)&_address, sizeof(_address)) < 0) // TOCOMMENT + TODO explicit error msg
 		return (false);
 
-	if (listen(this->_server_fd, 3) < 0) // TOCOMMENT + TODO explicit error msg
+	if (listen(this->_server_fd, 50) < 0) // TOCOMMENT + TODO explicit error msg
 		return (false);
 
 	// Initializing the array of connected clients
@@ -60,27 +62,65 @@ bool	Server::run()
 			return (false);
 		}
 
-		if (FD_ISSET(_server_fd, &read_fd_set)) // If the _server_fd is triggered, new connection to the server
-			acceptClient(returned_value); // TODO acceptClient function
-		
+		if (FD_ISSET(_server_fd, &read_fd_set) && _connected_clients < MAX_CONNECTIONS) // If the _server_fd is triggered, new connection to the server
+			acceptClient();
+		else if (_connected_clients >= MAX_CONNECTIONS)
+			std::cout << "Too many clients" << std::endl; // TOREPLACE with an err to the client ?
 		for (int i = 1; i < MAX_CONNECTIONS; i++) // Checking on all connections if one is triggered
 		{
 			if (_all_connections[i] > 0 && FD_ISSET(_all_connections[i], &read_fd_set))
-				manageClient(); // TODO manageClient function
+				manageClient(i); // TODO manageClient function
 		}
 	}
 	return (true);
 }
 
-bool	Server::acceptClient(int returned_value)
+bool	Server::acceptClient()
 {
-	// TODO accept(), putting the new user in an array of users
+	// TODO putting the new user in an array of users
+	int			new_connection;
+	int			returned_value;
+	char		buffer[1024]; // TOREPLACE
+
+	new_connection = accept(_server_fd, (struct sockaddr *)&_address, &_addrlen); // TOCHECK cast
+	
+	if (new_connection < 0)
+	{
+		std::cout << "accept: failed to accept an incoming connection" << std::endl;
+		return (false);
+	}
+
+	for (int i = 0; i < MAX_CONNECTIONS; i++)
+		if (_all_connections[i] < 0)
+			_all_connections[i] = new_connection;
+	_connected_clients++;
 	return (true);
 }
 
-bool	Server::manageClient()
+bool	Server::manageClient(int &current)
 {
-	// TODO recv(), array of function pointer for the commands, send()
+	// TODO array of function pointer for the commands, send()
+	int		returned_value;
+	char	buffer[1024]; // TOREPLACE
+
+	returned_value = recv(_all_connections[current], &buffer, 1024, 0);
+	
+	if (returned_value == 0)
+	{
+		close(_all_connections[current]);
+		_all_connections[current] = -1;
+	}
+
+	if (returned_value > 0)
+	{
+		buffer[returned_value] = '\0';
+		std::cout << buffer << std::endl;
+	}
+
+	if (returned_value == -1)
+	{
+		// TODO error receiving
+	}
 	return (true);
 }
 

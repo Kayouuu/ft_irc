@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/25 15:44:26 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/01/26 16:37:01 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,11 @@
 
 #include <sys/socket.h>
 #include <sys/select.h>
+#include <unistd.h>
 #include <netinet/in.h>
 #include <iostream>
+
+#include "User.hpp"
 
 #define MAX_CONNECTIONS	1024
 
@@ -28,12 +31,14 @@ class Server
 	private:
 		int					_server_fd;
 		int					_all_connections[MAX_CONNECTIONS];
+		int					_connected_clients;
 		struct sockaddr_in	_address;
+		socklen_t			_addrlen;
 		const int			_port;
 		const std::string	_password;
 
 		bool	acceptClient();
-		bool	manageClient();
+		bool	manageClient(int &current);
 	public:
 		Server(int port, std::string password);
 		~Server();

@@ -6,7 +6,7 @@
 #    By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/18 14:38:40 by psaulnie          #+#    #+#              #
-#    Updated: 2023/01/26 13:56:38 by psaulnie         ###   ########.fr        #
+#    Updated: 2023/01/26 16:50:37 by psaulnie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ HEADFILE = $(shell find incs -name "*.hpp")
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS = -std=c++98
-#CFLAGS += -fsanitize=address -g3
+# CFLAGS += -fsanitize=address -g3
 
 # **************************************************************************** #
 #                                    COLORS                                    #

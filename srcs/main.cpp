@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:12:10 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/26 13:54:43 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/01/26 17:05:29 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 		std::cout << "Usage: ./ircserv [port] [password]" << std::endl;
 		return 1;
 	}
-	port = std::atoi(argv[1]);
+	port = std::atoi(argv[1]); // TOREPLACE with std::strtol ((int)strtol(s, &stopped, 10); if (*stopped) { /* handle error */ })
 	if (port < 0 || port > 65535)
 		std::cout << "Port range must be between 0 and 65535" << std::endl;
 	Server	server(port, argv[2]);
