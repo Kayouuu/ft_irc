@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/26 13:50:51 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/01/26 15:56:43 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ bool	Server::run()
 		}
 
 		if (FD_ISSET(_server_fd, &read_fd_set)) // If the _server_fd is triggered, new connection to the server
-			acceptClient(); // TODO acceptClient function
+			acceptClient(returned_value); // TODO acceptClient function
 		
 		for (int i = 1; i < MAX_CONNECTIONS; i++) // Checking on all connections if one is triggered
 		{
@@ -72,7 +72,7 @@ bool	Server::run()
 	return (true);
 }
 
-bool	Server::acceptClient()
+bool	Server::acceptClient(int returned_value)
 {
 	// TODO accept(), putting the new user in an array of users
 	return (true);
