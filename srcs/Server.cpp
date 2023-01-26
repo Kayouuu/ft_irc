@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/25 15:43:33 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/01/26 13:50:51 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ bool	Server::starting()
 	for (int i = 0; i < MAX_CONNECTIONS; i++)
 		_all_connections[i] = -1;
 	_all_connections[0] = _server_fd;
+	return (true);
 }
 
 bool	Server::run()
@@ -48,22 +49,38 @@ bool	Server::run()
 
 	while (1)
 	{
-		FD_ZERO(&read_fd_set); //  Cleaning the 
+		FD_ZERO(&read_fd_set); //  Cleaning the FD list & TOCOMMENT
 		for (int i = 0; i < MAX_CONNECTIONS; i++)
 			if (_all_connections[i] >= 0)
-				FD_SET(_all_connections[i], &read_fd_set);
+				FD_SET(_all_connections[i], &read_fd_set); // Reading all the connected clients to the list
 		returned_value = select(FD_SETSIZE, &read_fd_set, NULL, NULL, NULL);
+		if (returned_value < 0)
+		{
+			// TODO Error msg + shutting down the server
+			return (false);
+		}
+
+		if (FD_ISSET(_server_fd, &read_fd_set)) // If the _server_fd is triggered, new connection to the server
+			acceptClient(); // TODO acceptClient function
 		
+		for (int i = 1; i < MAX_CONNECTIONS; i++) // Checking on all connections if one is triggered
+		{
+			if (_all_connections[i] > 0 && FD_ISSET(_all_connections[i], &read_fd_set))
+				manageClient(); // TODO manageClient function
+		}
 	}
-	
+	return (true);
 }
 
 bool	Server::acceptClient()
 {
 	// TODO accept(), putting the new user in an array of users
+	return (true);
 }
 
 bool	Server::manageClient()
 {
 	// TODO recv(), array of function pointer for the commands, send()
+	return (true);
 }
+
