@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+         #
+#    By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/18 14:38:40 by psaulnie          #+#    #+#              #
 #    Updated: 2023/01/18 14:38:41 by psaulnie         ###   ########.fr        #
@@ -17,11 +17,11 @@ NAME_BONUS = ircserv_bonus
 #                               FILES and PATHS                                #
 # **************************************************************************** #
 
-SRCS =	$(shell find srcs -name "*.c")
-HEADFILE = $(shell find incs -name "*.h")
+SRCS =	$(shell find srcs -name "*.cpp")
+HEADFILE = $(shell find incs -name "*.hpp")
 
-SRCS_BONUS =	$(shell find bonus/srcs -name "*.c")
-HEADFILE_BONUS = $(shell find bonus/incs -name "*.h")
+#SRCS_BONUS =	$(shell find bonus/srcs -name "*.cpp")
+#HEADFILE_BONUS = $(shell find bonus/incs -name "*.hpp")
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS = -std=c++98
@@ -57,18 +57,18 @@ NO_COLOR		=	\033[0m
 
 .DEFAULT_GOAL = all
 
-OBJS = $(SRCS:.c=.o)
-OBJS_BONUS = $(SRCS_BONUS:.c=.o)
+OBJS = $(SRCS:.cpp=.o)
+OBJS_BONUS = $(SRCS_BONUS:.cpp=.o)
 
 all: $(NAME)
 
 bonus: $(NAME_BONUS)
 
-srcs/%.o: srcs/%.c $(HEADFILE) Makefile
+srcs/%.o: srcs/%.cpp $(HEADFILE) Makefile
 	c++ $(CFLAGS) -o $@ -c $<
 	@printf "\r$(LIGHT_GRAY)Loading...$(NO_COLOR)"
 
-bonus/srcs/%.o: bonus/srcs/%.c $(HEADFILE_BONUS) Makefile
+bonus/srcs/%.o: bonus/srcs/%.cpp $(HEADFILE_BONUS) Makefile
 	c++ $(CFLAGS) -o $@ -c $<
 	@printf "\r$(LIGHT_GRAY)Loading bonus...$(NO_COLOR)"
 
