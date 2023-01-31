@@ -25,7 +25,7 @@ HEADFILE = $(shell find incs -name "*.hpp")
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS = -std=c++98
-# CFLAGS += -fsanitize=address -g3
+CFLAGS += -fsanitize=address -g3
 
 # **************************************************************************** #
 #                                    COLORS                                    #

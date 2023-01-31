@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/30 16:50:49 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/01/31 14:25:47 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,20 @@ Server::Server(int port, std::string password) : _port(port), _password(password
 
 Server::~Server() { }
 
-bool	Server::starting()
+void	Server::starting()
 {
 	_connected_clients = 0;
 	this->_server_fd = socket(AF_INET, SOCK_STREAM, 0); // TOCOMMENT + TODO explicit error msg
 	if (this->_server_fd < 0)
 	{
 		std::cout << "socket: error" << std::endl;
-		return (false);
+		throw std::exception();
 	}
-	if (fcntl(_server_fd, F_SETFL, O_NONBLOCK) == -1)
-	{
-		std::cout << "fcntl: error" << std::endl;
-		return (false);
-	}
+	// if (fcntl(_server_fd, F_SETFL, O_NONBLOCK) == -1)
+	// {
+	// 	std::cout << "fcntl: error" << std::endl;
+	// 	return (false);
+	// }
 	// TOCOMMENT
 	this->_address.sin_family = AF_INET;
 	this->_address.sin_addr.s_addr = INADDR_ANY;
@@ -39,25 +39,35 @@ bool	Server::starting()
 	if (bind(_server_fd, (struct sockaddr*)&_address, sizeof(_address)) < 0) // TOCOMMENT + TODO explicit error msg
 	{
 		std::cout << "bind: error" << std::endl;
-		return (false);
+		throw std::exception();
 	}
 	if (listen(this->_server_fd, 50) < 0) // TOCOMMENT + TODO explicit error msg
 	{
 		std::cout << "listen: error" << std::endl;
-		return (false);
+		throw std::exception();
 	}
+
+	initCommands(); // TODO check errors ?
 
 	// Initializing the array of connected clients
 	_clients.reserve(MAX_CONNECTIONS);
 	for (int i = 0; i < MAX_CONNECTIONS; i++)
 		_clients[i].setFd(-1);
 	_clients[0].setFd(_server_fd);
-	return (true);
 }
 
-bool	Server::run()
+/*
+	Command init template:
+		_commands.insert(ft::make_pair(std::string(""), &Server::)); 
+*/
+void	Server::initCommands()
 {
-	// TODO While loop, fd_set, select(), receiving data or accepting new clients
+	_commands.insert(std::make_pair(std::string("JOIN"), &Server::joinCmd));
+	_commands.insert(std::make_pair(std::string("NICK"), &Server::nickCmd));
+}
+
+void	Server::run()
+{
 	fd_set	read_fd_set;
 	int		returned_value;
 
@@ -67,15 +77,17 @@ bool	Server::run()
 	{
 		FD_ZERO(&read_fd_set); //  Cleaning the FD list & TOCOMMENT
 		for (int i = 0; i < MAX_CONNECTIONS; i++)
+		{
 			if (_clients[i].getFd() >= 0)
 				FD_SET(_clients[i].getFd(), &read_fd_set); // Reading all the connected clients to the list
+		}
 		FD_SET(0, &read_fd_set);
 		returned_value = select(FD_SETSIZE, &read_fd_set, NULL, NULL, NULL);
 		if (returned_value < 0)
 		{
 			std::cout << "select: error" << std::endl;
 			// TODO Error msg + shutting down the server
-			return (false);
+			throw std::exception();
 		}
 
 		if (FD_ISSET(_server_fd, &read_fd_set) && _connected_clients < MAX_CONNECTIONS) // If the _server_fd is triggered, new connection to the server
@@ -88,10 +100,9 @@ bool	Server::run()
 				manageClient(i); // TODO manageClient function
 		}
 	}
-	return (true);
 }
 
-bool	Server::acceptClient()
+void	Server::acceptClient()
 {
 	// TODO putting the new user in an array of users
 	int							new_connection;
@@ -104,7 +115,7 @@ bool	Server::acceptClient()
 	if (new_connection < 0)
 	{
 		std::cout << "accept: failed to accept an incoming connection" << std::endl;
-		return (false);
+		throw std::exception();
 	}
 	std::memset(_buffer, 0, 1024);
 	while (recv(new_connection, &_buffer, 1024, 0))
@@ -121,10 +132,13 @@ bool	Server::acceptClient()
 	}
 
 	std::string	msg = "001 " + tmp_user.getNick() + " :Welcome" + tmp_user.getNick() + " !";
+
+	std::cout << "New user logged: " << tmp_user.getNick() << std::endl; 
+	
 	if (send(new_connection, msg.c_str(), strlen(msg.c_str()), 0) < 0)
 	{
 		std::cout << "send: error" << std::endl; // explicit msg
-		return (false);
+		throw std::exception();
 	}
 	_clients.push_back(tmp_user);
 	for (int i = 0; i < MAX_CONNECTIONS; i++)
@@ -133,33 +147,27 @@ bool	Server::acceptClient()
 			_clients[i].setFd(new_connection);
 	}
 	_connected_clients++;
-	return (true);
 }
 
-bool	Server::manageClient(int &current)
+void	Server::manageClient(int &current)
 {
 	// TODO array of function pointer for the commands, send()
-	int		returned_value;
+	int			rvalue;
+	std::string	output;
 
-	returned_value = recv(_clients[current].getFd(), &_buffer, 1024, 0);
+	rvalue = _io.receive(output, _clients[current].getFd());
 
-	if (returned_value == 0)
+	if (rvalue == 0)
 	{
 		close(_clients[current].getFd());
 		_clients[current].setFd(-1);
 		_connected_clients--;
 	}
 
-	if (returned_value > 0)
+	if (rvalue > 0)
 	{
-		_buffer[returned_value] = '\0';
-		std::cout << _buffer << std::endl;
+		std::cout << output << std::endl;
 	}
 
-	if (returned_value == -1)
-	{
-		// TODO error receiving
-	}
-	return (true);
 }
 
