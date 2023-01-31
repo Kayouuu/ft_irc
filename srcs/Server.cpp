@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/30 15:00:50 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/01/30 16:50:49 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ bool	Server::starting()
 	}
 
 	// Initializing the array of connected clients
-	_clients.reserve(1024);
+	_clients.reserve(MAX_CONNECTIONS);
 	for (int i = 0; i < MAX_CONNECTIONS; i++)
 		_clients[i].setFd(-1);
 	_clients[0].setFd(_server_fd);
@@ -69,10 +69,11 @@ bool	Server::run()
 		for (int i = 0; i < MAX_CONNECTIONS; i++)
 			if (_clients[i].getFd() >= 0)
 				FD_SET(_clients[i].getFd(), &read_fd_set); // Reading all the connected clients to the list
+		FD_SET(0, &read_fd_set);
 		returned_value = select(FD_SETSIZE, &read_fd_set, NULL, NULL, NULL);
 		if (returned_value < 0)
 		{
-			std::cout << "Error select" << returned_value << std::endl;
+			std::cout << "select: error" << std::endl;
 			// TODO Error msg + shutting down the server
 			return (false);
 		}
@@ -127,8 +128,10 @@ bool	Server::acceptClient()
 	}
 	_clients.push_back(tmp_user);
 	for (int i = 0; i < MAX_CONNECTIONS; i++)
+	{
 		if (_clients[i].getFd() < 0)
 			_clients[i].setFd(new_connection);
+	}
 	_connected_clients++;
 	return (true);
 }
@@ -144,6 +147,7 @@ bool	Server::manageClient(int &current)
 	{
 		close(_clients[current].getFd());
 		_clients[current].setFd(-1);
+		_connected_clients--;
 	}
 
 	if (returned_value > 0)
