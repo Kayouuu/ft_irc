@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/30 14:45:47 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/01/31 15:19:14 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,16 @@
 #include <netinet/in.h>
 #include <iostream>
 #include <vector>
+#include <map>
+#include <cstring>
+#include <cstdlib>
 
 #include "User.hpp"
+#include "SocketIO.hpp"
 
 #define MAX_CONNECTIONS	1024
+
+class SocketIO;
 
 class Server
 {
@@ -31,25 +37,32 @@ class Server
 	// TODO Channel class + Channel array (vector)
 
 	private:
-		std::vector<User>	_clients;
-		char				_buffer[1024];
-		int					_server_fd;
-		int					_connected_clients;
-		struct sockaddr_in	_address;
-		socklen_t			_addrlen;
-		const int			_port;
-		const std::string	_password;
+		typedef	void (Server::*cmdHandler)(std::vector<std::string>, int); // Array of function pointer for function belonging to the Server class returning void and taking a string (input) and an int (fd)
 
-		bool	acceptClient();
-		bool	manageClient(int &current);
+		SocketIO							_io;
+		std::vector<User>					_clients;
+		char								_buffer[1024];
+		int									_server_fd;
+		int									_connected_clients;
+		struct sockaddr_in					_address;
+		socklen_t							_addrlen;
+		const int							_port;
+		const std::string					_password;
+		std::map<std::string, cmdHandler>	_commands;
+
+		void	initCommands();
+		void	acceptClient();
+		void	manageClient(int &current);
 	public:
 		Server(int port, std::string password);
 		~Server();
 
-		bool	starting();
-		bool	run();
+		void	starting();
+		void	run();
 	
-
+	private:
+		void	joinCmd(std::vector<std::string> input, int fd);
+		void	nickCmd(std::vector<std::string> input, int fd);
 };
 
 /*

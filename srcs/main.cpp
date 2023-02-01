@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:12:10 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/26 17:05:29 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/01/31 13:54:20 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,18 @@ int main(int argc, char *argv[])
 	}
 
 	Server	server(port, argv[2]);
-	if (!server.starting())
+
+	try
 	{
-		std::cout << "" << std::endl;
-		return (-1);
+		server.starting();
+		server.run();
 	}
-	if (!server.run())
+	catch(const std::exception& e)
 	{
-		std::cout << "" << std::endl;
-		return (-1);
+		std::cerr << e.what() << '\n';
+		return (1);
 	}
+
 	std::cout << "Shutting down the server" << std::endl;
 	return (0);
 }
