@@ -63,6 +63,7 @@ class Server
 	private:
 		void	joinCmd(std::vector<std::string> input, int fd);
 		void	nickCmd(std::vector<std::string> input, int fd);
+		void	msgCmd(std::vector<std::string> input, int fd);
 };
 
 /*
