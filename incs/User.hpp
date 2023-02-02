@@ -3,12 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   User.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:58:58 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/30 14:52:02 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/02 15:24:26 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef USER_HPP
+# define USER_HPP
 
 #include <iostream>
 
@@ -34,3 +37,5 @@ class User
 		std::string const	&getUser() const;
 		std::string const	&getPrefix() const;
 };
+
+#endif

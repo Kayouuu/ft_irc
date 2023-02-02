@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/31 15:19:14 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/02 15:33:17 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@
 #include <iostream>
 #include <vector>
 #include <map>
+
+#include <csignal>
 #include <cstring>
+#include <cerrno>
 #include <cstdlib>
 
 #include "User.hpp"
@@ -59,6 +62,7 @@ class Server
 
 		void	starting();
 		void	run();
+		static void	stop(int signal);
 	
 	private:
 		void	joinCmd(std::vector<std::string> input, int fd);

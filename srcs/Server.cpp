@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/31 14:25:47 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/02 15:36:20 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,22 +69,28 @@ void	Server::initCommands()
 void	Server::run()
 {
 	fd_set	read_fd_set;
-	int		returned_value;
+	int		rvalue;
 
 	std::cout << "The IRC server is running." << std::endl << "Waiting for connections..." << std::endl;
-
+	signal(SIGINT, Server::stop);
 	while (1)
 	{
 		FD_ZERO(&read_fd_set); //  Cleaning the FD list & TOCOMMENT
 		for (int i = 0; i < MAX_CONNECTIONS; i++)
 		{
 			if (_clients[i].getFd() >= 0)
-				FD_SET(_clients[i].getFd(), &read_fd_set); // Reading all the connected clients to the list
+			{
+				// std::cout << i << " " << _clients[i].getFd() << std::endl;
+				int fd = _clients[i].getFd(); // TODO maybe put the fd in another array anyway lool xD nyahh
+				FD_SET(fd, &read_fd_set); // Reading all the connected clients to the list
+				_clients[i].setFd(fd);
+			}
 		}
 		FD_SET(0, &read_fd_set);
-		returned_value = select(FD_SETSIZE, &read_fd_set, NULL, NULL, NULL);
-		if (returned_value < 0)
+		rvalue = select(FD_SETSIZE, &read_fd_set, NULL, NULL, NULL);
+		if (rvalue < 0)
 		{
+			std::cout << errno << std::endl;
 			std::cout << "select: error" << std::endl;
 			// TODO Error msg + shutting down the server
 			throw std::exception();
@@ -106,7 +112,6 @@ void	Server::acceptClient()
 {
 	// TODO putting the new user in an array of users
 	int							new_connection;
-	int							returned_value;
     std::string					tmp;
 	User						tmp_user;
 
@@ -122,6 +127,7 @@ void	Server::acceptClient()
 	{
 		tmp = _buffer;
 		int	size;
+		std::cout << tmp << std::endl; // TODO set password + send message if incorrect pass?
 		if ((size = tmp.find("NICK ", 0)) == 0)
 			tmp_user.setNick(tmp.substr(5));
 		if ((size = tmp.find("USER ", 0)) == 0)
@@ -167,7 +173,13 @@ void	Server::manageClient(int &current)
 	if (rvalue > 0)
 	{
 		std::cout << output << std::endl;
+		if (output.find("PING"))
+			_io.emit("PONG 127.0.0.1", _clients[current].getFd());
 	}
 
 }
 
+void	Server::stop(int signal)
+{
+	
+}
