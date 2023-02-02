@@ -14,5 +14,25 @@
 
 void	Server::nickCmd(std::vector<std::string> input, int fd)
 {
-	
+	if (input[1].size() > 9)
+	{
+		std::cout << "Error: nickname is too long, 9 characters max\n";
+		return;
+	}
+	std::vector<User>::iterator it = _clients.begin();
+	for (it; it < _clients.end(); it++)
+	{
+		if (it->getNick() == input[1])
+		{
+			std::cout << "Error: nickname already in use\n";//TOFIX: see NumericReplies.cpp to throw the correct error (Rep::E433)
+			return;
+		}
+	}
+	std::vector<User>::iterator ite = _clients.begin();
+	for (ite; ite < _clients.end(); ite++)
+	{
+		if (ite->getFd() == fd)
+			ite->setNick(input[1]);//TOCHECK: set index 1 for the moment but review the input vector construction (wich index for the nickname)
+	}
+	//TOCHECK: maybe throw a comment error if fd not found
 }

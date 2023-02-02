@@ -73,7 +73,7 @@ void	Server::run()
 
 	std::cout << "The IRC server is running." << std::endl << "Waiting for connections..." << std::endl;
 
-	while (1)
+	while (true)
 	{
 		FD_ZERO(&read_fd_set); //  Cleaning the FD list & TOCOMMENT
 		for (int i = 0; i < MAX_CONNECTIONS; i++)
