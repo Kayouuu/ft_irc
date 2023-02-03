@@ -41,9 +41,9 @@ void	User::setPrefix(const std::string &prefix)
 	_prefix = prefix;
 }
 
-void User::setOp(bool op)
+void User::setIrcOp(bool ircOp)
 {
-	_op = op;
+	_ircOp = ircOp;
 }
 
 int const	&User::getFd() const
@@ -64,7 +64,7 @@ std::string const &User::getPrefix() const
 	return (_prefix);
 }
 
-bool User::isOp() const
+bool User::isIrcOp() const
 {
-	return _op;
+	return _ircOp;
 }
