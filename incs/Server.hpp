@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/02 15:33:17 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/03 16:53:51 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,8 @@ class Server
 		Server(int port, std::string password);
 		~Server();
 
-		void	starting();
-		void	run();
-		static void	stop(int signal);
+		void		starting();
+		void		run();
 	
 	private:
 		void	joinCmd(std::vector<std::string> input, int fd);

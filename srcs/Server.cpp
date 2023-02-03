@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/02 15:36:20 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/03 17:10:10 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,11 @@ void	Server::starting()
 		std::cout << "socket: error" << std::endl;
 		throw std::exception();
 	}
-	// if (fcntl(_server_fd, F_SETFL, O_NONBLOCK) == -1)
-	// {
-	// 	std::cout << "fcntl: error" << std::endl;
-	// 	return (false);
-	// }
+	// TODO Check if needed to use setsocketopt() function
 	// TOCOMMENT
 	this->_address.sin_family = AF_INET;
 	this->_address.sin_addr.s_addr = INADDR_ANY;
 	this->_address.sin_port = htons(this->_port);
-	
 	
 	if (bind(_server_fd, (struct sockaddr*)&_address, sizeof(_address)) < 0) // TOCOMMENT + TODO explicit error msg
 	{
@@ -72,7 +67,6 @@ void	Server::run()
 	int		rvalue;
 
 	std::cout << "The IRC server is running." << std::endl << "Waiting for connections..." << std::endl;
-	signal(SIGINT, Server::stop);
 	while (1)
 	{
 		FD_ZERO(&read_fd_set); //  Cleaning the FD list & TOCOMMENT
@@ -81,9 +75,9 @@ void	Server::run()
 			if (_clients[i].getFd() >= 0)
 			{
 				// std::cout << i << " " << _clients[i].getFd() << std::endl;
-				int fd = _clients[i].getFd(); // TODO maybe put the fd in another array anyway lool xD nyahh
-				FD_SET(fd, &read_fd_set); // Reading all the connected clients to the list
-				_clients[i].setFd(fd);
+				// int fd = _clients[i].getFd(); // TODO maybe put the fd in another array anyway lool xD nyahh
+				FD_SET(_clients[i].getFd(), &read_fd_set); // Reading all the connected clients to the list
+				// _clients[i].setFd(fd);
 			}
 		}
 		FD_SET(0, &read_fd_set);
@@ -165,6 +159,7 @@ void	Server::manageClient(int &current)
 
 	if (rvalue == 0)
 	{
+		std::cout << "salu" << std::endl;
 		close(_clients[current].getFd());
 		_clients[current].setFd(-1);
 		_connected_clients--;
@@ -177,9 +172,4 @@ void	Server::manageClient(int &current)
 			_io.emit("PONG 127.0.0.1", _clients[current].getFd());
 	}
 
-}
-
-void	Server::stop(int signal)
-{
-	
 }
