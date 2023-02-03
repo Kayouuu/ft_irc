@@ -13,34 +13,35 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-#include <sys/socket.h>
-#include <sys/select.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <netinet/in.h>
-#include <iostream>
-#include <vector>
-#include <map>
-#include <cstring>
-#include <cstdlib>
+# include <sys/socket.h>
+# include <sys/select.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <netinet/in.h>
+# include <iostream>
+# include <vector>
+# include <map>
+# include <cstring>
+# include <cstdlib>
 
-#include "User.hpp"
-#include "SocketIO.hpp"
+# include "User.hpp"
+# include "SocketIO.hpp"
+# include "Channel.hpp"
 
-#define MAX_CONNECTIONS	1024
+# define MAX_CONNECTIONS	1024
 
 class SocketIO;
 
 class Server
 {
 	// function getUserByNickname()
-	// TODO Channel class + Channel array (vector)
 
 	private:
 		typedef	void (Server::*cmdHandler)(std::vector<std::string>, int); // Array of function pointer for function belonging to the Server class returning void and taking a string (input) and an int (fd)
 
 		SocketIO							_io;
 		std::vector<User>					_clients;
+		std::vector<Channel>				_channels;
 		char								_buffer[1024];
 		int									_server_fd;
 		int									_connected_clients;

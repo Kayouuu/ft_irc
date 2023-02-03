@@ -14,7 +14,7 @@
 
 User::User() { }
 
-User::User(std::string _nick, std::string _user)
+User::User(const std::string &_nick, const std::string &_user)
 {
 	this->_nick = _nick;
 	this->_user = _user;
@@ -28,17 +28,22 @@ void	User::setFd(int new_fd)
 {
 	_fd = new_fd;
 }
-void	User::setNick(std::string nick)
+void	User::setNick(const std::string &nick)
 {
 	_nick = nick;
 }
-void	User::setUser(std::string user)
+void	User::setUser(const std::string &user)
 {
 	_user = user;	
 }
-void	User::setPrefix(std::string prefix)
+void	User::setPrefix(const std::string &prefix)
 {
 	_prefix = prefix;
+}
+
+void User::setOp(bool op)
+{
+	_op = op;
 }
 
 int const	&User::getFd() const
@@ -57,4 +62,9 @@ std::string const &User::getUser() const
 std::string const &User::getPrefix() const
 {
 	return (_prefix);
+}
+
+bool User::isOp() const
+{
+	return _op;
 }
