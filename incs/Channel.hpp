@@ -6,6 +6,8 @@
 # define CHANNEL_HPP
 
 # include <iostream>
+# include <map>
+# include <vector>
 # include "User.hpp"
 
 class Channel
@@ -20,13 +22,14 @@ class Channel
 		const std::string &getSubject() const;
 		const std::map<std::string, bool> &getMode() const;
 		const std::vector<User> &getUsers() const;
-		//bool isBanned(User &user);
+		bool isBanned(User &user);
 
 		void setName(const std::string &name);
 		void setSubject(const std::string &subject);
-		//void setMode(const std::map<std::string, bool> &mode);
-		//void setUsers(const std::vector<User> &users);
-		//void banUser(User &user);
+		void setMode(std::string &modeName, bool &isMode);
+		void setUsers(User &users);
+		void setOpUsers(User &opUsers);
+		void banUser(User &user);
 
 	private:
 		std::string							_name; //200 char max

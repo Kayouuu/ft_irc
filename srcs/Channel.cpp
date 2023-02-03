@@ -21,7 +21,13 @@ Channel::Channel(const Channel &src)
 
 Channel &Channel::operator=(const Channel &rhs)
 {
-	return ;
+	_name=rhs._name;
+	_subject=rhs._subject;
+	_mode=rhs._mode;
+	_users=rhs._users;
+	_opUsers=rhs._opUsers;
+	_bannedUsers=rhs._bannedUsers;
+	return *this;
 }
 
 const std::string &Channel::getName() const
@@ -34,7 +40,7 @@ const std::string &Channel::getSubject() const
 	return _subject;
 }
 
-const std::__1::map<std::string, bool> &Channel::getMode() const
+const std::map<std::string, bool> &Channel::getMode() const
 {
 	return _mode;
 }
@@ -42,6 +48,11 @@ const std::__1::map<std::string, bool> &Channel::getMode() const
 const std::vector<User> &Channel::getUsers() const
 {
 	return _users;
+}
+
+bool Channel::isBanned(User &user)
+{
+	//TODO
 }
 
 void Channel::setName(const std::string &name)
@@ -54,14 +65,24 @@ void Channel::setSubject(const std::string &subject)
 	_subject = subject;
 }
 
-void Channel::setMode(const std::__1::map<std::string, bool> &mode)
+void Channel::setMode(std::string &modeName, bool &isMode)
 {
-	_mode = mode;
+	//TODO;
 }
 
-void Channel::setUsers(const std::vector<User> &users)
+void Channel::setUsers(User &users)
 {
-	_users = users;
+	//TODO;
+}
+
+void Channel::setOpUsers(User &opUsers)
+{
+	//TODO;
+}
+
+void Channel::banUser(User &user)
+{
+	//TODO
 }
 
 Channel::~Channel()
