@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:58:58 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/03 17:10:22 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/06 16:37:16 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ class User
 		std::string	_nick;
 		std::string	_user;
 		std::string	_prefix;
+		bool		_is_registered;
+		bool		_right_password;
 	public:
 		User();
 		User(std::string _nick, std::string _user);

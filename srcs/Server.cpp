@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/03 17:10:10 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/06 16:43:48 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void	Server::run()
 	std::cout << "The IRC server is running." << std::endl << "Waiting for connections..." << std::endl;
 	while (1)
 	{
+		std::cout << "loop" << std::endl;
 		FD_ZERO(&read_fd_set); //  Cleaning the FD list & TOCOMMENT
 		for (int i = 0; i < MAX_CONNECTIONS; i++)
 		{
@@ -117,34 +118,35 @@ void	Server::acceptClient()
 		throw std::exception();
 	}
 	std::memset(_buffer, 0, 1024);
-	while (recv(new_connection, &_buffer, 1024, 0))
-	{
-		tmp = _buffer;
-		int	size;
-		std::cout << tmp << std::endl; // TODO set password + send message if incorrect pass?
-		if ((size = tmp.find("NICK ", 0)) == 0)
-			tmp_user.setNick(tmp.substr(5));
-		if ((size = tmp.find("USER ", 0)) == 0)
-		{
-			tmp_user.setUser(tmp.substr(5, tmp.find(" ", 5) - 5));
-			break ;
-		}
-	}
+	// while (recv(new_connection, &_buffer, 1024, 0))
+	// {
+	// 	tmp = _buffer;
+	// 	int	size;
+	// 	std::cout << tmp << std::endl; // TODO set password + send message if incorrect pass?
+	// 	if ((size = tmp.find("NICK ", 0)) == 0)
+	// 		tmp_user.setNick(tmp.substr(5));
+	// 	if ((size = tmp.find("USER ", 0)) == 0)
+	// 	{
+	// 		tmp_user.setUser(tmp.substr(5, tmp.find(" ", 5) - 5));
+	// 		break ;
+	// 	}
+	// }
 
-	std::string	msg = "001 " + tmp_user.getNick() + " :Welcome" + tmp_user.getNick() + " !";
+	// std::string	msg = "001 " + tmp_user.getNick() + " :Welcome" + tmp_user.getNick() + " !";
 
-	std::cout << "New user logged: " << tmp_user.getNick() << std::endl; 
+	// std::cout << "New user logged: " << tmp_user.getNick() << std::endl; 
 	
-	if (send(new_connection, msg.c_str(), strlen(msg.c_str()), 0) < 0)
-	{
-		std::cout << "send: error" << std::endl; // explicit msg
-		throw std::exception();
-	}
-	_clients.push_back(tmp_user);
+	// if (send(new_connection, msg.c_str(), strlen(msg.c_str()), 0) < 0)
+	// {
+	// 	std::cout << "send: error" << std::endl; // explicit msg
+	// 	throw std::exception();
+	// }
+	tmp_user.setFd(new_connection);
 	for (int i = 0; i < MAX_CONNECTIONS; i++)
 	{
 		if (_clients[i].getFd() < 0)
-			_clients[i].setFd(new_connection);
+			_clients.push_back(tmp_user);
+			// _clients[i].setFd(new_connection);
 	}
 	_connected_clients++;
 }
@@ -156,20 +158,25 @@ void	Server::manageClient(int &current)
 	std::string	output;
 
 	rvalue = _io.receive(output, _clients[current].getFd());
-
 	if (rvalue == 0)
 	{
-		std::cout << "salu" << std::endl;
 		close(_clients[current].getFd());
 		_clients[current].setFd(-1);
 		_connected_clients--;
 	}
-
 	if (rvalue > 0)
 	{
 		std::cout << output << std::endl;
-		if (output.find("PING"))
-			_io.emit("PONG 127.0.0.1", _clients[current].getFd());
+		commandHandler(output, current);
 	}
+}
+
+void		Server::commandHandler(std::string const &output, int &current)
+{
+	int		i;
+	for (i = 0; i < MAX_CONNECTIONS; i++)
+		if (_clients[i].getFd() == current)
+			break ;
+	User	&cUser = _clients[i];
 
 }

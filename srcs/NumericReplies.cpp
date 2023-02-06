@@ -3,249 +3,251 @@
 /*                                                        :::      ::::::::   */
 /*   NumericReplies.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:31:10 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/30 13:57:19 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/06 15:03:53 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/NumericReplies.hpp"
 
-// void Rep::R001(Server& io, const std::string& cNick)
+// Rep::Rep(SocketIO &io) : io(io) { }
+
+// void Rep::R001(int fd, const std::string &cNick)
 // {
-// 	io << "001 " << cNick << " :Welcome to the Internet Relay Network " << cNick;
-// 	io.Send();
+// 	output = "001 " + cNick + " :Welcome to the Internet Relay Network " + cNick;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R002(Server& io, const std::string& cNick, const std::string& servName, const std::string &servVersion)
+// void Rep::R002(int fd, const std::string &cNick, const std::string& servName, const std::string &servVersion)
 // {
-// 	io << "002 " << cNick << " :Your host is " << servName << ", running version " << servVersion;
-// 	io.Send();
+// 	output = "002 " + cNick + " :Your host is " + servName + ", running version " + servVersion;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R003(Server& io, const std::string& cNick, const std::string& date)
+// void Rep::R003(int fd, const std::string &cNick, const std::string& date)
 // {
-// 	io << "003 " << cNick << " :This server was created " << date;
-// 	io.Send();
+// 	output = "003 " + cNick + " :This server was created " + date;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R004(Server& io, const std::string& cNick)
+// void Rep::R004(int fd, const std::string &cNick)
 // {
 // 	/* User modes https://www.rfc-editor.org/rfc/rfc2812#section-3.1.5 */
 // 	/* Channel modes https://www.rfc-editor.org/rfc/rfc2811#section-4 */
-// 	io << "004 " << cNick << " 42ircserv 1.0 " << CHANNELMODE_CHARLIST << " " << USERMODE_CHARLIST;
-// 	io.Send();
+// 	output = "004 " + cNick + " 42ircserv 1.0 " + CHANNELMODE_CHARLIST + " " + USERMODE_CHARLIST;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R211(Server& io, const std::string& cNick, const std::string& infostr)
+// void Rep::R211(int fd, const std::string &cNick, const std::string& infostr)
 // {
-// 	io << "211 " << cNick << " " << infostr;
-// 	io.Send();
+// 	output = "211 " + cNick + " " + infostr;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R212(Server& io, const std::string& cNick, const std::string& infostr)
+// void Rep::R212(int fd, const std::string &cNick, const std::string& infostr)
 // {
-// 	io << "212 " << cNick << " " << infostr << " 0 0";
-// 	io.Send();
+// 	output = "212 " + cNick + " " + infostr + " 0 0";
+// 	io.emit(output, fd);
 // }
-// void Rep::R219(Server& io, const std::string& cNick, const std::string& letters)
+// void Rep::R219(int fd, const std::string &cNick, const std::string& letters)
 // {
-// 	io << "219 " << cNick << " " << letters << " :End of STATS report";
-// 	io.Send();
+// 	output = "219 " + cNick + " " + letters + " :End of STATS report";
+// 	io.emit(output, fd);
 // }
-// void Rep::R242(Server& io, const std::string& cNick, const std::string& infostr)
+// void Rep::R242(int fd, const std::string &cNick, const std::string& infostr)
 // {
-// 	io << "242 " << cNick << " :" << infostr;
-// 	io.Send();
+// 	output = "242 " + cNick + " :" + infostr;
+// 	io.emit(output, fd);
 // }
-// void Rep::R243(Server& io, const std::string& cNick, const std::string& infostr)
+// void Rep::R243(int fd, const std::string &cNick, const std::string& infostr)
 // {
-// 	io << "243 " << cNick << " " << infostr;
-// 	io.Send();
-// }
-
-// void Rep::R221(Server& io, const std::string& cNick, const std::string& modes)
-// {
-// 	io << "221 " << cNick << " " << modes;
-// 	io.Send();
+// 	output = "243 " + cNick + " " + infostr;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R251(Server& io, const std::string& cNick, const std::string& infostr)
+// void Rep::R221(int fd, const std::string &cNick, const std::string& modes)
 // {
-// 	io << "251 " << cNick << " " << infostr;
-// 	io.Send();
+// 	output = "221 " + cNick + " " + modes;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R252(Server& io, const std::string& cNick, int ops)
+// void Rep::R251(int fd, const std::string &cNick, const std::string& infostr)
 // {
-// 	io << "252 " << cNick << " " << ops << " :operator(s) online";
-// 	io.Send();
+// 	output = "251 " + cNick + " " + infostr;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R253(Server& io, const std::string& cNick, int unknownConnnections)
+// void Rep::R252(int fd, const std::string &cNick, int ops)
 // {
-// 	io << "253 " << cNick << " " << unknownConnnections << " :unknown connection(s)";
-// 	io.Send();
+// 	output = "252 " + cNick + " " + ops + " :operator(s) online";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R254(Server& io, const std::string& cNick, int channels)
+// void Rep::R253(int fd, const std::string &cNick, int unknownConnnections)
 // {
-// 	io << "254 " << cNick << " " << channels << " :channel(s) currently open";
-// 	io.Send();
+// 	output = "253 " + cNick + " " + unknownConnnections + " :unknown connection(s)";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R255(Server& io, const std::string& cNick, const std::string& infostr)
+// void Rep::R254(int fd, const std::string &cNick, int channels)
 // {
-// 	io << "255 " << cNick << " " << infostr;
-// 	io.Send();
+// 	output = "254 " + cNick + " " + channels + " :channel(s) currently open";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R265(Server& io, const std::string& cNick, int users)
+// void Rep::R255(int fd, const std::string &cNick, const std::string& infostr)
 // {
-// 	io << "265 " << cNick << " " << users << " " << MAXCLIENTS <<" :Current local users " << users << ", max " << MAXCLIENTS;
-// 	io.Send();
+// 	output = "255 " + cNick + " " + infostr;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R266(Server& io, const std::string& cNick, int users)
+// void Rep::R265(int fd, const std::string &cNick, int users)
 // {
-// 	io << "266 " << cNick << " " << users << " " << MAXCLIENTS <<" :Current global users " << users << ", max " << MAXCLIENTS;
-// 	io.Send();
+// 	output = "265 " + cNick + " " + users + " " + MAXCLIENTS +" :Current local users " + users + ", max " + MAXCLIENTS;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R311(Server& io, const std::string& cNick, const std::string& queryNick, const std::string& queryName, const std::string& queryRealName)
+// void Rep::R266(int fd, const std::string &cNick, int users)
 // {
-// 	io << "311 " << cNick << " " << queryNick << " " << queryName << " * * :" << queryRealName;
-// 	io.Send();
+// 	output = "266 " + cNick + " " + users + " " + MAXCLIENTS +" :Current global users " + users + ", max " + MAXCLIENTS;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R313(Server& io, const std::string& cNick, const std::string& queryNick)
+// void Rep::R311(int fd, const std::string &cNick, const std::string& queryNick, const std::string& queryName, const std::string& queryRealName)
 // {
-// 	io << "313 " << cNick << " " << queryNick << " :Is an IRC operator";
-// 	io.Send();
+// 	output = "311 " + cNick + " " + queryNick + " " + queryName + " * * :" + queryRealName;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R315(Server& io, const std::string& cNick, const std::string& name)
+// void Rep::R313(int fd, const std::string &cNick, const std::string& queryNick)
 // {
-// 	io << "315 " << cNick << " " << name << " :End of Who query";
-// 	io.Send();
+// 	output = "313 " + cNick + " " + queryNick + " :Is an IRC operator";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R318(Server& io, const std::string& cNick, const std::string& queryList)
+// void Rep::R315(int fd, const std::string &cNick, const std::string& name)
 // {
-// 	io << "318 " << cNick << " " << queryList << " :End of /WHOIS list";
-// 	io.Send();
+// 	output = "315 " + cNick + " " + name + " :End of Who query";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R319(Server& io, const std::string& cNick, const std::string& queryNick, char prefix, const std::string& chanName)
+// void Rep::R318(int fd, const std::string &cNick, const std::string& queryList)
 // {
-// 	io << "319 " << cNick << " " << queryNick << " :";
+// 	output = "318 " + cNick + " " + queryList + " :End of /WHOIS list";
+// 	io.emit(output, fd);
+// }
+
+// void Rep::R319(int fd, const std::string &cNick, const std::string& queryNick, char prefix, const std::string& chanName)
+// {
+// 	output = "319 " + cNick + " " + queryNick + " :";
 // 	if (prefix != 'u')
-// 	 	io << prefix;
-// 	io << chanName;
-// 	io.Send();
+// 	 	output = prefix;
+// 	output = chanName;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R324(Server& io, const std::string& cNick, const std::string& chanName, const std::string& chanModeStr, const std::string& chanModeArgs)
+// void Rep::R324(int fd, const std::string &cNick, const std::string& chanName, const std::string& chanModeStr, const std::string& chanModeArgs)
 // {
-// 	io << "324 " << cNick << " " << chanName << " " << chanModeStr << " " << chanModeArgs;
-// 	io.Send();
+// 	output = "324 " + cNick + " " + chanName + " " + chanModeStr + " " + chanModeArgs;
+// 	io.emit(output, fd);
 // }
 
-// void	Rep::R322(Server& io, const std::string& cNick, int nuser, const std::string& topic, const std::string& chanName)
+// void	Rep::R322(int fd, const std::string &cNick, int nuser, const std::string& topic, const std::string& chanName)
 // {
-// 	io << "322 " << cNick << " " << chanName << " " << nuser << " :" << topic;
-// 	io.Send();
+// 	output = "322 " + cNick + " " + chanName + " " + nuser + " :" + topic;
+// 	io.emit(output, fd);
 // }
 
-// void	Rep::R323(Server& io, const std::string& cNick)
+// void	Rep::R323(int fd, const std::string &cNick)
 // {
-// 	io << "323 " << cNick << " :End of LIST";
-// 	io.Send();
+// 	output = "323 " + cNick + " :End of LIST";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R331(Server& io, const std::string& cNick, const std::string& chanName)
+// void Rep::R331(int fd, const std::string &cNick, const std::string& chanName)
 // {
-// 	io << "331 " << cNick << " " << chanName << " :No topic set";
-// 	io.Send();
+// 	output = "331 " + cNick + " " + chanName + " :No topic set";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R332(Server& io, const std::string& cNick, const std::string& chanName, const std::string& topic)
+// void Rep::R332(int fd, const std::string &cNick, const std::string& chanName, const std::string& topic)
 // {
-// 	io << "332 " << cNick << " " << chanName << " :" << topic;
-// 	io.Send();
+// 	output = "332 " + cNick + " " + chanName + " :" + topic;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R333(Server& io, const std::string& cNick, const std::string& chanName, const std::string& setterNick, time_t timestamp)
+// void Rep::R333(int fd, const std::string &cNick, const std::string& chanName, const std::string& setterNick, time_t timestamp)
 // {
-// 	io << "333 " << cNick << " " << chanName << " " << setterNick << " " << timestamp;
-// 	io.Send();
+// 	output = "333 " + cNick + " " + chanName + " " + setterNick + " " + timestamp;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R341(Server& io, const std::string& cNick, const std::string& otherNick, const std::string& chanName)
+// void Rep::R341(int fd, const std::string &cNick, const std::string& otherNick, const std::string& chanName)
 // {
-// 	io << "341 " << cNick << " " << otherNick << " " << chanName;
-// 	io.Send();
+// 	output = "341 " + cNick + " " + otherNick + " " + chanName;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R352(Server& io, const std::string& cNick, const std::string& message)
+// void Rep::R352(int fd, const std::string &cNick, const std::string& message)
 // {
-// 	io << "352 " << cNick << " " << message;
-// 	io.Send();
+// 	output = "352 " + cNick + " " + message;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R353(Server& io, const std::string& cNick, const std::string& chanName, const std::string& nick, char chanPrefix, char userPrefix)
+// void Rep::R353(int fd, const std::string &cNick, const std::string& chanName, const std::string& nick, char chanPrefix, char userPrefix)
 // {
 // 	if (userPrefix == 'u')
-// 		io << "353 " << cNick << " " << chanPrefix << " " << chanName << " :" << nick;
+// 		output = "353 " + cNick + " " + chanPrefix + " " + chanName + " :" + nick;
 // 	else
-// 		io << "353 " << cNick << " " << chanPrefix << " " << chanName << " :" << userPrefix << nick;
-// 	io.Send();
+// 		output = "353 " + cNick + " " + chanPrefix + " " + chanName + " :" + userPrefix + nick;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R366(Server& io, const std::string& cNick, const std::string& chanName)
+// void Rep::R366(int fd, const std::string &cNick, const std::string& chanName)
 // {
-// 	io << "366 " << cNick << " " << chanName << " :End of NAMES list";
-// 	io.Send();
+// 	output = "366 " + cNick + " " + chanName + " :End of NAMES list";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R367(Server& io, const std::string& cNick, const std::string& chanName, const std::string& bannedUser)
+// void Rep::R367(int fd, const std::string &cNick, const std::string& chanName, const std::string& bannedUser)
 // {
-// 	io << "367 " << cNick << " " << chanName << " " + bannedUser;
-// 	io.Send();
+// 	output = "367 " + cNick + " " + chanName + " " + bannedUser;
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R368(Server& io, const std::string& cNick, const std::string& chanName)
+// void Rep::R368(int fd, const std::string &cNick, const std::string& chanName)
 // {
-// 	io << "368 " << cNick << " " << chanName << " :End of channel ban list";
-// 	io.Send();
+// 	output = "368 " + cNick + " " + chanName + " :End of channel ban list";
+// 	io.emit(output, fd);
 // }
 
-// void	Rep::R372(Server& io, const std::string& cNick, const std::string& Motd)
+// void	Rep::R372(int fd, const std::string &cNick, const std::string& Motd)
 // {
-// 	io << "372 " << cNick << " :" << Motd;
-// 	io.Send();
+// 	output = "372 " + cNick + " :" + Motd;
+// 	io.emit(output, fd);
 // }
 
-// void	Rep::R375(Server& io, const std::string& cNick, const std::string& serverName)
+// void	Rep::R375(int fd, const std::string &cNick, const std::string& serverName)
 // {
-// 	io << "375 " << cNick << " :- " << serverName << " Message of the day - ";
-// 	io.Send();
+// 	output = "375 " + cNick + " :- " + serverName + " Message of the day - ";
+// 	io.emit(output, fd);
 // }
 
-// void	Rep::R376(Server& io, const std::string& cNick)
+// void	Rep::R376(int fd, const std::string &cNick)
 // {
-// 	io << "376 " << cNick << " :End of /MOTD command.";
-// 	io.Send();
+// 	output = "376 " + cNick + " :End of /MOTD command.";
+// 	io.emit(output, fd);
 // }
 
-// void	Rep::R381(Server& io, const std::string& cNick)
+// void	Rep::R381(int fd, const std::string &cNick)
 // {
-// 	io << "381 " << cNick << " " << " :You are now an IRC operator";
-// 	io.Send();
+// 	output = "381 " + cNick + " " + " :You are now an IRC operator";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::R391(Server& io, const std::string& cNick, const std::string& servName)
+// void Rep::R391(int fd, const std::string &cNick, const std::string& servName)
 // {
 // 	char date_string[128];
 // 	time_t curr_time;
@@ -255,169 +257,169 @@
 
 // 	std::strftime(date_string, 50, "%c", curr_tm);
 
-// 	io << "391 " << cNick << " " << servName << " :" << date_string;
-// 	io.Send();
+// 	output = "391 " + cNick + " " + servName + " :" + date_string;
+// 	io.emit(output, fd);
 // }
 
 // /* Errors */
-// void Rep::E401(Server& io, const std::string& cNick, const std::string& inputNick)
+// void Rep::E401(int fd, const std::string &cNick, const std::string& inputNick)
 // {
-// 	io << "401 " << cNick << " " << inputNick << " :No such nick/channel";
-// 	io.Send();
+// 	output = "401 " + cNick + " " + inputNick + " :No such nick/channel";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E403(Server& io, const std::string& cNick, const std::string& chanName)
+// void Rep::E403(int fd, const std::string &cNick, const std::string& chanName)
 // {
-// 	io << "403 " << cNick << " " << chanName << " :No such channel";
-// 	io.Send();
+// 	output = "403 " + cNick + " " + chanName + " :No such channel";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E404(Server& io, const std::string& cNick, const std::string& chanName)
+// void Rep::E404(int fd, const std::string &cNick, const std::string& chanName)
 // {
-// 	io << "404 " << cNick << " " << chanName << " :Cannot send to channel";
-// 	io.Send();
+// 	output = "404 " + cNick + " " + chanName + " :Cannot send to channel";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E411(Server& io, const std::string& cNick, const std::string& cmd)
+// void Rep::E411(int fd, const std::string &cNick, const std::string& cmd)
 // {
-// 	io << "411 " << cNick << " :No recipient given (" << cmd << ")";
-// 	io.Send();
+// 	output = "411 " + cNick + " :No recipient given (" + cmd + ")";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E412(Server& io, const std::string& cNick)
+// void Rep::E412(int fd, const std::string &cNick)
 // {
-// 	io << "412 " << cNick << " :No text to send";
-// 	io.Send();
+// 	output = "412 " + cNick + " :No text to send";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E421(Server& io, const std::string& cNick, const std::string& cmd)
+// void Rep::E421(int fd, const std::string &cNick, const std::string& cmd)
 // {
-// 	io << "421 " << cNick << " " << cmd << " :Unknown command";
-// 	io.Send();
+// 	output = "421 " + cNick + " " + cmd + " :Unknown command";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E422(Server& io, const std::string& cNick)
+// void Rep::E422(int fd, const std::string &cNick)
 // {
-// 	io << "422 " << cNick << " :No MOTD in config File";
-// 	io.Send();
+// 	output = "422 " + cNick + " :No MOTD in config File";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E431(Server& io, const std::string& cNick)
+// void Rep::E431(int fd, const std::string &cNick)
 // {
-// 	io << "431 " << cNick << " :No nickname given";
-// 	io.Send();
+// 	output = "431 " + cNick + " :No nickname given";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E432(Server& io, const std::string& cNick, const std::string& badNick)
+// void Rep::E432(int fd, const std::string &cNick, const std::string& badNick)
 // {
-// 	io << "432 " << cNick << " " << badNick << " :Erronous nickname";
-// 	io.Send();
+// 	output = "432 " + cNick + " " + badNick + " :Erronous nickname";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E433(Server& io, const std::string& cNick, const std::string& badNick)
+// void Rep::E433(int fd, const std::string &cNick, const std::string& badNick)
 // {
-// 	io << "433 " << cNick << " " << badNick << " :Nickname is already in use";
-// 	io.Send();
+// 	output = "433 " + cNick + " " + badNick + " :Nickname is already in use";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E441(Server& io, const std::string& cNick, const std::string& chanName, const std::string& inputNick)
+// void Rep::E441(int fd, const std::string &cNick, const std::string& chanName, const std::string& inputNick)
 // {
-// 	io << "441 " << cNick << " " << inputNick << " " << chanName << " :They aren't on that channel";
-// 	io.Send();
+// 	output = "441 " + cNick + " " + inputNick + " " + chanName + " :They aren't on that channel";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E442(Server& io, const std::string& cNick, const std::string& chanName)
+// void Rep::E442(int fd, const std::string &cNick, const std::string& chanName)
 // {
-// 	io << "442 " << cNick << " " << chanName << " :You're not on that channel";
-// 	io.Send();
+// 	output = "442 " + cNick + " " + chanName + " :You're not on that channel";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E443(Server& io, const std::string& cNick, const std::string& chanName, const std::string& inputNick)
+// void Rep::E443(int fd, const std::string &cNick, const std::string& chanName, const std::string& inputNick)
 // {
-// 	io << "443 " << cNick << " " << inputNick << " " << chanName << " :Is already on channel";
-// 	io.Send();
+// 	output = "443 " + cNick + " " + inputNick + " " + chanName + " :Is already on channel";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E451(Server& io, const std::string& cNick)
+// void Rep::E451(int fd, const std::string &cNick)
 // {
-// 	io << "451 " << cNick << " :You have not registered";
-// 	io.Send();
+// 	output = "451 " + cNick + " :You have not registered";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E461(Server& io, const std::string& cNick, const std::string& cmd)
+// void Rep::E461(int fd, const std::string &cNick, const std::string& cmd)
 // {
-// 	io << "461 " << cNick << " " << cmd << " :Not enough parameters";
-// 	io.Send();
+// 	output = "461 " + cNick + " " + cmd + " :Not enough parameters";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E462(Server& io, const std::string& cNick)
+// void Rep::E462(int fd, const std::string &cNick)
 // {
-// 	io << "462 " << cNick << " :Unauthorized command (already registered)";
-// 	io.Send();
+// 	output = "462 " + cNick + " :Unauthorized command (already registered)";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E464(Server& io, const std::string& cNick)
+// void Rep::E464(int fd, const std::string &cNick)
 // {
-// 	io << "464 " << cNick << " :Password incorrect";
-// 	io.Send();
+// 	output = "464 " + cNick + " :Password incorrect";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E465(Server& io, const std::string& cNick)
+// void Rep::E465(int fd, const std::string &cNick)
 // {
-// 	io << "465 " << cNick << " :You are banned from this server";
-// 	io.Send();
+// 	output = "465 " + cNick + " :You are banned from this server";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E471(Server& io, const std::string& cNick, const std::string& chanName)
+// void Rep::E471(int fd, const std::string &cNick, const std::string& chanName)
 // {
-// 	io << "471 " << cNick << " " << chanName << " :Cannot join channel (+l)";
-// 	io.Send();
+// 	output = "471 " + cNick + " " + chanName + " :Cannot join channel (+l)";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E472(Server& io, const std::string& cNick, const std::string& modeChar)
+// void Rep::E472(int fd, const std::string &cNick, const std::string& modeChar)
 // {
-// 	io << "472 " << cNick << " " << modeChar << " :is unknown mode char to me";
-// 	io.Send();
+// 	output = "472 " + cNick + " " + modeChar + " :is unknown mode char to me";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E473(Server& io, const std::string& cNick, const std::string& chanName)
+// void Rep::E473(int fd, const std::string &cNick, const std::string& chanName)
 // {
-// 	io << "473 " << cNick << " " << chanName << " :Cannot join channel (+i)";
-// 	io.Send();
+// 	output = "473 " + cNick + " " + chanName + " :Cannot join channel (+i)";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E474(Server& io, const std::string& cNick, const std::string& chanName)
+// void Rep::E474(int fd, const std::string &cNick, const std::string& chanName)
 // {
-// 	io << "474 " << cNick << " " << chanName << " :Cannot join channel (+b)";
-// 	io.Send();
+// 	output = "474 " + cNick + " " + chanName + " :Cannot join channel (+b)";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E475(Server& io, const std::string& cNick, const std::string& chanName)
+// void Rep::E475(int fd, const std::string &cNick, const std::string& chanName)
 // {
-// 	io << "475 " << cNick << " " << chanName << " :Cannot join channel (+k)";
-// 	io.Send();
+// 	output = "475 " + cNick + " " + chanName + " :Cannot join channel (+k)";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E476(Server& io, const std::string& cNick)
+// void Rep::E476(int fd, const std::string &cNick)
 // {
-// 	io << "476 " << cNick << " :Bad Channel Mask";
-// 	io.Send();
+// 	output = "476 " + cNick + " :Bad Channel Mask";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E482(Server& io, const std::string& cNick, const std::string& chanName)
+// void Rep::E482(int fd, const std::string &cNick, const std::string& chanName)
 // {
-// 	io << "482 " << cNick << " " << chanName << " :You're not channel operator";
-// 	io.Send();
+// 	output = "482 " + cNick + " " + chanName + " :You're not channel operator";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E501(Server& io, const std::string& cNick)
+// void Rep::E501(int fd, const std::string &cNick)
 // {
-// 	io << "501 " << cNick << " :Unknown MODE flag";
-// 	io.Send();
+// 	output = "501 " + cNick + " :Unknown MODE flag";
+// 	io.emit(output, fd);
 // }
 
-// void Rep::E502(Server& io, const std::string& cNick)
+// void Rep::E502(int fd, const std::string &cNick)
 // {
-// 	io << "502 " << cNick << " :Can't view or change mode for other users";
-// 	io.Send();
+// 	output = "502 " + cNick + " :Can't view or change mode for other users";
+// 	io.emit(output, fd);
 // }

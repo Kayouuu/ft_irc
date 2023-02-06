@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 11:00:21 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/30 14:53:24 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/06 16:37:35 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ User::User(std::string _nick, std::string _user)
 {
 	this->_nick = _nick;
 	this->_user = _user;
+	this->_right_password = false;
+	this->_is_registered = false;
 }
 
 User::~User()
