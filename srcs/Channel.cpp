@@ -12,6 +12,16 @@ Channel::Channel()
 Channel::Channel(const std::string &name, User &opUser) : _name(name)
 {
 	_opUsers.insert(_opUsers.begin(), opUser);
+	_mode.insert(std::pair<char, bool>('i', false));
+	_mode.insert(std::pair<char, bool>('k', false));
+	_mode.insert(std::pair<char, bool>('l', false));
+	_mode.insert(std::pair<char, bool>('m', false));
+	_mode.insert(std::pair<char, bool>('n', false));
+	_mode.insert(std::pair<char, bool>('p', false));
+	_mode.insert(std::pair<char, bool>('r', false));
+	_mode.insert(std::pair<char, bool>('s', false));
+	_mode.insert(std::pair<char, bool>('t', false));
+	_mode.insert(std::pair<char, bool>('v', false));
 }
 
 Channel::Channel(const Channel &src)
@@ -40,9 +50,12 @@ const std::string &Channel::getSubject() const
 	return _subject;
 }
 
-const std::map<std::string, bool> &Channel::getMode() const
+bool Channel::getMode(char mode)
 {
-	return _mode;
+	std::map<char, bool>::iterator it = _mode.find(mode);
+	if (it == _mode.end())
+		throw std::exception(); //TODO error msg
+	return it->second;
 }
 
 const std::vector<User> &Channel::getUsers() const
@@ -52,7 +65,12 @@ const std::vector<User> &Channel::getUsers() const
 
 bool Channel::isBanned(User &user)
 {
-	//TODO
+	for (std::vector<User>::iterator it = _bannedUsers.begin(); it < _bannedUsers.end(); it++)
+	{
+		if (user == *it)
+			return true;
+	}
+	return false;
 }
 
 void Channel::setName(const std::string &name)
@@ -65,24 +83,27 @@ void Channel::setSubject(const std::string &subject)
 	_subject = subject;
 }
 
-void Channel::setMode(std::string &modeName, bool &isMode)
+void Channel::setMode(char &modeName, bool &isMode)
 {
-	//TODO;
+	std::map<char, bool>::iterator it = _mode.find(modeName);
+	if (it == _mode.end())
+		throw std::exception(); //TODO error msg
+	it->second = isMode;
 }
 
-void Channel::setUsers(User &users)
+void Channel::addUser(User &user)
 {
-	//TODO;
+	_bannedUsers.push_back(user);
 }
 
-void Channel::setOpUsers(User &opUsers)
+void Channel::addOpUser(User &opUser)
 {
-	//TODO;
+	_bannedUsers.push_back(opUser);
 }
 
 void Channel::banUser(User &user)
 {
-	//TODO
+	_bannedUsers.push_back(user);
 }
 
 Channel::~Channel()
