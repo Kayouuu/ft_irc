@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 11:00:21 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/06 16:37:35 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/07 13:58:53 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,28 +26,36 @@ User::~User()
 {
 }
 
-void	User::setFd(int new_fd)
+void	User::setFd(int const &new_fd)
 {
 	_fd = new_fd;
 }
-void	User::setNick(std::string nick)
+void	User::setNick(std::string const &nick)
 {
 	_nick = nick;
 }
-void	User::setUser(std::string user)
+void	User::setUser(std::string const &user)
 {
 	_user = user;	
 }
-void	User::setPrefix(std::string prefix)
+void	User::setPrefix(std::string const &prefix)
 {
 	_prefix = prefix;
 }
+void	User::setRegister(bool const &input)
+{
+	_is_registered = input;
+}
+void	User::setRPassword(bool const &input)
+{
+	_right_password = input;
+}
+
 
 int const	&User::getFd() const
 {
 	return (_fd);
 }	
-
 std::string const &User::getNick() const
 {
 	return (_nick);
@@ -59,4 +67,12 @@ std::string const &User::getUser() const
 std::string const &User::getPrefix() const
 {
 	return (_prefix);
+}
+bool		const	&User::getRegister() const
+{
+	return (_is_registered);
+}
+bool		const	&User::getRPassword() const
+{
+	return (_right_password);
 }

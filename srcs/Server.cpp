@@ -6,13 +6,13 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 11:56:10 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/07 14:10:59 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/Server.hpp"
 
-Server::Server(int port, std::string password) : _port(port), _password(password) { }
+Server::Server(int port, std::string password) : _port(port), _password(password), _rep(_io) { }
 
 Server::~Server() { }
 
@@ -59,6 +59,8 @@ void	Server::initCommands()
 {
 	_commands.insert(std::make_pair(std::string("JOIN"), &Server::joinCmd));
 	_commands.insert(std::make_pair(std::string("NICK"), &Server::nickCmd));
+	_commands.insert(std::make_pair(std::string("PASS"), &Server::passCmd));
+	_commands.insert(std::make_pair(std::string("USER"), &Server::userCmd));
 }
 
 void	Server::run()
@@ -171,7 +173,7 @@ void	Server::manageClient(int &current)
 	}
 }
 
-void		Server::commandHandler(std::string const &output, int &current)
+void		Server::commandHandler(std::string const &output, int &current) // TODO change output with input
 {
 	std::vector<std::string>	parsed_output;
 	std::string					tmp;
@@ -205,12 +207,8 @@ void		Server::commandHandler(std::string const &output, int &current)
 			tmp.push_back(c);
 		}
 	}
-	parsed_output.push_back(tmp);
-
-	for (int i = 0; i < vector_it; i++)
-	{
-		std::cout << "[" << parsed_output[i] << std::endl;
-	}
 	User	&cUser = _clients[user_index];
 
+	if (_commands.find(parsed_output[0]) != _commands.end())
+		(this->*_commands[parsed_output[0]])(parsed_output, current, _clients[user_index]); // Execute command corresponding to the input
 }

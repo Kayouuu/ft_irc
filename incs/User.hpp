@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:58:58 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/06 16:37:16 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/07 13:58:32 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,19 @@ class User
 		User(std::string _nick, std::string _user);
 		virtual ~User();
 
-		void	setFd(int new_fd);
-		void	setNick(std::string	nick);
-		void	setUser(std::string	user);
-		void	setPrefix(std::string prefix);
+		void	setFd(int const &new_fd);
+		void	setNick(std::string	const &nick);
+		void	setUser(std::string	const &user);
+		void	setPrefix(std::string const &prefix);
+		void	setRegister(bool const &input);
+		void	setRPassword(bool const &input);
 
 		int const			&getFd() const;	
 		std::string const	&getNick() const;
 		std::string const	&getUser() const;
 		std::string const	&getPrefix() const;
+		bool		const	&getRegister() const;
+		bool		const	&getRPassword() const;
 };
 
 #endif
