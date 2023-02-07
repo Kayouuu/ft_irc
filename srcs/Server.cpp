@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 16:30:20 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/07 17:45:20 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void	Server::acceptClient()
 		std::cout << "accept: failed to accept an incoming connection" << std::endl;
 		throw std::exception();
 	}
-	std::memset(_buffer, 0, 1024);
+	// std::memset(_buffer, 0, 1024);
 	// while (recv(new_connection, &_buffer, 1024, 0))
 	// {
 	// 	tmp = _buffer;
@@ -192,20 +192,20 @@ void		Server::commandHandler(std::string const &output, int const &current) // T
 	for (size_t i = 0; i < output.length(); i++)
 	{
 		char c = output[i];
-		if (c == ' ')
+		if (std::isspace(c))
 		{
 			parsed_output.push_back(tmp);
 			tmp.clear();
 			vector_it++;
 		}
-		else if (c == '\"')
-		{
-			tmp.push_back(c);
-			i++;
-			while (i < output.length() && output[i] != '\"') { tmp.push_back(c); i++; }
-			if (i < output.length())
-				tmp.push_back(c);
-		}
+		// else if (c == '\"')
+		// {
+		// 	tmp.push_back(c);
+		// 	i++;
+		// 	while (i < output.length() && output[i] != '\"') { tmp.push_back(c); i++; }
+		// 	if (i < output.length())
+		// 		tmp.push_back(c);
+		// }
 		else
 		{
 			tmp.push_back(c);
