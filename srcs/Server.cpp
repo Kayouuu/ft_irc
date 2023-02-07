@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/06 16:43:48 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/07 11:56:10 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	Server::starting()
 		std::cout << "socket: error" << std::endl;
 		throw std::exception();
 	}
-	// TODO Check if needed to use setsocketopt() function
+	// TODO Check if needed to use setsocketopt() function (seems not)
 	// TOCOMMENT
 	this->_address.sin_family = AF_INET;
 	this->_address.sin_addr.s_addr = INADDR_ANY;
@@ -173,10 +173,44 @@ void	Server::manageClient(int &current)
 
 void		Server::commandHandler(std::string const &output, int &current)
 {
-	int		i;
-	for (i = 0; i < MAX_CONNECTIONS; i++)
-		if (_clients[i].getFd() == current)
+	std::vector<std::string>	parsed_output;
+	std::string					tmp;
+	int							user_index;
+	int							vector_it;
+	int							size;
+
+	for (user_index = 0; user_index < MAX_CONNECTIONS; user_index++)
+		if (_clients[user_index].getFd() == current)
 			break ;
-	User	&cUser = _clients[i];
+
+	for (size_t i = 0; i < output.length(); i++)
+	{
+		char c = output[i];
+		if (c == ' ')
+		{
+			parsed_output.push_back(tmp);
+			tmp.clear();
+			vector_it++;
+		}
+		else if (c == '\"')
+		{
+			tmp.push_back(c);
+			i++;
+			while (i < output.length() && output[i] != '\"') { tmp.push_back(c); i++; }
+			if (i < output.length())
+				tmp.push_back(c);
+		}
+		else
+		{
+			tmp.push_back(c);
+		}
+	}
+	parsed_output.push_back(tmp);
+
+	for (int i = 0; i < vector_it; i++)
+	{
+		std::cout << "[" << parsed_output[i] << std::endl;
+	}
+	User	&cUser = _clients[user_index];
 
 }

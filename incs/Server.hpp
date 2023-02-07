@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/06 16:39:48 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/07 10:54:20 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ class Server
 	// TODO Channel class + Channel array (vector)
 
 	private:
-		typedef	void (Server::*cmdHandler)(std::vector<std::string>, int); // Array of function pointer for function belonging to the Server class returning void and taking a string (input) and an int (fd)
+		typedef	void (Server::*cmdHandler)(std::vector<std::string> const &, int); // Array of function pointer for function belonging to the Server class returning void and taking a string (input) and an int (fd)
 
 		SocketIO							_io;
 		std::vector<User>					_clients;
@@ -65,8 +65,8 @@ class Server
 		void		commandHandler(std::string const &output, int &current);
 	
 	private:
-		void	joinCmd(std::vector<std::string> input, int fd);
-		void	nickCmd(std::vector<std::string> input, int fd);
+		void	joinCmd(std::vector<std::string> const &input, int fd);
+		void	nickCmd(std::vector<std::string> const &input, int fd);
 };
 
 /*
