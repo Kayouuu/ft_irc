@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/31 15:19:14 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/07 16:10:15 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,30 @@
 # include <iostream>
 # include <vector>
 # include <map>
+
+# include <csignal>
 # include <cstring>
+# include <cerrno>
 # include <cstdlib>
 
 # include "User.hpp"
 # include "SocketIO.hpp"
 # include "Channel.hpp"
+# include "NumericReplies.hpp"
 
 # define MAX_CONNECTIONS	1024
 
-class SocketIO;
+class	SocketIO;
+class	Rep;
 
 class Server
 {
 	// function getUserByNickname()
 
 	private:
-		typedef	void (Server::*cmdHandler)(std::vector<std::string>, int); // Array of function pointer for function belonging to the Server class returning void and taking a string (input) and an int (fd)
+		typedef	void (Server::*cmdHandler)(std::vector<std::string> const &, int, User &); // Array of function pointer for function belonging to the Server class returning void and taking a string (input) and an int (fd)
 
+		Rep									_rep;
 		SocketIO							_io;
 		std::vector<User>					_clients;
 		std::vector<Channel>				_channels;
@@ -58,14 +64,17 @@ class Server
 		Server(int port, std::string password);
 		~Server();
 
-		void	starting();
-		void	run();
+		void		starting();
+		void		run();
+		void		commandHandler(std::string const &output, int const &current);
 	
 	private:
-		void	joinCmd(std::vector<std::string> input, int fd);
-		void	nickCmd(std::vector<std::string> input, int fd);
-		void	msgCmd(std::vector<std::string> input, int fd);
-		void	inviteCmd(std::vector<std::string> input, int fd);
+		void	joinCmd(std::vector<std::string> const &input, int fd, User &cUser);
+		void	nickCmd(std::vector<std::string> const &input, int fd, User &cUser);
+		void	passCmd(std::vector<std::string> const &input, int fd, User &cUser);
+		void	userCmd(std::vector<std::string> const &input, int fd, User &cUser);
+		void	msgCmd(std::vector<std::string> const &input, int fd, User &cUser);
+		void	inviteCmd(std::vector<std::string> const &input, int fd, User &cUser);
 };
 
 /*

@@ -6,13 +6,13 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/31 14:25:47 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/07 16:30:20 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/Server.hpp"
 
-Server::Server(int port, std::string password) : _port(port), _password(password) { }
+Server::Server(int port, std::string password) : _port(port), _password(password), _rep(_io) { }
 
 Server::~Server() { }
 
@@ -25,16 +25,11 @@ void	Server::starting()
 		std::cout << "socket: error" << std::endl;
 		throw std::exception();
 	}
-	// if (fcntl(_server_fd, F_SETFL, O_NONBLOCK) == -1)
-	// {
-	// 	std::cout << "fcntl: error" << std::endl;
-	// 	return (false);
-	// }
+	// TODO Check if needed to use setsocketopt() function (seems not)
 	// TOCOMMENT
 	this->_address.sin_family = AF_INET;
 	this->_address.sin_addr.s_addr = INADDR_ANY;
 	this->_address.sin_port = htons(this->_port);
-	
 	
 	if (bind(_server_fd, (struct sockaddr*)&_address, sizeof(_address)) < 0) // TOCOMMENT + TODO explicit error msg
 	{
@@ -64,27 +59,35 @@ void	Server::initCommands()
 {
 	_commands.insert(std::make_pair(std::string("JOIN"), &Server::joinCmd));
 	_commands.insert(std::make_pair(std::string("NICK"), &Server::nickCmd));
+	_commands.insert(std::make_pair(std::string("PASS"), &Server::passCmd));
+	_commands.insert(std::make_pair(std::string("USER"), &Server::userCmd));
 }
 
 void	Server::run()
 {
 	fd_set	read_fd_set;
-	int		returned_value;
+	int		rvalue;
 
 	std::cout << "The IRC server is running." << std::endl << "Waiting for connections..." << std::endl;
-
-	while (true)
+	while (1)
 	{
+		std::cout << "loop" << std::endl;
 		FD_ZERO(&read_fd_set); //  Cleaning the FD list & TOCOMMENT
 		for (int i = 0; i < MAX_CONNECTIONS; i++)
 		{
 			if (_clients[i].getFd() >= 0)
+			{
+				// std::cout << i << " " << _clients[i].getFd() << std::endl;
+				// int fd = _clients[i].getFd(); // TODO maybe put the fd in another array anyway lool xD nyahh
 				FD_SET(_clients[i].getFd(), &read_fd_set); // Reading all the connected clients to the list
+				// _clients[i].setFd(fd);
+			}
 		}
 		FD_SET(0, &read_fd_set);
-		returned_value = select(FD_SETSIZE, &read_fd_set, NULL, NULL, NULL);
-		if (returned_value < 0)
+		rvalue = select(FD_SETSIZE, &read_fd_set, NULL, NULL, NULL);
+		if (rvalue < 0)
 		{
+			std::cout << errno << std::endl;
 			std::cout << "select: error" << std::endl;
 			// TODO Error msg + shutting down the server
 			throw std::exception();
@@ -106,7 +109,6 @@ void	Server::acceptClient()
 {
 	// TODO putting the new user in an array of users
 	int							new_connection;
-	int							returned_value;
     std::string					tmp;
 	User						tmp_user;
 
@@ -118,33 +120,34 @@ void	Server::acceptClient()
 		throw std::exception();
 	}
 	std::memset(_buffer, 0, 1024);
-	while (recv(new_connection, &_buffer, 1024, 0))
-	{
-		tmp = _buffer;
-		int	size;
-		if ((size = tmp.find("NICK ", 0)) == 0)
-			tmp_user.setNick(tmp.substr(5));
-		if ((size = tmp.find("USER ", 0)) == 0)
-		{
-			tmp_user.setUser(tmp.substr(5, tmp.find(" ", 5) - 5));
-			break ;
-		}
-	}
+	// while (recv(new_connection, &_buffer, 1024, 0))
+	// {
+	// 	tmp = _buffer;
+	// 	int	size;
+	// 	std::cout << tmp << std::endl; // TODO set password + send message if incorrect pass?
+	// 	if ((size = tmp.find("NICK ", 0)) == 0)
+	// 		tmp_user.setNick(tmp.substr(5));
+	// 	if ((size = tmp.find("USER ", 0)) == 0)
+	// 	{
+	// 		tmp_user.setUser(tmp.substr(5, tmp.find(" ", 5) - 5));
+	// 		break ;
+	// 	}
+	// }
 
-	std::string	msg = "001 " + tmp_user.getNick() + " :Welcome" + tmp_user.getNick() + " !";
+	// std::string	msg = "001 " + tmp_user.getNick() + " :Welcome" + tmp_user.getNick() + " !";
 
-	std::cout << "New user logged: " << tmp_user.getNick() << std::endl; 
+	// std::cout << "New user logged: " << tmp_user.getNick() << std::endl; 
 	
-	if (send(new_connection, msg.c_str(), strlen(msg.c_str()), 0) < 0)
-	{
-		std::cout << "send: error" << std::endl; // explicit msg
-		throw std::exception();
-	}
-	_clients.push_back(tmp_user);
+	// if (send(new_connection, msg.c_str(), strlen(msg.c_str()), 0) < 0)
+	// {
+	// 	std::cout << "send: error" << std::endl; // explicit msg
+	// 	throw std::exception();
+	// }
 	for (int i = 0; i < MAX_CONNECTIONS; i++)
 	{
 		if (_clients[i].getFd() < 0)
 			_clients[i].setFd(new_connection);
+			// _clients[i].setFd(new_connection);
 	}
 	_connected_clients++;
 }
@@ -156,18 +159,59 @@ void	Server::manageClient(int &current)
 	std::string	output;
 
 	rvalue = _io.receive(output, _clients[current].getFd());
-
 	if (rvalue == 0)
 	{
 		close(_clients[current].getFd());
 		_clients[current].setFd(-1);
 		_connected_clients--;
 	}
-
 	if (rvalue > 0)
 	{
 		std::cout << output << std::endl;
+		commandHandler(output, _clients[current].getFd());
 	}
-
 }
 
+void		Server::commandHandler(std::string const &output, int const &current) // TODO change output with input
+{
+	std::vector<std::string>	parsed_output;
+	std::string					tmp;
+	int							user_index;
+	int							vector_it;
+	int							size;
+
+	for (user_index = 0; user_index < MAX_CONNECTIONS; user_index++)
+		if (_clients[user_index].getFd() == current)
+			break ;
+	if (_clients[user_index].getFd() == -1)
+	{
+		std::cout << "error: not finding the associated fd" << std::endl;
+		throw std::exception();
+	}
+
+	for (size_t i = 0; i < output.length(); i++)
+	{
+		char c = output[i];
+		if (c == ' ')
+		{
+			parsed_output.push_back(tmp);
+			tmp.clear();
+			vector_it++;
+		}
+		else if (c == '\"')
+		{
+			tmp.push_back(c);
+			i++;
+			while (i < output.length() && output[i] != '\"') { tmp.push_back(c); i++; }
+			if (i < output.length())
+				tmp.push_back(c);
+		}
+		else
+		{
+			tmp.push_back(c);
+		}
+	}
+
+	if (_commands.find(parsed_output[0]) != _commands.end())
+		(this->*_commands[parsed_output[0]])(parsed_output, current, _clients[user_index]); // Execute command corresponding to the input
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:58:58 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/30 14:52:02 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/07 16:15:20 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ class User
 		std::string				_prefix;
 		std::vector<Channel>	_chanOp;//array of channels in which the user is operator
 		bool					_ircOp;//true: user is irc operator, false: user is not irc operator
-
+		bool					_is_registered;
+		bool					_right_password;
 	public:
 		User();
 		User(const std::string &_nick, const std::string& _user);
@@ -45,6 +46,8 @@ class User
 		void	setPrefix(const std::string &prefix);
 		void	addOpChannel(Channel &channel);
 		void	setIrcOp(bool ircOp);
+		void	setRegister(bool const &input);
+		void	setRPassword(bool const &input);
 
 		int const					&getFd() const;
 		std::string const			&getNick() const;
@@ -52,6 +55,8 @@ class User
 		std::string const			&getPrefix() const;
 		std::vector<Channel> const	&getOpChannels() const;
 		bool 						isIrcOp() const;
+		bool const					&getRegister() const;
+		bool const					&getRPassword() const;
 };
 
 #endif

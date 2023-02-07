@@ -8,6 +8,8 @@
 
 # specific files
 test.cpp
+.TODO.txt.swp
+TODO.txt
 
 # Prerequisites
 *.d
@@ -41,3 +43,4 @@ test.cpp
 *.exe
 *.out
 *.app
+ircserv

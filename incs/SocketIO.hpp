@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:44:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/01/31 15:08:57 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/06 13:21:27 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #include <sys/socket.h>
 #include <iostream>
+#include <cerrno>
+#include <cstring>
 
 class SocketIO
 {
