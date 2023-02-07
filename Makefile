@@ -18,7 +18,6 @@ NAME_BONUS = ircserv_bonus
 # **************************************************************************** #
 
 SRCS =	$(shell find srcs -name "*.cpp")
-SRCS +=	$(shell find srcs/commands -name "*.cpp")
 HEADFILE = $(shell find incs -name "*.hpp")
 
 #SRCS_BONUS =	$(shell find bonus/srcs -name "*.cpp")

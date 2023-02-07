@@ -24,7 +24,7 @@ void	Server::nickCmd(std::vector<std::string> input, int fd)
 	{
 		if (it->getNick() == input[1])
 		{
-			std::cout << "Error: nickname already in use\n";//TOFIX: see NumericReplies.cpp to throw the correct error (Rep::E433)
+			std::cout << "Error: nickname already in use\n";//TODO FIX see NumericReplies.cpp to throw the correct error (Rep::E433)
 			return;
 		}
 	}
@@ -32,7 +32,7 @@ void	Server::nickCmd(std::vector<std::string> input, int fd)
 	for (ite; ite < _clients.end(); ite++)
 	{
 		if (ite->getFd() == fd)
-			ite->setNick(input[1]);//TOCHECK: set index 1 for the moment but review the input vector construction (wich index for the nickname)
+			ite->setNick(input[1]);//TODO CHECK set index 1 for the moment but review the input vector construction (wich index for the nickname)
 	}
-	//TOCHECK: maybe throw a comment error if fd not found
+	//TODO CHECK maybe throw a comment error if fd not found
 }

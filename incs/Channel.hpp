@@ -10,6 +10,8 @@
 # include <vector>
 # include "User.hpp"
 
+class User;
+
 class Channel
 {
 	public:
@@ -30,6 +32,9 @@ class Channel
 		void addUser(User &user);
 		void addOpUser(User &opUser);
 		void banUser(User &user);
+
+		bool operator==(const Channel &rhs) const;
+		bool operator!=(const Channel &rhs) const;
 
 	private:
 		std::string				_name; //200 char max

@@ -6,5 +6,5 @@ void Server::msgCmd(std::vector<std::string> input, int fd)
     while (fd != it->getFd())
         it++;
     if (it == _clients.end())
-        //client pas trouver
+        ;//client pas trouver
 }

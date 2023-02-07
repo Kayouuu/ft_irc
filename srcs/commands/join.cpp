@@ -14,5 +14,5 @@
 
 void	Server::joinCmd(std::vector<std::string> input, int fd)
 {
-	
+
 }

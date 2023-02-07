@@ -81,17 +81,18 @@ bool User::isIrcOp() const
 
 User::User(const User &src)
 {
-	_fd = src._fd;
-	_nick = src._nick;
-	_user = src._user;
-	_prefix = src._prefix;
-	_chanOp = src._chanOp;
-	_ircOp = src._ircOp;
+	*this = src;
 }
 
 User &User::operator=(const User &rhs)
 {
-	*this = rhs;
+	_fd = rhs._fd;
+	_nick = rhs._nick;
+	_user = rhs._user;
+	_prefix = rhs._prefix;
+	_chanOp = rhs._chanOp;
+	_ircOp = rhs._ircOp;
+	return *this;
 }
 
 bool User::operator==(const User &rhs) const

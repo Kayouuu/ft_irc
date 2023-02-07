@@ -106,6 +106,23 @@ void Channel::banUser(User &user)
 	_bannedUsers.push_back(user);
 }
 
+bool Channel::operator==(const Channel &rhs) const
+{
+	return _name == rhs._name &&
+		   _subject == rhs._subject &&
+		   _mode == rhs._mode &&
+		   _users == rhs._users &&
+		   _opUsers == rhs._opUsers &&
+		   _bannedUsers == rhs._bannedUsers &&
+		   _usrNbMax == rhs._usrNbMax &&
+		   _mdp == rhs._mdp;
+}
+
+bool Channel::operator!=(const Channel &rhs) const
+{
+	return !(rhs == *this);
+}
+
 Channel::~Channel()
 {
 

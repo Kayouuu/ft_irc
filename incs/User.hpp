@@ -17,6 +17,8 @@
 # include <vector>
 # include "Channel.hpp"
 
+class Channel;
+
 class User
 {
 	private:
