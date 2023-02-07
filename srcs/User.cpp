@@ -6,13 +6,13 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 11:00:21 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 13:58:53 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/07 16:29:33 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/User.hpp"
 
-User::User() { }
+User::User() { _nick = ""; _user = ""; _fd = -1; _prefix = ""; _right_password = false; _is_registered = false; }
 
 User::User(std::string _nick, std::string _user)
 {
@@ -20,6 +20,19 @@ User::User(std::string _nick, std::string _user)
 	this->_user = _user;
 	this->_right_password = false;
 	this->_is_registered = false;
+}
+
+User	&User::operator=(User const &other)
+{
+	// TODO if (this == other protection)
+	_is_registered = other.getRegister();
+	_prefix.assign(other.getPrefix());
+	_nick.assign(other.getNick());
+	_user.assign(other.getUser());
+	_fd = other.getFd();
+	_right_password = other.getRPassword();
+
+	return (*this);
 }
 
 User::~User()

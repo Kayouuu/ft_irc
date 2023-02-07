@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 14:10:59 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/07 16:30:20 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,11 +143,10 @@ void	Server::acceptClient()
 	// 	std::cout << "send: error" << std::endl; // explicit msg
 	// 	throw std::exception();
 	// }
-	tmp_user.setFd(new_connection);
 	for (int i = 0; i < MAX_CONNECTIONS; i++)
 	{
 		if (_clients[i].getFd() < 0)
-			_clients.push_back(tmp_user);
+			_clients[i].setFd(new_connection);
 			// _clients[i].setFd(new_connection);
 	}
 	_connected_clients++;
@@ -169,11 +168,11 @@ void	Server::manageClient(int &current)
 	if (rvalue > 0)
 	{
 		std::cout << output << std::endl;
-		commandHandler(output, current);
+		commandHandler(output, _clients[current].getFd());
 	}
 }
 
-void		Server::commandHandler(std::string const &output, int &current) // TODO change output with input
+void		Server::commandHandler(std::string const &output, int const &current) // TODO change output with input
 {
 	std::vector<std::string>	parsed_output;
 	std::string					tmp;
@@ -184,6 +183,11 @@ void		Server::commandHandler(std::string const &output, int &current) // TODO ch
 	for (user_index = 0; user_index < MAX_CONNECTIONS; user_index++)
 		if (_clients[user_index].getFd() == current)
 			break ;
+	if (_clients[user_index].getFd() == -1)
+	{
+		std::cout << "error: not finding the associated fd" << std::endl;
+		throw std::exception();
+	}
 
 	for (size_t i = 0; i < output.length(); i++)
 	{
@@ -207,7 +211,6 @@ void		Server::commandHandler(std::string const &output, int &current) // TODO ch
 			tmp.push_back(c);
 		}
 	}
-	User	&cUser = _clients[user_index];
 
 	if (_commands.find(parsed_output[0]) != _commands.end())
 		(this->*_commands[parsed_output[0]])(parsed_output, current, _clients[user_index]); // Execute command corresponding to the input

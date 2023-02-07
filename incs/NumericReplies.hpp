@@ -6,17 +6,18 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:31:44 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 14:09:58 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/07 15:43:05 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef NUMERICREPLIES_HPP
 # define NUMERICREPLIES_HPP
 
-#include "Server.hpp"
+#include "SocketIO.hpp"
+
+class	SocketIO;
 
 # define NR_ARG int fd, const std::string& cNick
-# define NR_IN *io, user->getNick()
 
 #include <ctime>
 

@@ -6,11 +6,11 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 13:35:18 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 14:42:52 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/07 15:31:24 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incs/Server.hpp"
+#include "../../incs/Server.hpp"
 
 void	Server::userCmd(std::vector<std::string> const &input, int fd, User &cUser)
 {

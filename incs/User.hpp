@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:58:58 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 13:58:32 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/07 16:15:20 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ class User
 	public:
 		User();
 		User(std::string _nick, std::string _user);
+		User	&operator=(User const &other);
 		virtual ~User();
 
 		void	setFd(int const &new_fd);

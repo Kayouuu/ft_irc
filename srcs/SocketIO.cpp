@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:45:14 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/06 14:22:09 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/07 15:53:48 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	SocketIO::emit(std::string const &input, int fd) const
 {
 	if (send(fd, input.c_str(), input.length(), 0) < 0)
 	{
+		std::cout << errno << std::endl;
 		std::cout << "send: error" << std::endl; // TODO explicit msg
 		throw std::exception();
 	}		

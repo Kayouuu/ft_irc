@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 14:05:55 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/07 16:10:15 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,14 @@
 #include <cerrno>
 #include <cstdlib>
 
-#include "NumericReplies.hpp"
 #include "User.hpp"
 #include "SocketIO.hpp"
+#include "NumericReplies.hpp"
 
 #define MAX_CONNECTIONS	1024
 
-class SocketIO;
+class	SocketIO;
+class	Rep;
 
 class Server
 {
@@ -64,7 +65,7 @@ class Server
 
 		void		starting();
 		void		run();
-		void		commandHandler(std::string const &output, int &current);
+		void		commandHandler(std::string const &output, int const &current);
 	
 	private:
 		void	joinCmd(std::vector<std::string> const &input, int fd, User &cUser);
