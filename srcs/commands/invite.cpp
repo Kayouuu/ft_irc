@@ -25,13 +25,26 @@ void Server::inviteCmd(std::vector<std::string> const &input, int fd, User &cUse
 		if (it->getName() == input[1])
 		{
 			if (!it->isMode('i'))
-				throw std::exception();//error msg: channel <input[1]> is not in invite mode (+i)
+				throw std::exception(); //error msg: channel <input[1]> is not in invite mode (+i)
 			//user is op ?
 			if (!it->isOpUser(cUser))
-				throw std::exception();//error msg: user <cUser> is not a channel operator
+				_rep.E482(fd, cUser.getNick(), it->getName()); // ERR_CHANOPRIVSNEEDED
 			//nickname is registered in server ?
-
+			for (std::vector<User>::iterator ite = _clients.begin(); ite < _clients.end(); ite++)
+			{
+				if (ite->getNick() == input[2])
+				{
+					it->addUser(*ite);
+					_rep.R341(fd, cUser.getNick(), ite->getNick(), it->getName()); // RPL_INVITING
+					return ;
+				}
+			}
+			_rep.E401(fd, cUser.getNick(), input[2]); // ERR_NOSUCHNICK/CHANNEL
 		}
 	}
-	throw std::exception();//error msg: no channel named <input[1]>
+	_rep.E401(fd, cUser.getNick(), input[1]); // ERR_NOSUCHNICK/CHANNEL
 }
+
+//ERR_NEEDMOREPARAMS (E461)
+//ERR_NOTONCHANNEL (E442)
+//ERR_USERONCHANNEL (E443)
