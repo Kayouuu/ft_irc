@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/08 16:21:46 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/08 18:29:53 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ void	Server::starting()
 	if (this->_server_fd < 0)
 	{
 		std::cout << "socket: error" << std::endl;
+		throw std::exception();
+	}
+
+	int opt = 1;
+	if (setsockopt(this->_server_fd, SOL_SOCKET, SO_REUSEADDR | SO_REUSEPORT, &opt, sizeof(opt)) == -1)
+	{
+		std::cout << "setsocketopt: error" << std::endl;
 		throw std::exception();
 	}
 	// TODO Check if needed to use setsocketopt() function (seems not)
@@ -52,6 +59,16 @@ void	Server::starting()
 		_clients.push_back(tmp_user);
 	}
 	_clients[0].setFd(_server_fd);
+
+	char date_string[128];
+	time_t curr_time;
+	tm *curr_tm;
+	_date = std::time(&curr_time);
+	curr_tm = std::localtime(&curr_time);
+
+	std::strftime(date_string, 50, "%c", curr_tm);
+
+	_date = date_string;
 }
 
 /*
@@ -76,15 +93,8 @@ void	Server::run()
 	{
 		FD_ZERO(&read_fd_set); //  Cleaning the FD list & TOCOMMENT
 		for (int i = 0; i < MAX_CONNECTIONS; i++)
-		{
 			if (_clients[i].getFd() >= 0)
-			{
-				// std::cout << i << " " << _clients[i].getFd() << std::endl;
-				// int fd = _clients[i].getFd(); // TODO maybe put the fd in another array anyway lool xD nyahh
 				FD_SET(_clients[i].getFd(), &read_fd_set); // Reading all the connected clients to the list
-				// _clients[i].setFd(fd);
-			}
-		}
 		// FD_SET(0, &read_fd_set);
 		rvalue = select(FD_SETSIZE, &read_fd_set, NULL, NULL, NULL);
 		if (rvalue < 0)
@@ -169,6 +179,11 @@ void	Server::manageClient(int &index)
 		// TODO reset string too
 		close(_clients[index].getFd());
 		_clients[index].setFd(-1);
+		_clients[index].setNick("");
+		_clients[index].setPrefix("");
+		_clients[index].setUser("");
+		_clients[index].setRegister(false);
+		_clients[index].setRPassword(false);
 		_connected_clients--;
 	}
 	if (rvalue > 0)

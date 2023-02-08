@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:31:10 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/08 16:51:01 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/08 18:13:52 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,19 @@ Rep::Rep(SocketIO &io) : io(io) { }
 
 void Rep::R001(int const &fd, const std::string &cNick)
 {
-	output = "001 " + cNick + " :Welcome " + cNick + " to ScoobIRC!\r\n";
+	output = "001 " + cNick + " :Welcome " + cNick + " to the Internet Chat Relay!\r\n";
 	io.emit(output, fd);
 }
 
 void Rep::R002(int const &fd, const std::string &cNick, const std::string& servName, const std::string &servVersion)
 {
-	output = "002 " + cNick + " :Your host is " + servName + ", running version " + servVersion;
+	output = "002 " + cNick + " :Your host is " + servName + ", running version " + servVersion + "\r\n";
 	io.emit(output, fd);
 }
 
 void Rep::R003(int const &fd, const std::string &cNick, const std::string& date)
 {
-	output = "003 " + cNick + " :This server was created " + date;
+	output = "003 " + cNick + " :This server was created " + date + "\r\n";
 	io.emit(output, fd);
 }
 
@@ -318,7 +318,7 @@ void Rep::E432(int const &fd, const std::string &cNick, const std::string& badNi
 
 void Rep::E433(int const &fd, const std::string &cNick, const std::string& badNick)
 {
-	output = "433 " + cNick + " " + badNick + " :Nickname is already in use";
+	output = "433 " + cNick + " " + badNick + " :Nickname is already in use\r\n";
 	io.emit(output, fd);
 }
 
@@ -354,7 +354,7 @@ void Rep::E461(int const &fd, const std::string &cNick, const std::string& cmd)
 
 void Rep::E462(int const &fd, const std::string &cNick)
 {
-	output = "462 " + cNick + " :Unauthorized command (already registered)";
+	output = "462 " + cNick + " :Unauthorized command (already registered)\r\n";
 	io.emit(output, fd);
 }
 

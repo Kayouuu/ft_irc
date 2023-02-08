@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/08 14:04:46 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/08 17:54:15 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <vector>
 #include <map>
 
+#include <ctime>
 #include <csignal>
 #include <cstring>
 #include <cerrno>
@@ -55,6 +56,7 @@ class Server
 		const int							_port;
 		const std::string					_password;
 		std::map<std::string, cmdHandler>	_commands;
+		std::string							_date;
 
 		void	initCommands();
 		void	acceptClient();
