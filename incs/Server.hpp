@@ -6,7 +6,7 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/08 19:06:16 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/08 19:33:21 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,15 @@ class Server
 
 		void	initCommands();
 		void	acceptClient();
-		void	manageClient(int &current);
+		void	manageClient(int &index);
+
 	public:
 		Server(int port, std::string password);
 		~Server();
 
-		void		starting();
-		void		run();
-		void		commandHandler(std::string const &output, int const &current);
+		void	starting();
+		void	run();
+		void	commandHandler(std::string const &output, int const &current);
 	
 	private:
 		void	joinCmd(std::vector<std::string> const &input, int fd, User &cUser);

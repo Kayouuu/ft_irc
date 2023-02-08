@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:45:14 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 15:53:48 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/08 16:27:11 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,22 @@ SocketIO::SocketIO() { }
 
 SocketIO::~SocketIO() { }
 
-void	SocketIO::emit(std::string const &input, int fd) const
+void	SocketIO::emit(std::string const &input, int const &fd) const
 {
-	if (send(fd, input.c_str(), input.length(), 0) < 0)
+	int error;
+	// std::cout << input.size() << std::endl;
+	// std::cout << send(fd, "001 pierrot :Welcome to the Internet Relay Network pierrot", 44, 0) << std::endl;
+	std::cout << "Message sent: [" << input << "] ; Size: " << input.size() << std::endl;
+	error = send(fd, input.c_str(), input.size(), 0);
+	if (error < 0)
 	{
-		std::cout << errno << std::endl;
 		std::cout << "send: error" << std::endl; // TODO explicit msg
 		throw std::exception();
 	}		
+	std::cout << "Number of characters sent: " << error << std::endl;
 }
 
-int	SocketIO::receive(std::string &output, int fd) const
+int	SocketIO::receive(std::string &output, int const &fd) const
 {
 	char	buffer[1024 + 1];
 	int		rvalue;
