@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:31:44 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 15:43:05 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/08 14:15:05 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 class	SocketIO;
 
-# define NR_ARG int fd, const std::string& cNick
+# define NR_ARG int const &fd, const std::string& cNick
 
 #include <ctime>
 
