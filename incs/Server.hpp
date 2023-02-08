@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 16:10:15 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/08 19:06:16 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <iostream>
 # include <vector>
 # include <map>
-
+# include <algorithm>
 # include <csignal>
 # include <cstring>
 # include <cerrno>
@@ -73,7 +73,7 @@ class Server
 		void	nickCmd(std::vector<std::string> const &input, int fd, User &cUser);
 		void	passCmd(std::vector<std::string> const &input, int fd, User &cUser);
 		void	userCmd(std::vector<std::string> const &input, int fd, User &cUser);
-		void	msgCmd(std::vector<std::string> const &input, int fd, User &cUser);
+		void	msgCmd(std::vector<std::string> input, int fd, User &cUser);
 		void	inviteCmd(std::vector<std::string> const &input, int fd, User &cUser);
 };
 
