@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:44:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/06 13:21:27 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/08 14:14:20 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ class SocketIO
 		SocketIO();
 		~SocketIO();
 
-		void	emit(std::string const &input, int fd) const;
-		int		receive(std::string &output, int fd) const;
+		void	emit(std::string const &input, int const &fd) const;
+		int		receive(std::string &output, int const &fd) const;
 };
 
 #endif

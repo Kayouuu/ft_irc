@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 11:00:21 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 17:01:07 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/08 12:01:22 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,18 @@ User::User(std::string _nick, std::string _user)
 	this->_user = _user;
 	this->_right_password = false;
 	this->_is_registered = false;
+}
+
+User	&User::operator=(User const &other)
+{
+	_fd = other.getFd();
+	_prefix.assign(other.getPrefix());
+	_nick.assign(other.getNick());
+	_user.assign(other.getUser());
+	_right_password = other.getRPassword();
+	_is_registered = other.getRegister();
+	
+	return (*this);
 }
 
 User::~User()

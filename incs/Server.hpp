@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 16:10:15 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/08 14:04:46 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ class Server
 
 		void	initCommands();
 		void	acceptClient();
-		void	manageClient(int &current);
+		void	manageClient(int &index);
 	public:
 		Server(int port, std::string password);
 		~Server();

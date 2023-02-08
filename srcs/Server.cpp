@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 17:45:20 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/08 16:21:46 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,12 @@ void	Server::starting()
 	initCommands(); // TODO check errors ?
 
 	// Initializing the array of connected clients
-	_clients.reserve(MAX_CONNECTIONS);
+	// _clients.reserve(MAX_CONNECTIONS);
 	for (int i = 0; i < MAX_CONNECTIONS; i++)
-		_clients[i].setFd(-1);
+	{
+		User	tmp_user = User();
+		_clients.push_back(tmp_user);
+	}
 	_clients[0].setFd(_server_fd);
 }
 
@@ -71,7 +74,6 @@ void	Server::run()
 	std::cout << "The IRC server is running." << std::endl << "Waiting for connections..." << std::endl;
 	while (1)
 	{
-		std::cout << "loop" << std::endl;
 		FD_ZERO(&read_fd_set); //  Cleaning the FD list & TOCOMMENT
 		for (int i = 0; i < MAX_CONNECTIONS; i++)
 		{
@@ -83,7 +85,7 @@ void	Server::run()
 				// _clients[i].setFd(fd);
 			}
 		}
-		FD_SET(0, &read_fd_set);
+		// FD_SET(0, &read_fd_set);
 		rvalue = select(FD_SETSIZE, &read_fd_set, NULL, NULL, NULL);
 		if (rvalue < 0)
 		{
@@ -137,7 +139,6 @@ void	Server::acceptClient()
 	// std::string	msg = "001 " + tmp_user.getNick() + " :Welcome" + tmp_user.getNick() + " !";
 
 	// std::cout << "New user logged: " << tmp_user.getNick() << std::endl; 
-	
 	// if (send(new_connection, msg.c_str(), strlen(msg.c_str()), 0) < 0)
 	// {
 	// 	std::cout << "send: error" << std::endl; // explicit msg
@@ -146,29 +147,34 @@ void	Server::acceptClient()
 	for (int i = 0; i < MAX_CONNECTIONS; i++)
 	{
 		if (_clients[i].getFd() < 0)
+		{
 			_clients[i].setFd(new_connection);
-			// _clients[i].setFd(new_connection);
+			break ;
+		}
 	}
 	_connected_clients++;
 }
 
-void	Server::manageClient(int &current)
+void	Server::manageClient(int &index)
 {
 	// TODO array of function pointer for the commands, send()
 	int			rvalue;
 	std::string	output;
 
-	rvalue = _io.receive(output, _clients[current].getFd());
+	std::cout << "Triggered FD: " << _clients[index].getFd() << std::endl;
+
+	rvalue = _io.receive(output, _clients[index].getFd());
 	if (rvalue == 0)
 	{
-		close(_clients[current].getFd());
-		_clients[current].setFd(-1);
+		// TODO reset string too
+		close(_clients[index].getFd());
+		_clients[index].setFd(-1);
 		_connected_clients--;
 	}
 	if (rvalue > 0)
 	{
-		std::cout << output << std::endl;
-		commandHandler(output, _clients[current].getFd());
+		// std::cout << output << std::endl;
+		commandHandler(output, _clients[index].getFd());
 	}
 }
 
@@ -183,7 +189,8 @@ void		Server::commandHandler(std::string const &output, int const &current) // T
 	for (user_index = 0; user_index < MAX_CONNECTIONS; user_index++)
 		if (_clients[user_index].getFd() == current)
 			break ;
-	if (_clients[user_index].getFd() == -1)
+
+	if (user_index == MAX_CONNECTIONS)
 	{
 		std::cout << "error: not finding the associated fd" << std::endl;
 		throw std::exception();
@@ -211,7 +218,7 @@ void		Server::commandHandler(std::string const &output, int const &current) // T
 			tmp.push_back(c);
 		}
 	}
-
-	if (_commands.find(parsed_output[0]) != _commands.end())
+	std::cout << "Executed command: [" << parsed_output[0] << "]" << std::endl;
+	if (_commands.find(parsed_output[0]) != _commands.end()) // TODO check if registered and not a command to login
 		(this->*_commands[parsed_output[0]])(parsed_output, current, _clients[user_index]); // Execute command corresponding to the input
 }
