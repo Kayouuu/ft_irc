@@ -1,6 +1,14 @@
-//
-// Created by Delphine Bouron on 02/02/2023.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Channel.cpp                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dbouron <dbouron@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/08 11:44:15 by dbouron           #+#    #+#             */
+/*   Updated: 2023/02/08 11:44:15 by dbouron          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../incs/Channel.hpp"
 
@@ -50,7 +58,7 @@ const std::string &Channel::getSubject() const
 	return _subject;
 }
 
-bool Channel::getMode(char mode)
+bool Channel::isMode(char mode)
 {
 	std::map<char, bool>::iterator it = _mode.find(mode);
 	if (it == _mode.end())
@@ -61,6 +69,16 @@ bool Channel::getMode(char mode)
 const std::vector<User> &Channel::getUsers() const
 {
 	return _users;
+}
+
+bool Channel::isOpUser(User &user)
+{
+	for (std::vector<User>::iterator it = _opUsers.begin(); it < _opUsers.end(); it++)
+	{
+		if (user == *it)
+			return true;
+	}
+	return false;
 }
 
 bool Channel::isBanned(User &user)

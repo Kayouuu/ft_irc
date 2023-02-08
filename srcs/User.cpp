@@ -22,19 +22,6 @@ User::User(const std::string &_nick, const std::string &_user)
 	this->_is_registered = false;
 }
 
-User &User::operator=(User const &other)
-{
-	// TODO if (this == other protection)
-	_is_registered = other.getRegister();
-	_prefix.assign(other.getPrefix());
-	_nick.assign(other.getNick());
-	_user.assign(other.getUser());
-	_fd = other.getFd();
-	_right_password = other.getRPassword();
-
-	return (*this);
-}
-
 User::~User()
 {
 }

@@ -60,13 +60,14 @@ class Server
 		void	initCommands();
 		void	acceptClient();
 		void	manageClient(int &current);
+
 	public:
 		Server(int port, std::string password);
 		~Server();
 
-		void		starting();
-		void		run();
-		void		commandHandler(std::string const &output, int const &current);
+		void	starting();
+		void	run();
+		void	commandHandler(std::string const &output, int const &current);
 	
 	private:
 		void	joinCmd(std::vector<std::string> const &input, int fd, User &cUser);

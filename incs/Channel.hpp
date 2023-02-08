@@ -1,6 +1,14 @@
-//
-// Created by Delphine Bouron on 02/02/2023.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Channel.hpp                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dbouron <dbouron@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/08 11:43:58 by dbouron           #+#    #+#             */
+/*   Updated: 2023/02/08 11:43:58 by dbouron          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
@@ -22,8 +30,9 @@ class Channel
 
 		const std::string &getName() const;
 		const std::string &getSubject() const;
-		bool getMode(char mode);
+		bool isMode(char mode);
 		const std::vector<User> &getUsers() const;
+		bool isOpUser(User &user);
 		bool isBanned(User &user);
 
 		void setName(const std::string &name);
