@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:58:58 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 16:15:20 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/09 17:38:03 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,19 @@
 # define USER_HPP
 
 #include <iostream>
+#include "Server.hpp"
 
 class User
 {
 	private:
-		int			_fd;
-		std::string	_nick;
-		std::string	_user;
-		std::string	_prefix;
-		bool		_is_registered;
-		bool		_right_password;
+		int					_fd;
+		std::string			_nick;
+		std::string			_user;
+		std::string			_prefix;
+		bool				_is_registered;
+		bool				_right_password;
+		struct sockaddr_in	_address;
+		socklen_t			_addrlen;
 	public:
 		User();
 		User(std::string _nick, std::string _user);
@@ -43,6 +46,8 @@ class User
 		std::string const	&getPrefix() const;
 		bool		const	&getRegister() const;
 		bool		const	&getRPassword() const;
+		struct sockaddr_in	&getAdress();
+		socklen_t			&getAdressLen();
 };
 
 #endif

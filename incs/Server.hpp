@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/08 17:54:15 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/09 17:34:57 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <sys/socket.h>
 #include <sys/select.h>
+#include <arpa/inet.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <netinet/in.h>
@@ -36,6 +37,7 @@
 
 class	SocketIO;
 class	Rep;
+class	User;
 
 class Server
 {
@@ -70,6 +72,7 @@ class Server
 		void		commandHandler(std::string const &output, int const &current);
 	
 	private:
+		void	capCmd(std::vector<std::string> const &input, int fd, User &cUser);
 		void	joinCmd(std::vector<std::string> const &input, int fd, User &cUser);
 		void	nickCmd(std::vector<std::string> const &input, int fd, User &cUser);
 		void	passCmd(std::vector<std::string> const &input, int fd, User &cUser);

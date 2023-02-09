@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:31:10 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/08 18:13:52 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/09 14:30:02 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -348,7 +348,7 @@ void Rep::E451(int const &fd, const std::string &cNick)
 
 void Rep::E461(int const &fd, const std::string &cNick, const std::string& cmd)
 {
-	output = "461 " + cNick + " " + cmd + " :Not enough parameters";
+	output = "461 " + cNick + " " + cmd + " :Not enough parameters\r\n";
 	io.emit(output, fd);
 }
 

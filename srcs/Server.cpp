@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/08 18:29:53 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/09 17:34:35 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	Server::starting()
 */
 void	Server::initCommands()
 {
+	_commands.insert(std::make_pair(std::string("CAP"), &Server::capCmd));
 	_commands.insert(std::make_pair(std::string("JOIN"), &Server::joinCmd));
 	_commands.insert(std::make_pair(std::string("NICK"), &Server::nickCmd));
 	_commands.insert(std::make_pair(std::string("PASS"), &Server::passCmd));
@@ -89,13 +90,13 @@ void	Server::run()
 	int		rvalue;
 
 	std::cout << "The IRC server is running." << std::endl << "Waiting for connections..." << std::endl;
-	while (1)
+	while (true)
 	{
 		FD_ZERO(&read_fd_set); //  Cleaning the FD list & TOCOMMENT
 		for (int i = 0; i < MAX_CONNECTIONS; i++)
 			if (_clients[i].getFd() >= 0)
 				FD_SET(_clients[i].getFd(), &read_fd_set); // Reading all the connected clients to the list
-		// FD_SET(0, &read_fd_set);
+		FD_SET(0, &read_fd_set);
 		rvalue = select(FD_SETSIZE, &read_fd_set, NULL, NULL, NULL);
 		if (rvalue < 0)
 		{
@@ -124,36 +125,12 @@ void	Server::acceptClient()
     std::string					tmp;
 	User						tmp_user;
 
-	new_connection = accept(_server_fd, (struct sockaddr *)&_address, &_addrlen); // TOCHECK cast
-	
+	new_connection = accept(_server_fd, (struct sockaddr *)&tmp_user.getAdress(), &tmp_user.getAdressLen()); // TOCHECK cast
 	if (new_connection < 0)
 	{
 		std::cout << "accept: failed to accept an incoming connection" << std::endl;
 		throw std::exception();
 	}
-	// std::memset(_buffer, 0, 1024);
-	// while (recv(new_connection, &_buffer, 1024, 0))
-	// {
-	// 	tmp = _buffer;
-	// 	int	size;
-	// 	std::cout << tmp << std::endl; // TODO set password + send message if incorrect pass?
-	// 	if ((size = tmp.find("NICK ", 0)) == 0)
-	// 		tmp_user.setNick(tmp.substr(5));
-	// 	if ((size = tmp.find("USER ", 0)) == 0)
-	// 	{
-	// 		tmp_user.setUser(tmp.substr(5, tmp.find(" ", 5) - 5));
-	// 		break ;
-	// 	}
-	// }
-
-	// std::string	msg = "001 " + tmp_user.getNick() + " :Welcome" + tmp_user.getNick() + " !";
-
-	// std::cout << "New user logged: " << tmp_user.getNick() << std::endl; 
-	// if (send(new_connection, msg.c_str(), strlen(msg.c_str()), 0) < 0)
-	// {
-	// 	std::cout << "send: error" << std::endl; // explicit msg
-	// 	throw std::exception();
-	// }
 	for (int i = 0; i < MAX_CONNECTIONS; i++)
 	{
 		if (_clients[i].getFd() < 0)
@@ -162,6 +139,7 @@ void	Server::acceptClient()
 			break ;
 		}
 	}
+	std::cout << "New connection" << std::endl;
 	_connected_clients++;
 }
 
@@ -171,12 +149,9 @@ void	Server::manageClient(int &index)
 	int			rvalue;
 	std::string	output;
 
-	std::cout << "Triggered FD: " << _clients[index].getFd() << std::endl;
-
 	rvalue = _io.receive(output, _clients[index].getFd());
 	if (rvalue == 0)
 	{
-		// TODO reset string too
 		close(_clients[index].getFd());
 		_clients[index].setFd(-1);
 		_clients[index].setNick("");
@@ -186,10 +161,17 @@ void	Server::manageClient(int &index)
 		_clients[index].setRPassword(false);
 		_connected_clients--;
 	}
-	if (rvalue > 0)
+	else if (rvalue > 0)
 	{
-		// std::cout << output << std::endl;
-		commandHandler(output, _clients[index].getFd());
+		size_t pos = 0;
+		std::string token;
+		std::string	delimiter = "\n" ;
+		while ((pos = output.find(delimiter)) != std::string::npos) 
+		{
+			token = output.substr(0, pos);
+			commandHandler(token, _clients[index].getFd());
+			output.erase(0, pos + delimiter.length());
+		}
 	}
 }
 
@@ -233,7 +215,16 @@ void		Server::commandHandler(std::string const &output, int const &current) // T
 			tmp.push_back(c);
 		}
 	}
+	parsed_output.push_back(tmp);
+
 	std::cout << "Executed command: [" << parsed_output[0] << "]" << std::endl;
+	if (parsed_output[0] == "PING")
+	{
+		std::string	tmp = "PONG ";
+		char *ip = inet_ntoa(_clients[user_index].getAdress().sin_addr);
+		tmp += ip;
+		_io.emit("PONG 127.0.0.1\r\n", current);
+	}
 	if (_commands.find(parsed_output[0]) != _commands.end()) // TODO check if registered and not a command to login
 		(this->*_commands[parsed_output[0]])(parsed_output, current, _clients[user_index]); // Execute command corresponding to the input
 }

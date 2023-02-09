@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 13:35:18 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/08 17:55:07 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/09 11:37:05 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	Server::userCmd(std::vector<std::string> const &input, int fd, User &cUser)
 	{
 		cUser.setUser(input[1]);
 		cUser.setPrefix(input[4]);
-		// TODO set real name input[4]
 		cUser.setRegister(true);
 		_rep.R001(cUser.getFd(), cUser.getNick());
 		_rep.R002(cUser.getFd(), cUser.getNick(), "ScoobyIRC", "1.0");

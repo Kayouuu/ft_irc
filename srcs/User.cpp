@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 11:00:21 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/08 12:01:22 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/09 17:38:09 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,14 @@ bool		const	&User::getRegister() const
 bool		const	&User::getRPassword() const
 {
 	return (_right_password);
+}
+
+struct sockaddr_in	&User::getAdress()
+{
+	return (_address);
+}
+
+socklen_t			&User::getAdressLen()
+{
+	return (_addrlen);
 }
