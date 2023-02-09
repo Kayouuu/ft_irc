@@ -71,6 +71,16 @@ const std::vector<User> &Channel::getUsers() const
 	return _users;
 }
 
+bool Channel::isUser(User &user)
+{
+	for (std::vector<User>::iterator it = _users.begin(); it < _users.end(); it++)
+	{
+		if (user == *it)
+			return true;
+	}
+	return false;
+}
+
 bool Channel::isOpUser(User &user)
 {
 	for (std::vector<User>::iterator it = _opUsers.begin(); it < _opUsers.end(); it++)

@@ -32,6 +32,7 @@ class Channel
 		const std::string &getSubject() const;
 		bool isMode(char mode);
 		const std::vector<User> &getUsers() const;
+		bool isUser(User &user);
 		bool isOpUser(User &user);
 		bool isBanned(User &user);
 
