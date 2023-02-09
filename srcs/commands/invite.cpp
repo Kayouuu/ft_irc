@@ -31,7 +31,7 @@ void Server::inviteCmd(std::vector<std::string> const &input, int fd, User &cUse
 		{
 			//channel is on invite mode +i ?
 			if (!chan->isMode('i'))
-				throw std::exception(); //error msg: channel <input[1]> is not in invchane mode (+i)
+				throw std::exception(); //error msg: channel <input[1]> is not in invite mode (+i)
 
 			//user is on channel ?
 			if (!chan->isUser(cUser))
@@ -52,8 +52,12 @@ void Server::inviteCmd(std::vector<std::string> const &input, int fd, User &cUse
 			{
 				if (user->getNick() == input[2])
 				{
-					//is invited user already on channel ?
-
+					//is nickname already on channel ?
+					if (chan->isUser(*user))
+					{
+						_rep.E443(fd, cUser.getNick(), chan->getName(), user->getNick()); // ERR_USERONCHANNEL
+						return ;
+					}
 					chan->addUser(*user);
 					_rep.R341(fd, cUser.getNick(), user->getNick(), chan->getName()); // RPL_INVITING
 					return ;
@@ -65,5 +69,3 @@ void Server::inviteCmd(std::vector<std::string> const &input, int fd, User &cUse
 	}
 	_rep.E401(fd, cUser.getNick(), input[1]); // ERR_NOSUCHNICK/CHANNEL
 }
-
-//ERR_USERONCHANNEL (E443) :Is already on channel
