@@ -25,7 +25,7 @@ class Channel
 	public:
 		Channel(const std::string &name, User &opUser);
 		Channel(const Channel &src);
-		Channel &operator=(const6 Channel &rhs);
+		Channel &operator=(const Channel &rhs);
 		virtual ~Channel();
 
 		const std::string &getName() const;
