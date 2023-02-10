@@ -76,6 +76,7 @@ class Server
 		void	userCmd(std::vector<std::string> const &input, int fd, User &cUser);
 		void	msgCmd(std::vector<std::string> input, int fd, User &cUser);
 		void	inviteCmd(std::vector<std::string> const &input, int fd, User &cUser);
+		void	kickCmd(std::vector<std::string> const &input, int fd, User &cUser);
 };
 
 /*

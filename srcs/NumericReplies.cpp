@@ -264,7 +264,7 @@ void Rep::R391(int const &fd, const std::string &cNick, const std::string& servN
 /* Errors */
 void Rep::E401(int const &fd, const std::string &cNick, const std::string& inputNick)
 {
-	output = "401 " + cNick + " " + inputNick + " :No such nick/channel";
+	output = "401 " + cNick + " " + inputNick + " :No such nick";
 	io.emit(output, fd);
 }
 

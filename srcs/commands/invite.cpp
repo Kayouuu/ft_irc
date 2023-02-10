@@ -63,9 +63,9 @@ void Server::inviteCmd(std::vector<std::string> const &input, int fd, User &cUse
 					return ;
 				}
 			}
-			_rep.E401(fd, cUser.getNick(), input[2]); // ERR_NOSUCHNICK/CHANNEL
+			_rep.E401(fd, cUser.getNick(), input[2]); // ERR_NOSUCHNICK
 			return ;
 		}
 	}
-	_rep.E401(fd, cUser.getNick(), input[1]); // ERR_NOSUCHNICK/CHANNEL
+	_rep.E403(fd, cUser.getNick(), input[1]); // ERR_NOSUCHCHANNEL
 }

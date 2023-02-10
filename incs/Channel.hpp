@@ -40,6 +40,7 @@ class Channel
 		void setSubject(const std::string &subject);
 		void setMode(char &modeName, bool &isMode);
 		void addUser(User &user);
+		void removeUser(User &user);
 		void addOpUser(User &opUser);
 		void banUser(User &user);
 

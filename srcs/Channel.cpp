@@ -121,12 +121,22 @@ void Channel::setMode(char &modeName, bool &isMode)
 
 void Channel::addUser(User &user)
 {
-	_bannedUsers.push_back(user);
+	_users.push_back(user);
+}
+
+void Channel::removeUser(User &user)
+{
+	std::vector<User>::iterator it = _users.begin();
+	for (it; it < _users.end(); it++)
+	{
+		if (*it == user)
+			_users.erase(it);
+	}
 }
 
 void Channel::addOpUser(User &opUser)
 {
-	_bannedUsers.push_back(opUser);
+	_opUsers.push_back(opUser);
 }
 
 void Channel::banUser(User &user)
