@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbouron <dbouron@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:43:58 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/08 11:43:58 by dbouron          ###   ########.fr       */
+/*   Updated: 2023/02/08 20:21:45 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ class Channel
 	public:
 		Channel(const std::string &name, User &opUser);
 		Channel(const Channel &src);
-		Channel &operator=(const Channel &rhs);
+		Channel &operator=(const6 Channel &rhs);
 		virtual ~Channel();
 
 		const std::string &getName() const;

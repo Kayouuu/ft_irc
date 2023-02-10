@@ -6,13 +6,13 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/08 19:33:12 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/08 20:22:11 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
 
-void Server::msgCmd(std::vector<std::string> input, int fd, User &cUser) {
+void Server::msgCmd(std::vector<std::string> const &input, int fd, User &cUser) {
     std::vector<std::string>::iterator it = input.begin() + 1;
     if (it[0] == "#") {
         std::vector<Channel>::iterator itChannel = _channels.begin();
