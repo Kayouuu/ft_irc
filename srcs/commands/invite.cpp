@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbouron <dbouron@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:48:09 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/07 16:48:09 by dbouron          ###   ########.fr       */
+/*   Updated: 2023/02/13 10:20:13 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * @param fd
  * @param cUser
  */
-void Server::inviteCmd(std::vector<std::string> const &input, int fd, User &cUser)
+void Server::inviteCmd(std::vector<std::string> &input, int fd, User &cUser)
 {
 	if (input[1].empty() || input[2].empty())
 	{

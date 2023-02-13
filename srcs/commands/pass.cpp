@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 13:34:30 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/08 13:43:14 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/13 10:20:36 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
 
-void	Server::passCmd(std::vector<std::string> const &input, int fd, User &cUser)
+void	Server::passCmd(std::vector<std::string> &input, int fd, User &cUser)
 {
 	if (input.size() == 1)
 		_rep.E461(cUser.getFd(), cUser.getNick(), input[0]);

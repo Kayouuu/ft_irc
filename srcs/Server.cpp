@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/08 16:21:46 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/13 12:08:50 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	Server::initCommands()
 	_commands.insert(std::make_pair(std::string("NICK"), &Server::nickCmd));
 	_commands.insert(std::make_pair(std::string("PASS"), &Server::passCmd));
 	_commands.insert(std::make_pair(std::string("USER"), &Server::userCmd));
+	_commands.insert(std::make_pair(std::string("PRIVMSG"), &Server::msgCmd));
 }
 
 void	Server::run()

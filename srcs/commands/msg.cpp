@@ -6,40 +6,63 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/08 20:22:11 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/13 14:50:21 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
-
-void Server::msgCmd(std::vector<std::string> const &input, int fd, User &cUser) {
-    std::vector<std::string>::iterator it = input.begin() + 1;
+//TODO test msg to channel
+void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
+    std::cout << "---entering msgCmd---\n";
+    std::vector<std::string>::iterator it = input.begin();
+    std::vector<User>::iterator itClient = _clients.begin();
+    it++;
     if (it[0] == "#") {
+        std::cout << "msg to channel\n";
         std::vector<Channel>::iterator itChannel = _channels.begin();
         while (itChannel != _channels.end()) {
-            if (*itChannel == *it)
+            if (itChannel->getName() == *it)
                 break;
             itChannel++;
         }
         if (itChannel == _channels.end()) {
-            _rep.E404(cUser.getFd(),cUser.getNick(), *itChannel);
+            _rep.E404(cUser.getFd(),cUser.getNick(), itChannel->getName());
             return;
         }
-        else if (itChannel.isBanned(cUser) == 1) {
+        else if (itChannel->isBanned(cUser) == 1) {
             return;
         }
         it++;
-        std::for_each(_clients.begin(), _clients.end(), _io.emit(*it, _clients.getFd()));
+        for (itClient; itClient < _clients.end(); itClient++) {
+            _io.emit(*it, itClient->getFd());
+        }
     }
     else {
-        std::vector<User>::iterator itClient = _clients.begin();
-        if (*it.find(",") != std::string::npos) {
-            //occurence trouver!
+        std::vector<std::string>    listUsers;
+        std::string                 tmp;
+        std::string                 str = *it;
+        it++;
+        for (size_t i = 0; i < str.length(); i++) {
+            char c = str[i];
+            if (c == ',') {
+                listUsers.push_back(tmp);
+                tmp.clear();
+            }
+            else if (!std::isspace(c))
+                tmp.push_back(c);
         }
-        while (itClient != _clients.end()) {
-            if (*itClient == *it)
-                break;
-            itClient++;
+        listUsers.push_back(tmp);
+        for (std::vector<std::string>::iterator itList = listUsers.begin(); itList < listUsers.end(); itList++) {
+            while (itClient != _clients.end()) {
+                if (itClient->getNick() == *itList)
+                    break;
+                itClient++;
+            }
+            if (itClient != _clients.end())
+                _io.emit(*it, itClient->getFd());
+            else
+                _rep.E401(cUser.getFd(), cUser.getNick(), *itList);
         }
     }
+    std::cout << "---leaving msgCmd---\n";
 }

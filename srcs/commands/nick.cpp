@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:10:55 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 17:00:52 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/13 10:20:33 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
 
-void	Server::nickCmd(std::vector<std::string> const &input, int fd, User &cUser) // TODO two other errors possible
+void	Server::nickCmd(std::vector<std::string> &input, int fd, User &cUser) // TODO two other errors possible
 {
 	if (input[1].size() > 9)
 	{
