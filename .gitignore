@@ -3,3 +3,6 @@ srcs/*.o
 .vscode/settings.json
 .vscode/
 test.cpp
+.TODO.txt.swp
+TODO.txt
+ircserv

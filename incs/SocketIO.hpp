@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:44:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/02 14:43:16 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/13 10:54:58 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <sys/socket.h>
 #include <iostream>
 #include <cerrno>
+#include <cstring>
+#include <cstdio>
 
 class SocketIO
 {
@@ -23,8 +25,9 @@ class SocketIO
 		SocketIO();
 		~SocketIO();
 
-		void	emit(std::string const &input, int fd) const;
-		int		receive(std::string &output, int fd) const;
+		void	emit(std::string const &input, int const &fd) const;
+		int		receive(std::string &output, int const &fd);
+
 };
 
 #endif

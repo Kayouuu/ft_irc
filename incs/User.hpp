@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:58:58 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/03 17:10:22 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/09 17:38:03 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,40 @@
 # define USER_HPP
 
 #include <iostream>
+#include "Server.hpp"
 
 class User
 {
 	private:
-		int			_fd;
-		std::string	_nick;
-		std::string	_user;
-		std::string	_prefix;
+		int					_fd;
+		std::string			_nick;
+		std::string			_user;
+		std::string			_prefix;
+		bool				_is_registered;
+		bool				_right_password;
+		struct sockaddr_in	_address;
+		socklen_t			_addrlen;
 	public:
 		User();
 		User(std::string _nick, std::string _user);
+		User	&operator=(User const &other);
 		virtual ~User();
 
-		void	setFd(int new_fd);
-		void	setNick(std::string	nick);
-		void	setUser(std::string	user);
-		void	setPrefix(std::string prefix);
+		void	setFd(int const &new_fd);
+		void	setNick(std::string	const &nick);
+		void	setUser(std::string	const &user);
+		void	setPrefix(std::string const &prefix);
+		void	setRegister(bool const &input);
+		void	setRPassword(bool const &input);
 
 		int const			&getFd() const;	
 		std::string const	&getNick() const;
 		std::string const	&getUser() const;
 		std::string const	&getPrefix() const;
+		bool		const	&getRegister() const;
+		bool		const	&getRPassword() const;
+		struct sockaddr_in	&getAdress();
+		socklen_t			&getAdressLen();
 };
 
 #endif

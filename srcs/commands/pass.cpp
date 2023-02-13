@@ -1,18 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   join.cpp                                           :+:      :+:    :+:   */
+/*   pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/31 12:02:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 13:51:06 by psaulnie         ###   ########.fr       */
+/*   Created: 2023/02/07 13:34:30 by psaulnie          #+#    #+#             */
+/*   Updated: 2023/02/08 13:43:14 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
 
-void	Server::joinCmd(std::vector<std::string> const &input, int fd, User &cUser)
+void	Server::passCmd(std::vector<std::string> const &input, int fd, User &cUser)
 {
-	
+	if (input.size() == 1)
+		_rep.E461(cUser.getFd(), cUser.getNick(), input[0]);
+	else if (input.size() > 1)
+		cUser.setRPassword(input[1] == _password);
+	else if (cUser.getRegister() == true)
+		_rep.E462(cUser.getFd(), cUser.getNick());
 }

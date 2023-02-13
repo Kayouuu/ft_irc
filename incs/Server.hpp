@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/03 16:53:51 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/13 11:48:05 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <sys/socket.h>
 #include <sys/select.h>
+#include <arpa/inet.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <netinet/in.h>
@@ -22,26 +23,30 @@
 #include <vector>
 #include <map>
 
+#include <ctime>
 #include <csignal>
 #include <cstring>
 #include <cerrno>
 #include <cstdlib>
+#include <cstdio>
 
 #include "User.hpp"
 #include "SocketIO.hpp"
+#include "NumericReplies.hpp"
 
 #define MAX_CONNECTIONS	1024
+#define	MAX_INCONNECTIONS 50
 
-class SocketIO;
+class	SocketIO;
+class	Rep;
+class	User;
 
 class Server
 {
-	// function getUserByNickname()
-	// TODO Channel class + Channel array (vector)
-
 	private:
-		typedef	void (Server::*cmdHandler)(std::vector<std::string>, int); // Array of function pointer for function belonging to the Server class returning void and taking a string (input) and an int (fd)
+		typedef	void (Server::*cmdHandler)(std::vector<std::string> const &, int, User &); // Array of function pointer for function belonging to the Server class returning void and taking a string (input) and an int (fd)
 
+		Rep									_rep;
 		SocketIO							_io;
 		std::vector<User>					_clients;
 		char								_buffer[1024];
@@ -52,20 +57,25 @@ class Server
 		const int							_port;
 		const std::string					_password;
 		std::map<std::string, cmdHandler>	_commands;
+		std::string							_date;
 
 		void	initCommands();
 		void	acceptClient();
-		void	manageClient(int &current);
+		void	manageClient(int &index);
 	public:
 		Server(int port, std::string password);
 		~Server();
 
 		void		starting();
 		void		run();
+		void		shutdown();
+		void		commandHandler(std::string const &output, int const &current);
 	
 	private:
-		void	joinCmd(std::vector<std::string> input, int fd);
-		void	nickCmd(std::vector<std::string> input, int fd);
+		void	joinCmd(std::vector<std::string> const &input, int fd, User &cUser);
+		void	nickCmd(std::vector<std::string> const &input, int fd, User &cUser);
+		void	passCmd(std::vector<std::string> const &input, int fd, User &cUser);
+		void	userCmd(std::vector<std::string> const &input, int fd, User &cUser);
 };
 
 /*
