@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:31:10 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/09 14:30:02 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/10 15:39:56 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ void Rep::R003(int const &fd, const std::string &cNick, const std::string& date)
 	io.emit(output, fd);
 }
 
-// void Rep::R004(int const &fd, const std::string &cNick)
-// {
-// 	/* User modes https://www.rfc-editor.org/rfc/rfc2812#section-3.1.5 */
-// 	/* Channel modes https://www.rfc-editor.org/rfc/rfc2811#section-4 */
-// 	output = "004 " + cNick + " 42ircserv 1.0 " + CHANNELMODE_CHARLIST + " " + USERMODE_CHARLIST;
-// 	io.emit(output, fd);
-// }
+void Rep::R004(int const &fd, const std::string &cNick)
+{
+	/* User modes https://www.rfc-editor.org/rfc/rfc2812#section-3.1.5 */
+	/* Channel modes https://www.rfc-editor.org/rfc/rfc2811#section-4 */
+	output = "004 " + cNick + " 42ircserv 1.0 " + CHANNELMODE_CHARLIST + " " + USERMODE_CHARLIST + "\r\n";
+	io.emit(output, fd);
+}
 
 void Rep::R211(int const &fd, const std::string &cNick, const std::string& infostr)
 {

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 13:35:18 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/09 11:37:05 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/13 10:54:47 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	Server::userCmd(std::vector<std::string> const &input, int fd, User &cUser)
 {
-	std::cout << "FD sent to USER cmd: " << cUser.getFd() << std::endl;
 	if (input.size() < 5)
 		_rep.E461(fd, cUser.getNick(), input[0]);
 	else if (cUser.getRegister() == true)
@@ -27,5 +26,6 @@ void	Server::userCmd(std::vector<std::string> const &input, int fd, User &cUser)
 		_rep.R001(cUser.getFd(), cUser.getNick());
 		_rep.R002(cUser.getFd(), cUser.getNick(), "ScoobyIRC", "1.0");
 		_rep.R003(cUser.getFd(), cUser.getNick(), _date);
+		_rep.R004(cUser.getFd(), cUser.getNick());
 	}
 }

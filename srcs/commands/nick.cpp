@@ -6,18 +6,23 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:10:55 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/07 17:00:52 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/13 11:23:58 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
 
-void	Server::nickCmd(std::vector<std::string> const &input, int fd, User &cUser) // TODO two other errors possible
+void	Server::nickCmd(std::vector<std::string> const &input, int fd, User &cUser)
 {
-	if (input[1].size() > 9)
+	if (input[1] == "")
 	{
-		std::cout << "Error: nickname is too long, 9 characters max\n"; // TOREPLACE with Error msg
-		return;
+		_rep.E431(fd, cUser.getNick());
+		return ;
+	}
+	if (input[1].size() > 9) // TODO check unwanted character
+	{
+		_rep.E432(fd, cUser.getNick(), input[1]);
+		return ;
 	}
 	std::vector<User>::iterator it = _clients.begin();
 	for (it; it < _clients.end(); it++)
@@ -28,5 +33,5 @@ void	Server::nickCmd(std::vector<std::string> const &input, int fd, User &cUser)
 			return;
 		}
 	}
-	cUser.setNick(input[1]); //TOCHECK: set index 1 for the moment but review the input vector construction (wich index for the nickname)
+	cUser.setNick(input[1]); //TOCHECK: set index 1 for the moment but review the input vector construction (wich index for the nickname) (?)
 }

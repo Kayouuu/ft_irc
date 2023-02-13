@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/09 17:34:57 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/13 11:48:05 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,14 @@
 #include <cstring>
 #include <cerrno>
 #include <cstdlib>
+#include <cstdio>
 
 #include "User.hpp"
 #include "SocketIO.hpp"
 #include "NumericReplies.hpp"
 
 #define MAX_CONNECTIONS	1024
+#define	MAX_INCONNECTIONS 50
 
 class	SocketIO;
 class	Rep;
@@ -41,9 +43,6 @@ class	User;
 
 class Server
 {
-	// function getUserByNickname()
-	// TODO Channel class + Channel array (vector)
-
 	private:
 		typedef	void (Server::*cmdHandler)(std::vector<std::string> const &, int, User &); // Array of function pointer for function belonging to the Server class returning void and taking a string (input) and an int (fd)
 
@@ -69,10 +68,10 @@ class Server
 
 		void		starting();
 		void		run();
+		void		shutdown();
 		void		commandHandler(std::string const &output, int const &current);
 	
 	private:
-		void	capCmd(std::vector<std::string> const &input, int fd, User &cUser);
 		void	joinCmd(std::vector<std::string> const &input, int fd, User &cUser);
 		void	nickCmd(std::vector<std::string> const &input, int fd, User &cUser);
 		void	passCmd(std::vector<std::string> const &input, int fd, User &cUser);
