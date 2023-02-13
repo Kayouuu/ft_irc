@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/13 12:14:48 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/13 15:40:05 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void	Server::initCommands()
 	_commands.insert(std::make_pair(std::string("JOIN"), &Server::joinCmd));
 	_commands.insert(std::make_pair(std::string("NICK"), &Server::nickCmd));
 	_commands.insert(std::make_pair(std::string("PASS"), &Server::passCmd));
+	_commands.insert(std::make_pair(std::string("QUIT"), &Server::quitCmd));
 	_commands.insert(std::make_pair(std::string("USER"), &Server::userCmd));
 }
 
@@ -263,6 +264,7 @@ void		Server::commandHandler(std::string const &output, int const &current)
 	if (_commands.find(parsed_output[0]) != _commands.end())
 		if (_clients[user_index].getRegister() || parsed_output[0] == "PASS" || parsed_output[0] == "NICK" || parsed_output[0] == "USER")
 			(this->*_commands[parsed_output[0]])(parsed_output, current, _clients[user_index]); // Execute command corresponding to the input
+
 }
 
 void	Server::shutdown()

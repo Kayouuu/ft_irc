@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:45:14 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/13 10:58:03 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/13 15:37:47 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,33 @@ void	SocketIO::emit(std::string const &input, int const &fd) const
 	{
 		std::perror("send");
 		throw std::exception();
-	}		
+	}
 }
 
 int	SocketIO::receive(std::string &output, int const &fd)
 {
 	char	buffer[1024 + 1];
 	int		rvalue;
+	int		loop_exit; 
 
-	rvalue = recv(fd, &buffer, 1024, 0);
-	if (rvalue < 0)
+	while (1)
 	{
-		std::perror("recv");
-		throw std::exception();
+		rvalue = recv(fd, &buffer, 1024, 0);
+		if (rvalue < 0)
+		{
+			std::perror("recv");
+			throw std::exception();
+		}
+		buffer[rvalue] = '\0';
+		output.append(buffer);
+		loop_exit = output.find(10);
+		if (loop_exit >= 0 || loop_exit <= output.size())
+		{
+			std::cout << output.find(10) << std::endl;
+			break ;
+		}
 	}
-	buffer[rvalue] = '\0';
-	output.append(buffer);
+	std::cout << "exiting loop" << std::endl;
 	return (rvalue);
 }
-
+	

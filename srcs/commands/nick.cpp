@@ -6,13 +6,13 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:10:55 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/13 11:23:58 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/13 14:39:49 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
 
-void	Server::nickCmd(std::vector<std::string> const &input, int fd, User &cUser)
+void	Server::nickCmd(std::vector<std::string> &input, int fd, User &cUser)
 {
 	if (input[1] == "")
 	{

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:31:44 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/10 14:26:41 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/13 15:38:20 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 #include "SocketIO.hpp"
 
+#define MAX_CONNECTIONS	1024
+
 class	SocketIO;
 
 # define USERMODE_CHARLIST "iswo"
@@ -22,11 +24,12 @@ class	SocketIO;
 # define NR_ARG int const &fd, const std::string& cNick
 
 #include <ctime>
+#include <sstream>
 
 class Rep
 {
 	private:
-		std::string	output;
+		std::stringstream	output;
 		SocketIO	&io;
 	public:
 		Rep(SocketIO &io);
@@ -122,6 +125,8 @@ class Rep
 
 		void E501(NR_ARG);
 		void E502(NR_ARG);
+
+		void	clearBuffer();
 };
 
 #endif

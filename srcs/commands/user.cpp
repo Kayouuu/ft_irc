@@ -6,13 +6,13 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 13:35:18 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/13 10:54:47 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/13 14:39:55 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
 
-void	Server::userCmd(std::vector<std::string> const &input, int fd, User &cUser)
+void	Server::userCmd(std::vector<std::string> &input, int fd, User &cUser)
 {
 	if (input.size() < 5)
 		_rep.E461(fd, cUser.getNick(), input[0]);
