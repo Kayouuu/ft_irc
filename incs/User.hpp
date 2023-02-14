@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:58:58 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/09 17:38:03 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/14 16:29:33 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 # define USER_HPP
 
 #include <iostream>
-#include "Server.hpp"
+// #include "Server.hpp"
+#include <netinet/in.h>
 
 class User
 {

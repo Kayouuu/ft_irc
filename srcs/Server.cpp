@@ -6,13 +6,13 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/13 15:40:05 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/14 16:37:55 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/Server.hpp"
 
-Server::Server(int port, std::string password) : _port(port), _password(password), _rep(_io), _connected_clients(0) { }
+Server::Server(int port, std::string password) : _port(port), _password(password), _rep(_io), _connected_clients(0), _bot(_io) { }
 
 Server::~Server() { }
 
@@ -149,6 +149,7 @@ void	Server::run()
 			if (_clients[i].getFd() > 0 && FD_ISSET(_clients[i].getFd(), &read_fd_set)) // If one is triggered, handle it
 				manageClient(i);
 		}
+		_bot.check(_clients);
 	}
 }
 

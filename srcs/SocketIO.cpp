@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:45:14 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/13 15:37:47 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/14 16:34:27 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	SocketIO::receive(std::string &output, int const &fd)
 			break ;
 		}
 	}
-	std::cout << "exiting loop" << std::endl;
 	return (rvalue);
 }
 	
