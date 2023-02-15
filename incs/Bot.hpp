@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:11:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/14 16:29:49 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/15 15:07:39 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ class Bot
 {
 	private:
 		SocketIO	&_io;
-		std::string	_msg;
+		std::string	_scoob_msg;
+		std::string	_velma_msg;
+		std::string	_shaggy_msg;
 		std::time_t _curr_time;
 	public:
 		Bot(SocketIO &io);
@@ -33,7 +35,7 @@ class Bot
 
 		std::string const	&getMsg() const;
 		void	check(std::vector<User> &clients);
-		void	setMsg(std::string const &new_msg);
+		void	setMsg(std::string const &who, std::string const &new_msg);
 		void	sendMsg(std::vector<User> &clients);
 };
 

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:45:14 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/14 16:34:27 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/15 14:00:13 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,7 @@ int	SocketIO::receive(std::string &output, int const &fd)
 		output.append(buffer);
 		loop_exit = output.find(10);
 		if (loop_exit >= 0 || loop_exit <= output.size())
-		{
-			std::cout << output.find(10) << std::endl;
 			break ;
-		}
 	}
 	return (rvalue);
 }
