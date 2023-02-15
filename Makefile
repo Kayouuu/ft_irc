@@ -84,11 +84,13 @@ $(NAME_BONUS): $(OBJS_BONUS) $(HEADFILE_BONUS)
 
 $(DIR_OBJ)/%.o: $(SRCS) $(HEADFILE) Makefile | $(DIR_OBJ)
 	c++ $(CFLAGS) -I $(DIR_OBJ)
+
 $(DIR_OBJ):
 	mkdir -p $(DIR_OBJ)
 
 $(DIR_OBJ_BONUS):
 	mkdir -p $(DIR_OBJ_BONUS)
+
 clean:
 	rm -rf $(OBJS)
 	rm -rf $(OBJS_BONUS)
