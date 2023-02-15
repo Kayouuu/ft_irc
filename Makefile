@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/18 14:38:40 by psaulnie          #+#    #+#              #
-#    Updated: 2023/01/18 14:38:41 by psaulnie         ###   ########.fr        #
+#    Updated: 2023/02/13 16:10:57 by lbattest         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,11 @@ NAME_BONUS = ircserv_bonus
 
 SRCS =	$(shell find srcs -name "*.cpp")
 HEADFILE = $(shell find incs -name "*.hpp")
+DIR_OBJ = .objs
 
 #SRCS_BONUS =	$(shell find bonus/srcs -name "*.cpp")
 #HEADFILE_BONUS = $(shell find bonus/incs -name "*.hpp")
+#DIR_OBJ_BONUS = .objs_bonus
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS = -std=c++98
@@ -80,6 +82,13 @@ $(NAME_BONUS): $(OBJS_BONUS) $(HEADFILE_BONUS)
 	c++ $(CFLAGS) -o $(NAME_BONUS) $(SRCS_BONUS)
 	@printf "\r$(LIGHT_GREEN)➞$(NO_COLOR) Compiled with bonus $(LIGHT_GREEN)✔$(NO_COLOR)\n"
 
+$(DIR_OBJ)/%.o: $(SRCS) $(HEADFILE) Makefile | $(DIR_OBJ)
+	c++ $(CFLAGS) -I $(DIR_OBJ)
+$(DIR_OBJ):
+	mkdir -p $(DIR_OBJ)
+
+$(DIR_OBJ_BONUS):
+	mkdir -p $(DIR_OBJ_BONUS)
 clean:
 	rm -rf $(OBJS)
 	rm -rf $(OBJS_BONUS)

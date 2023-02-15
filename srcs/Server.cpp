@@ -6,7 +6,7 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/13 12:08:50 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/15 11:47:30 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	Server::initCommands()
 	_commands.insert(std::make_pair(std::string("NICK"), &Server::nickCmd));
 	_commands.insert(std::make_pair(std::string("PASS"), &Server::passCmd));
 	_commands.insert(std::make_pair(std::string("USER"), &Server::userCmd));
-	_commands.insert(std::make_pair(std::string("PRIVMSG"), &Server::msgCmd));
+	_commands.insert(std::make_pair(std::string("MSG"), &Server::msgCmd));
 }
 
 void	Server::run()

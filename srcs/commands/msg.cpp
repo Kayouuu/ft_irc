@@ -6,7 +6,7 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/13 14:50:21 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/15 12:01:26 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
     std::cout << "---entering msgCmd---\n";
     std::vector<std::string>::iterator it = input.begin();
+    std::vector<std::string>::iterator itTmp;
     std::vector<User>::iterator itClient = _clients.begin();
     it++;
     if (it[0] == "#") {
@@ -34,7 +35,13 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
         }
         it++;
         for (itClient; itClient < _clients.end(); itClient++) {
-            _io.emit(*it, itClient->getFd());
+            itTmp = it;
+            for (it; it < input.end(); it++) {
+                _io.emit(*it, itClient->getFd());
+                if (it < --input.end())
+                    _io.emit(" ", itClient->getFd());
+            }
+            it = itTmp;
         }
     }
     else {
@@ -58,8 +65,16 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
                     break;
                 itClient++;
             }
-            if (itClient != _clients.end())
-                _io.emit(*it, itClient->getFd());
+            if (itClient != _clients.end()){
+                itTmp = it;
+                _io.emit("MSG(" + cUser.getNick() + "):", itClient->getFd());
+                for (it; it < input.end(); it++) {
+                    _io.emit(*it, itClient->getFd());
+                    if (it < --input.end())
+                        _io.emit(" ", itClient->getFd());
+                }
+                it = itTmp;
+            }
             else
                 _rep.E401(cUser.getFd(), cUser.getNick(), *itList);
         }
