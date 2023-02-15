@@ -13,7 +13,7 @@
 #include "../../incs/Server.hpp"
 
 /**
- * /kick <channelName> <nickname> [message] (kick a client from a channel)
+ * /KICK <channelName> <nickname> [message] (kick a client from a channel)
  * @param input
  * @param fd
  * @param cUser

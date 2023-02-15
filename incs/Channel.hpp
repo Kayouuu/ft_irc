@@ -55,7 +55,7 @@ class Channel
 		std::vector<User>		_opUsers;
 		std::vector<User>		_bannedUsers;
 		unsigned short			_usrNbMax;
-		std::string 			_mdp;
+		std::string 			_pw;
 
 		Channel();
 };

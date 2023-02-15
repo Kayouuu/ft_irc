@@ -116,6 +116,9 @@ void	Server::initCommands()
 	_commands.insert(std::make_pair(std::string("QUIT"), &Server::quitCmd));
 	_commands.insert(std::make_pair(std::string("USER"), &Server::userCmd));
 	_commands.insert(std::make_pair(std::string("MSG"), &Server::msgCmd));
+	_commands.insert(std::make_pair(std::string("INVITE"), &Server::inviteCmd));
+	_commands.insert(std::make_pair(std::string("KICK"), &Server::kickCmd));
+	_commands.insert(std::make_pair(std::string("MODE"), &Server::modeCmd));
 }
 
 void	Server::run()
