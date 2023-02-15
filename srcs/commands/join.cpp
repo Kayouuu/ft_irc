@@ -12,7 +12,7 @@
 
 #include "../../incs/Server.hpp"
 
-void	Server::joinCmd(std::vector<std::string> &input, int fd, User &cUser)
+void	Server::joinCmd(std::vector<std::string> const &input, int fd, User &cUser)
 {
-    
+	
 }

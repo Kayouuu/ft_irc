@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/13 10:20:56 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/14 16:28:43 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,16 @@
 
 # include <sys/socket.h>
 # include <sys/select.h>
+# include <arpa/inet.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <netinet/in.h>
 # include <iostream>
 # include <vector>
 # include <map>
+
 # include <algorithm>
+# include <ctime>
 # include <csignal>
 # include <cstring>
 # include <cerrno>
@@ -31,11 +34,15 @@
 # include "SocketIO.hpp"
 # include "Channel.hpp"
 # include "NumericReplies.hpp"
+# include "Bot.hpp"
 
-# define MAX_CONNECTIONS	1024
+// #define MAX_CONNECTIONS	1024
+#define	MAX_INCONNECTIONS 50
 
 class	SocketIO;
 class	Rep;
+class	Bot;
+class	User;
 
 class Server
 {
@@ -44,6 +51,7 @@ class Server
 	private:
 		typedef	void (Server::*cmdHandler)(std::vector<std::string> &, int, User &); // Array of function pointer for function belonging to the Server class returning void and taking a string (input) and an int (fd)
 
+		Bot									_bot;
 		Rep									_rep;
 		SocketIO							_io;
 		std::vector<User>					_clients;
@@ -56,6 +64,7 @@ class Server
 		const int							_port;
 		const std::string					_password;
 		std::map<std::string, cmdHandler>	_commands;
+		std::string							_date;
 
 		void	initCommands();
 		void	acceptClient();
@@ -65,9 +74,10 @@ class Server
 		Server(int port, std::string password);
 		~Server();
 
-		void	starting();
-		void	run();
-		void	commandHandler(std::string const &output, int const &current);
+		void		starting();
+		void		run();
+		void		shutdown();
+		void		commandHandler(std::string const &output, int const &current);
 	
 	private:
 		void	joinCmd(std::vector<std::string> &input, int fd, User &cUser);
@@ -77,6 +87,7 @@ class Server
 		void	msgCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	inviteCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	kickCmd(std::vector<std::string> &input, int fd, User &cUser);
+		void	quitCmd(std::vector<std::string> &input, int fd, User &cUser);
 };
 
 /*

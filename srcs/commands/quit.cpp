@@ -1,33 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   SocketIO.hpp                                       :+:      :+:    :+:   */
+/*   quit.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/31 13:44:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/13 15:37:36 by psaulnie         ###   ########.fr       */
+/*   Created: 2023/02/13 14:40:03 by psaulnie          #+#    #+#             */
+/*   Updated: 2023/02/14 16:37:16 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SOCKETIO_HPP
-# define SOCKETIO_HPP
+#include "../../incs/Server.hpp"
 
-#include <sys/socket.h>
-#include <iostream>
-#include <cerrno>
-#include <cstring>
-#include <cstdio>
-
-class SocketIO
+void	Server::quitCmd(std::vector<std::string> &input, int fd, User &cUser)
 {
-	public:
-		SocketIO();
-		~SocketIO();
-
-		void	emit(std::string const &input, int const &fd) const;
-		int		receive(std::string &output, int const &fd);
-
-};
-
-#endif
+	close(cUser.getFd());
+	cUser.setFd(-1);
+	cUser.setNick("");
+	cUser.setPrefix("");
+	cUser.setUser("");
+	cUser.setRegister(false);
+	cUser.setRPassword(false);
+	_connected_clients--;
+}
