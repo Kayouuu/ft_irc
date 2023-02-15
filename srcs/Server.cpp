@@ -25,7 +25,7 @@ void	Server::starting()
 	*		Unlike pipes sockets support communication between unrelated processes,						 *
 	*		and even between processes running on different machines that communicate over a network. 	 *
 	\****************************************************************************************************/
-	
+
 	/*
 		socket(): Creating the server socket:
 			AF_INET: specifying using the IP protocol
@@ -91,7 +91,7 @@ void	Server::starting()
 	_clients[0].setFd(_server_fd);
 
 	// Getting the time of creation of the server
-	
+
 	char date_string[128];
 	time_t curr_time;
 	tm *curr_tm;
@@ -115,6 +115,7 @@ void	Server::initCommands()
 	_commands.insert(std::make_pair(std::string("PASS"), &Server::passCmd));
 	_commands.insert(std::make_pair(std::string("QUIT"), &Server::quitCmd));
 	_commands.insert(std::make_pair(std::string("USER"), &Server::userCmd));
+	_commands.insert(std::make_pair(std::string("MSG"), &Server::msgCmd));
 }
 
 void	Server::run()
@@ -201,7 +202,7 @@ void	Server::manageClient(int &index)
 		size_t pos = 0;
 		std::string token;
 		std::string	delimiter = "\n" ;
-		while ((pos = output.find(delimiter)) != std::string::npos) 
+		while ((pos = output.find(delimiter)) != std::string::npos)
 		{
 			token = output.substr(0, pos);
 			commandHandler(token, _clients[index].getFd());
@@ -249,7 +250,7 @@ void		Server::commandHandler(std::string const &output, int const &current)
 		else
 			tmp.push_back(c);
 	}
-	
+
 	parsed_output.push_back(tmp);
 
 	/****************************************************************************************************/
@@ -260,7 +261,7 @@ void		Server::commandHandler(std::string const &output, int const &current)
 		std::cout << "[" << *it << "]" << std::endl;
 	}
 	/*****************************************************************************************************/
-	
+
 	// Find the command by his name, needs to be registered to use them excepts the necessary commands to log in
 	if (parsed_output[0] == "PING")
 		_io.emit("PONG " + parsed_output[1] + "\r\n", current);
@@ -279,5 +280,5 @@ void	Server::shutdown()
 			close(it->getFd());
 	}
 	close(_server_fd);
-	
+
 }

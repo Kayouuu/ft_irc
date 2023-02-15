@@ -13,27 +13,28 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-#include <sys/socket.h>
-#include <sys/select.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <netinet/in.h>
-#include <iostream>
-#include <vector>
-#include <map>
+# include <sys/socket.h>
+# include <sys/select.h>
+# include <arpa/inet.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <netinet/in.h>
+# include <iostream>
+# include <vector>
+# include <map>
 
-#include <ctime>
-#include <csignal>
-#include <cstring>
-#include <cerrno>
-#include <cstdlib>
-#include <cstdio>
+# include <algorithm>
+# include <ctime>
+# include <csignal>
+# include <cstring>
+# include <cerrno>
+# include <cstdlib>
 
-#include "Bot.hpp"
-#include "User.hpp"
-#include "SocketIO.hpp"
-#include "NumericReplies.hpp"
+# include "User.hpp"
+# include "SocketIO.hpp"
+# include "Channel.hpp"
+# include "NumericReplies.hpp"
+# include "Bot.hpp"
 
 // #define MAX_CONNECTIONS	1024
 #define	MAX_INCONNECTIONS 50
@@ -45,6 +46,8 @@ class	User;
 
 class Server
 {
+	// function getUserByNickname()
+
 	private:
 		typedef	void (Server::*cmdHandler)(std::vector<std::string> &, int, User &); // Array of function pointer for function belonging to the Server class returning void and taking a string (input) and an int (fd)
 
@@ -52,6 +55,7 @@ class Server
 		Rep									_rep;
 		SocketIO							_io;
 		std::vector<User>					_clients;
+		std::vector<Channel>				_channels;
 		char								_buffer[1024];
 		int									_server_fd;
 		int									_connected_clients;
@@ -65,6 +69,7 @@ class Server
 		void	initCommands();
 		void	acceptClient();
 		void	manageClient(int &index);
+
 	public:
 		Server(int port, std::string password);
 		~Server();
@@ -78,8 +83,11 @@ class Server
 		void	joinCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	nickCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	passCmd(std::vector<std::string> &input, int fd, User &cUser);
-		void	quitCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	userCmd(std::vector<std::string> &input, int fd, User &cUser);
+		void	msgCmd(std::vector<std::string> &input, int fd, User &cUser);
+		void	inviteCmd(std::vector<std::string> &input, int fd, User &cUser);
+		void	kickCmd(std::vector<std::string> &input, int fd, User &cUser);
+		void	quitCmd(std::vector<std::string> &input, int fd, User &cUser);
 };
 
 /*

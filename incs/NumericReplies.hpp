@@ -60,8 +60,8 @@ class Rep
 		void R315(NR_ARG, const std::string& name);
 		void R318(NR_ARG, const std::string& queryList);
 		void R319(NR_ARG, const std::string& queryNick, char prefix, const std::string& chanName);
-		void	R322(NR_ARG, int nuser, const std::string& topic, const std::string& ChanName);
-		void	R323(NR_ARG);
+		void R322(NR_ARG, int nuser, const std::string& topic, const std::string& ChanName);
+		void R323(NR_ARG);
 
 		void R324(NR_ARG, const std::string& chanName, const std::string& chanModeStr, const std::string& chanModeArgs);
 
@@ -79,9 +79,9 @@ class Rep
 		void R367(NR_ARG, const std::string& chanName, const std::string& bannedUser);
 		void R368(NR_ARG, const std::string& chanName);
 
-		void	R375(NR_ARG, const std::string& serverName);
-		void	R372(NR_ARG, const std::string& Motd);
-		void	R376(NR_ARG);
+		void R375(NR_ARG, const std::string& serverName);
+		void R372(NR_ARG, const std::string& Motd);
+		void R376(NR_ARG);
 
 		void R381(NR_ARG);
 

@@ -13,42 +13,56 @@
 #ifndef USER_HPP
 # define USER_HPP
 
-#include <iostream>
+# include <iostream>
+# include <vector>
+# include "Channel.hpp"
+# include <netinet/in.h>
 // #include "Server.hpp"
-#include <netinet/in.h>
+
+class Channel;
 
 class User
 {
 	private:
-		int					_fd;
-		std::string			_nick;
-		std::string			_user;
-		std::string			_prefix;
-		bool				_is_registered;
-		bool				_right_password;
-		struct sockaddr_in	_address;
-		socklen_t			_addrlen;
+		int						_fd;
+		std::string				_nick;
+		std::string				_user;
+		std::string				_prefix;
+		std::vector<Channel>	_chanOp;//array of channels in which the user is operator
+		bool					_ircOp;//true: user is irc operator, false: user is not irc operator
+		bool					_is_registered;
+		bool					_right_password;
+		struct sockaddr_in		_address;
+		socklen_t				_addrlen;
 	public:
 		User();
-		User(std::string _nick, std::string _user);
-		User	&operator=(User const &other);
+		User(const std::string &_nick, const std::string& _user);
+		User(const User &src);
 		virtual ~User();
 
-		void	setFd(int const &new_fd);
-		void	setNick(std::string	const &nick);
-		void	setUser(std::string	const &user);
-		void	setPrefix(std::string const &prefix);
+		User &operator=(const User &rhs);
+		bool operator==(const User &rhs) const;
+		bool operator!=(const User &rhs) const;
+
+		void	setFd(int new_fd);
+		void	setNick(const std::string &nick);
+		void	setUser(const std::string &user);
+		void	setPrefix(const std::string &prefix);
+		void	addOpChannel(Channel &channel);
+		void	setIrcOp(bool ircOp);
 		void	setRegister(bool const &input);
 		void	setRPassword(bool const &input);
 
-		int const			&getFd() const;	
-		std::string const	&getNick() const;
-		std::string const	&getUser() const;
-		std::string const	&getPrefix() const;
-		bool		const	&getRegister() const;
-		bool		const	&getRPassword() const;
-		struct sockaddr_in	&getAdress();
-		socklen_t			&getAdressLen();
+		int const					&getFd() const;
+		std::string const			&getNick() const;
+		std::string const			&getUser() const;
+		std::string const			&getPrefix() const;
+		std::vector<Channel> const	&getOpChannels() const;
+		bool 						isIrcOp() const;
+		bool const					&getRegister() const;
+		bool const					&getRPassword() const;
+		struct sockaddr_in			&getAdress();
+		socklen_t					&getAdressLen();
 };
 
 #endif
