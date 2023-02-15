@@ -50,8 +50,9 @@ void Server::kickCmd(std::vector<std::string> &input, int fd, User &cUser)
 				if (user->getNick() == input[2])
 				{
 					chan->removeUser(*user);
-					//QUESTION: What do I do with the optional message ?
-					//QUESTION: Does it send a response to the client ?
+					if (!input[3].empty())
+						_io.emit(input[3], fd); // send message if it exists
+					//QUESTION: Does it send a response to the client ? Apparently not
 					return ;
 				}
 			}
@@ -67,12 +68,12 @@ void Server::kickCmd(std::vector<std::string> &input, int fd, User &cUser)
 //_rep.E476(fd, chan->getName());					// ERR_BADCHANMASK			[MISSING]
 //_rep.E482(fd, cUser.getNick(), chan->getName());	// ERR_CHANOPRIVSNEEDED		[OK]
 //_rep.E442(fd, cUser.getNick(), chan->getName());	// ERR_NOTONCHANNEL			[OK]
-//_rep.E442(fd, input[2], chan->getName());			// ERR_NOTONCHANNEL			[MISSING]
+//_rep.E442(fd, input[2], chan->getName());			// ERR_NOTONCHANNEL			[OK]
 
-//The KICK command is used to forcibly remove a user from a channel (force PART).
+// The KICK command is used to forcibly remove a user from a channel (force PART).
 // Only a channel operator can kick another user from a channel.
 
-//QUESTION: do we have to create a blacklist of people who cannot longer join the channel from wich they've been kicked ?
-//QUESTION: is the kicked client notified he's been kicked ? yes
+//QUESTION: do we have to create a blacklist of people who cannot longer join the channel from wich they've been kicked ? NO
+//QUESTION: is the kicked client notified he's been kicked ?
 //QUESTION: is a message sent in the channel to notify the other users in the channel than someone's been kicked ?
 //QUESTION: can the opchannel user kick hiself ?
