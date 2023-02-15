@@ -3,16 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   msg.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/15 12:01:26 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/15 15:39:03 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
 //TODO test msg to channel
 void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
+
+    if (input[1] == "TheMysteryMachine")
+    {
+        _bot.setMsg(input, cUser);
+        return ;
+    }
     std::cout << "---entering msgCmd---\n";
     std::vector<std::string>::iterator it = input.begin();
     std::vector<std::string>::iterator itTmp;

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/15 13:57:49 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/15 15:35:42 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,8 @@ void	Server::initCommands()
 	_commands.insert(std::make_pair(std::string("QUIT"), &Server::quitCmd));
 	_commands.insert(std::make_pair(std::string("USER"), &Server::userCmd));
 	_commands.insert(std::make_pair(std::string("MSG"), &Server::msgCmd));
+	_commands.insert(std::make_pair(std::string("PRIVMSG"), &Server::msgCmd));
+
 }
 
 void	Server::run()

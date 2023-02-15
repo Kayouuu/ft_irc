@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:11:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/15 15:07:39 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/15 15:38:35 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ class Bot
 
 		std::string const	&getMsg() const;
 		void	check(std::vector<User> &clients);
-		void	setMsg(std::string const &who, std::string const &new_msg);
+		void	setMsg(std::vector<std::string> &input, User &cUser);
 		void	sendMsg(std::vector<User> &clients);
 };
 
