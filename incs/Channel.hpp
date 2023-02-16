@@ -28,13 +28,13 @@ class Channel
 		Channel &operator=(const Channel &rhs);
 		virtual ~Channel();
 
-		const std::string &getName() const;
-		const std::string &getSubject() const;
-		bool isMode(char mode);
-		const std::vector<User> &getUsers() const;
-		bool isUser(User &user);
-		bool isOpUser(User &user);
-		bool isBanned(User &user);
+		const std::string		&getName() const;
+		const std::string		&getSubject() const;
+		bool					isMode(char mode);
+		const std::vector<User>	&getUsers() const;
+		bool					isUser(User &user);
+		bool					isOpUser(User &user);
+		bool					isBanned(User &user);
 
 		void setName(const std::string &name);
 		void setSubject(const std::string &subject);
@@ -58,6 +58,6 @@ class Channel
 		std::string 			_pw;
 
 		Channel();
-};
+};y
 
 #endif //CHANNEL_HPP

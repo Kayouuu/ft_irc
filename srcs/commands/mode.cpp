@@ -55,8 +55,12 @@ void Server::modeCmd(std::vector<std::string> &input, int fd, User &cUser)
 		std::vector<User>::iterator user = _clients.begin();
 		for (user; user < _clients.end(); user++)
 		{
-			
+			if (user->getNick() == input[1])
+			{
+
+			}
 		}
+		_rep.E401(fd, cUser.getNick(), input[1]);
 		//	If <target> is a different nick than the user who sent the command,
 		//	the ERR_USERSDONTMATCH (502) numeric is returned.
 		//	If <modestring> is not given,
