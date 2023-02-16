@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:10:46 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/16 14:54:34 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/16 15:21:42 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 Bot::Bot(SocketIO &io) : _io(io)
 {
+	_announce_msg = "---Bot conversation incoming---";
 	_scoob_msg = "You are in ScoobIRC, the best IRC server !";
 	_velma_msg = "Jinkies!";
 	_shaggy_msg = "Zoinks Scoob!";
@@ -72,18 +73,15 @@ void	Bot::check(std::vector<User> &clients)
 void	Bot::sendMsg(std::vector<User> &clients)
 {
 	std::vector<User>::iterator it = clients.begin();
-	std::string	scoob = ":SCOOBY-BOT NOTICE " + it->getNick() + " " + _scoob_msg;
-	std::string	velma = ":VELMA NOTICE " + it->getNick() + " " + _velma_msg;
-	std::string	shaggy = ":SHAGGY NOTICE " + it->getNick() + " " + _shaggy_msg;
-	it++;
+	it++; // Skip the server fd
 	for (it; it != clients.end(); it++)
 	{
 		if (it->getFd() != -1)
 		{
-			_io.emit(scoob, it->getFd());
-			_io.emit(velma, it->getFd());
-			_io.emit(shaggy, it->getFd());
-
+			_io.emit(":TheMysteryMachine NOTICE " + it->getNick() + " " + _announce_msg, it->getFd());
+			_io.emit(":SCOOBY-DOO NOTICE " + it->getNick() + " " + _scoob_msg, it->getFd());
+			_io.emit(":VELMA NOTICE " + it->getNick() + " " + _velma_msg, it->getFd());
+			_io.emit(":SHAGGY NOTICE " + it->getNick() + " " + _shaggy_msg, it->getFd());
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:11:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/15 15:38:35 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/16 15:21:00 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ class Bot
 {
 	private:
 		SocketIO	&_io;
+		std::string	_announce_msg;
 		std::string	_scoob_msg;
 		std::string	_velma_msg;
 		std::string	_shaggy_msg;
