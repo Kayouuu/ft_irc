@@ -13,7 +13,14 @@
 #include "../../incs/Server.hpp"
 //TODO test msg to channel
 void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
+
+    if (input[1] == "TheMysteryMachine")
+    {
+        _bot.setMsg(input, cUser);
+        return ;
+    }
     std::cout << "---entering msgCmd---\n";
+    std::string msg;
     std::vector<std::string>::iterator it = input.begin();
     std::vector<std::string>::iterator itTmp;
     std::vector<User>::iterator itClient = _clients.begin();
@@ -36,11 +43,14 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
         it++;
         for (itClient; itClient < _clients.end(); itClient++) {
             itTmp = it;
+            msg.append(":" + cUser.getNick() + " PRIVMSG " + itClient->getNick() + " ");
             for (it; it < input.end(); it++) {
-                _io.emit(*it, itClient->getFd());
+                msg.append(*it);
                 if (it < --input.end())
-                    _io.emit(" ", itClient->getFd());
+                    msg.append(" ");
             }
+            _io.emit(msg, itClient->getFd());
+            msg.clear();
             it = itTmp;
         }
     }
@@ -67,12 +77,14 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
             }
             if (itClient != _clients.end()){
                 itTmp = it;
-                _io.emit("MSG(" + cUser.getNick() + "):", itClient->getFd());
+                msg.append(":" + cUser.getNick() + " PRIVMSG " + itClient->getNick() + " ");
                 for (it; it < input.end(); it++) {
-                    _io.emit(*it, itClient->getFd());
+                    msg.append(*it);
                     if (it < --input.end())
-                        _io.emit(" ", itClient->getFd());
+                        msg.append(" ");
                 }
+                _io.emit(msg, itClient->getFd());
+                msg.clear();
                 it = itTmp;
             }
             else
