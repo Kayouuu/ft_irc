@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
-//TODO test msg to channel
+//TODO test msg to channel + ajouter verif si mode +n true pour chan
 void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
 
     if (input[1] == "TheMysteryMachine")
