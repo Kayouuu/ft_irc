@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/15 15:39:03 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/16 14:55:55 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
         return ;
     }
     std::cout << "---entering msgCmd---\n";
+    std::string msg;
     std::vector<std::string>::iterator it = input.begin();
     std::vector<std::string>::iterator itTmp;
     std::vector<User>::iterator itClient = _clients.begin();
@@ -43,10 +44,12 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
         for (itClient; itClient < _clients.end(); itClient++) {
             itTmp = it;
             for (it; it < input.end(); it++) {
-                _io.emit(*it, itClient->getFd());
+                msg.append(*it);
                 if (it < --input.end())
-                    _io.emit(" ", itClient->getFd());
+                    msg.append(" ");
             }
+            _io.emit(msg, fd);
+            msg.clear();
             it = itTmp;
         }
     }
@@ -73,12 +76,13 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
             }
             if (itClient != _clients.end()){
                 itTmp = it;
-                _io.emit("MSG(" + cUser.getNick() + "):", itClient->getFd());
+                msg.append("MSG(" + itClient->getNick() + ")");
                 for (it; it < input.end(); it++) {
-                    _io.emit(*it, itClient->getFd());
+                    msg.append(*it);
                     if (it < --input.end())
-                        _io.emit(" ", itClient->getFd());
+                        msg.append(" ");
                 }
+                msg.clear();
                 it = itTmp;
             }
             else

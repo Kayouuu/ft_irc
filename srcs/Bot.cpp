@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:10:46 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/15 16:06:55 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/16 14:54:34 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ Bot::~Bot() { }
 
 void	Bot::setMsg(std::vector<std::string> &input, User &cUser)
 {
+	std::string::const_iterator msg_it;
 	std::string	who = input[2];
 	std::string	new_msg;
 
@@ -36,6 +37,15 @@ void	Bot::setMsg(std::vector<std::string> &input, User &cUser)
 		if (++it != input.end() && *it != "")
 			new_msg.append(" ");
 	}
+	if (new_msg == "")
+		who = "";
+    for (msg_it = new_msg.begin(); msg_it != new_msg.end(); ++msg_it)
+    {
+        if (!std::isspace(*msg_it))
+			break ;
+    }
+	if (msg_it == new_msg.end())
+		who = "";
 	if (who == ":SCOOBY" || who == ":SCOOB" || who == ":SCOOBY-DOO")
 		_scoob_msg = new_msg;
 	else if (who == ":VELMA")
@@ -44,10 +54,10 @@ void	Bot::setMsg(std::vector<std::string> &input, User &cUser)
 		_shaggy_msg = new_msg;
 	else
 	{
-		_io.emit(":TheMysteryMachine NOTICE Usage => /msg TheMysteryMachine [SCOOBY, VELMA, SHAGGY] message ... ...\r\n", cUser.getFd());
+		_io.emit(":TheMysteryMachine NOTICE Usage => /msg TheMysteryMachine [SCOOBY, VELMA, SHAGGY] message ... ...", cUser.getFd());
 		return ;
 	}
-	_io.emit(":TheMysteryMachine NOTICE " + cUser.getNick() + " " + who.substr(1, who.length() - 1) + " will now say: " + "\"" + new_msg + "\""+ "\r\n", cUser.getFd());
+	_io.emit(":TheMysteryMachine NOTICE " + cUser.getNick() + " " + who.substr(1, who.length() - 1) + " will now say: " + "\"" + new_msg + "\"", cUser.getFd());
 }
 
 void	Bot::check(std::vector<User> &clients)
@@ -62,14 +72,17 @@ void	Bot::check(std::vector<User> &clients)
 void	Bot::sendMsg(std::vector<User> &clients)
 {
 	std::vector<User>::iterator it = clients.begin();
+	std::string	scoob = ":SCOOBY-BOT NOTICE " + it->getNick() + " " + _scoob_msg;
+	std::string	velma = ":VELMA NOTICE " + it->getNick() + " " + _velma_msg;
+	std::string	shaggy = ":SHAGGY NOTICE " + it->getNick() + " " + _shaggy_msg;
 	it++;
 	for (it; it != clients.end(); it++)
 	{
 		if (it->getFd() != -1)
 		{
-			_io.emit(":SCOOBY-BOT NOTICE " + it->getNick() + " " + _scoob_msg + "\r\n", it->getFd());
-			_io.emit(":VELMA NOTICE " + it->getNick() + " " + _velma_msg + "\r\n", it->getFd());
-			_io.emit(":SHAGGY NOTICE " + it->getNick() + " " + _shaggy_msg + "\r\n", it->getFd());
+			_io.emit(scoob, it->getFd());
+			_io.emit(velma, it->getFd());
+			_io.emit(shaggy, it->getFd());
 
 		}
 	}

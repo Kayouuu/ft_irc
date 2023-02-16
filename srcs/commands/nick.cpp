@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:10:55 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/15 15:24:56 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/15 17:13:19 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,7 @@ void	Server::nickCmd(std::vector<std::string> &input, int fd, User &cUser)
 			return;
 		}
 	}
+	if (cUser.getRegister())
+		_rep.R001(fd, input[1]);
 	cUser.setNick(input[1]); //TOCHECK: set index 1 for the moment but review the input vector construction (wich index for the nickname) (?)
 }

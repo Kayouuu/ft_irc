@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:45:14 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/15 14:00:13 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/16 14:57:55 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ SocketIO::~SocketIO() { }
 
 void	SocketIO::emit(std::string const &input, int const &fd) const
 {
-	int error;
+	std::string	msg = input + "\r\n";
+	int 		error;
 
-	std::cout << "Message sent: " << input;
-	error = send(fd, input.c_str(), input.size(), 0);
+	std::cout << "Message sent: " << input << std::endl;
+	error = send(fd, msg.c_str(), msg.size(), 0);
 	if (error < 0)
 	{
 		std::perror("send");
