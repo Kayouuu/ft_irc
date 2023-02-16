@@ -20,6 +20,10 @@ User::User(const std::string &_nick, const std::string &_user)
 	this->_user = _user;
 	this->_right_password = false;
 	this->_is_registered = false;
+	_mode.insert(std::pair<char, bool>('i', false));
+	_mode.insert(std::pair<char, bool>('s', false));
+	_mode.insert(std::pair<char, bool>('w', false));
+	_mode.insert(std::pair<char, bool>('o', false));
 }
 
 User::~User()
@@ -44,6 +48,14 @@ void User::setUser(const std::string &user)
 void User::setPrefix(const std::string &prefix)
 {
 	_prefix = prefix;
+}
+
+bool User::isMode(char mode)
+{
+	std::map<char, bool>::iterator it = _mode.find(mode);
+	if (it == _mode.end())
+		throw std::exception(); //TODO error msg
+	return it->second;
 }
 
 void	User::setRegister(bool const &input)
@@ -85,6 +97,14 @@ std::string const &User::getUser() const
 std::string const &User::getPrefix() const
 {
 	return (_prefix);
+}
+
+void User::setMode(char &modeName, bool &isMode)
+{
+	std::map<char, bool>::iterator it = _mode.find(modeName);
+	if (it == _mode.end())
+		throw std::exception(); //TODO error msg
+	it->second = isMode;
 }
 
 std::vector<Channel> const &User::getOpChannels() const

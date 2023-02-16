@@ -13,7 +13,7 @@
 #include "../../incs/Server.hpp"
 
 /**
- * invite <channelName> <nickename> : invite a user in a channel with invitation mode (mode +i)
+ * /INVITE <channelName> <nickename> : invite a user in a channel with invitation mode (mode +i)
  * @param input
  * @param fd
  * @param cUser

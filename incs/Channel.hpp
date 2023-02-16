@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:43:58 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/08 20:21:45 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/16 15:37:53 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ class Channel
 		Channel &operator=(const Channel &rhs);
 		virtual ~Channel();
 
-		const std::string &getName() const;
-		const std::string &getSubject() const;
-		bool isMode(char mode);
-		const std::vector<User> &getUsers() const;
-		bool isUser(User &user);
-		bool isOpUser(User &user);
-		bool isBanned(User &user);
+		const std::string		&getName() const;
+		const std::string		&getSubject() const;
+		bool					isMode(char mode);
+		const std::vector<User>	&getUsers() const;
+		bool					isUser(User &user);
+		bool					isOpUser(User &user);
+		bool					isBanned(User &user);
 
 		void setName(const std::string &name);
 		void setSubject(const std::string &subject);
@@ -55,7 +55,7 @@ class Channel
 		std::vector<User>		_opUsers;
 		std::vector<User>		_bannedUsers;
 		unsigned short			_usrNbMax;
-		std::string 			_mdp;
+		std::string 			_pw;
 
 		Channel();
 };

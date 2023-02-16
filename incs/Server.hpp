@@ -88,6 +88,7 @@ class Server
 		void	inviteCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	kickCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	quitCmd(std::vector<std::string> &input, int fd, User &cUser);
+		void	modeCmd(std::vector<std::string> &input, int fd, User &cUser);
 };
 
 /*

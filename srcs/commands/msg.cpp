@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/16 14:55:55 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/16 15:37:29 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,13 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
         it++;
         for (itClient; itClient < _clients.end(); itClient++) {
             itTmp = it;
+            msg.append(":" + cUser.getNick() + " PRIVMSG " + itClient->getNick() + " ");
             for (it; it < input.end(); it++) {
                 msg.append(*it);
                 if (it < --input.end())
                     msg.append(" ");
             }
-            _io.emit(msg, fd);
+            _io.emit(msg, itClient->getFd());
             msg.clear();
             it = itTmp;
         }
@@ -76,12 +77,13 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
             }
             if (itClient != _clients.end()){
                 itTmp = it;
-                msg.append("MSG(" + itClient->getNick() + ")");
+                msg.append(":" + cUser.getNick() + " PRIVMSG " + itClient->getNick() + " ");
                 for (it; it < input.end(); it++) {
                     msg.append(*it);
                     if (it < --input.end())
                         msg.append(" ");
                 }
+                _io.emit(msg, itClient->getFd());
                 msg.clear();
                 it = itTmp;
             }
