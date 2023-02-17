@@ -6,7 +6,7 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:43:58 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/17 12:38:58 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/17 18:00:06 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ class Channel
 		unsigned short			getUsrCon() const;
 		unsigned short			getUsrNbMax() const;
 		bool					getIsTopic() const;
-
+		char					getChanPrefix();
+		char					getUserPrefix();
 		void setName(const std::string &name);
 		void setSubject(const std::string &subject);
 		void setMode(char const &modeName, bool const &isMode);

@@ -6,7 +6,7 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:44:15 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/17 12:40:33 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/17 18:06:45 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,27 @@ unsigned short Channel::getUsrNbMax() const
 bool Channel::getIsTopic() const
 {
 	return _isTopic;	
+}
+
+char Channel::getChanPrefix()
+{
+	if 	(isMode('s') == true)
+		return '@';
+	else if (isMode('p') == true)
+		return '*';
+	return '=';
+}
+
+char Channel::getUserPrefix()
+{
+	std::vector<User>::iterator it = _users.begin();
+	if (it == _users.end())
+		return 'u';
+	if (it->isMode('o'))
+		return '@';
+	if (it->isMode('v') == true)
+		return '+';
+	return 'u';
 }
 
 void Channel::setName(const std::string &name)
