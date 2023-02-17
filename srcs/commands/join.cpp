@@ -6,53 +6,29 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:02:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/17 11:14:09 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/17 14:03:09 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
-//TODO finish file
-void	Server::joinCmd(std::vector<std::string> const &input, int fd, User &cUser)
+
+void	Server::joinCmd(std::vector<std::string> &input, int fd, User &cUser)
 {
 	std::vector<std::string>::iterator it = input.begin();
     it++;
-    if (cUser.getChanConnected() > MAX_CHAN)
-    {
-        _rep.E405(cUser.getFd(), *it);
-        return;
-    }
     if (it >= input.end())
     {
         _rep.E461(cUser.getFd(), cUser.getNick(), "JOIN");
         return;
     }
     std::vector<Channel>::iterator itChannel = _channels.begin();
-    while (itChannel != _channels.end())
-    {
-        if (itChannel->getName() == *it)
-            break;
-        itChannel++;
-    }
-    if (itChannel == _channels.end())
-    {
-        _rep.E403(cUser.getFd(), cUser.getNick(), *it);
-        return;
-    }
-    if (itChannel->isMode('i') == 1) {
-        _rep.E473(cUser.getFd(), cUser.getNick(), *it);
-        return;
-    }
-    if (it == input.end()) {
-        _rep.E461(cUser.getFd(), cUser.getNick(), "JOIN");
-        return;
-    }
     std::string str = *it;
     std::string tmp;
     std::vector<std::string> listChan;
-    std::vector<std::string> listKey = NULL;
+    std::vector<std::string> listKey;
     for (size_t i = 0; i < str.length(); i++) {
         char c = str[i];
-        if (c == ",") {
+        if (c == ',') {
             listChan.push_back(tmp);
             tmp.clear();
         }
@@ -65,7 +41,7 @@ void	Server::joinCmd(std::vector<std::string> const &input, int fd, User &cUser)
     if (it != input.end()) {
         for (size_t i = 0; i < str.length(); i++) {
             char c = str[i];
-            if (c == ",") {
+            if (c == ',') {
                 listKey.push_back(tmp);
                 tmp.clear();
             }
@@ -74,25 +50,34 @@ void	Server::joinCmd(std::vector<std::string> const &input, int fd, User &cUser)
         }
     listKey.push_back(tmp);
     tmp.clear();  
-    std::vector<std::string>::iterator itKey = listKey.begin();     
     }
+    std::vector<std::string>::iterator itKey = listKey.begin();     
     for (std::vector<std::string>::iterator itLst = listChan.begin(); itLst < listChan.end(); itLst++) {
         for(std::vector<Channel>::iterator itChannel = _channels.begin(); itChannel < _channels.end(); itChannel++) {
-            if (itChannel.getName() == *it)
+            if (itChannel->getName() == *it)
                 break;
         }
         if (itChannel == _channels.end()) { //channel n'existe pas
-            //check si toomanychannel n'est pas atteins
-            _channels.push_back(channel(*it, cUser));
-            if (listKey != NULL && itKey != listKey.end()) {
+            if (cUser.getChanConnected() > MAX_CHAN)
+            {
+                _rep.E405(cUser.getFd(), *it);
+                return;
+            }
+            _channels.push_back(Channel(*it, cUser));
+            if (listKey.size() != 0 && itKey != listKey.end()) {
                 itChannel->setMode('k', true);
-                setPw(*itKey);
+                itChannel->setPw(*itKey);
                 itKey++;
             }
-            //voir si besoin de setup un topic tout decuite ou envoyer RPL_NOTOPIC
         }
         else { //channel existe
-            if (isMode('l') == true && itChannel->getUsrConnected() + 1 > itChannel->getUsrNbMax()) {
+            if (itChannel->isMode('i') == true) {
+                if (cUser.isMode('i') == false) {
+                    _rep.E473(cUser.getFd(), cUser.getNick(), *it);
+                    return;
+                }
+            }
+            if (itChannel->isMode('l') == true && itChannel->getUsrCon() + 1 > itChannel->getUsrNbMax()) {
                 _rep.E471(cUser.getFd(), cUser.getNick(), *it);
                 return;
             }
@@ -100,21 +85,27 @@ void	Server::joinCmd(std::vector<std::string> const &input, int fd, User &cUser)
                 _rep.E474(cUser.getFd(), cUser.getNick(), *it);
                 return;
             }
-            //check si toomanychannel n'est pas atteins
+            if (cUser.getChanConnected() > MAX_CHAN)
+            {
+                _rep.E405(cUser.getFd(), *it);
+                return;
+            }
             else if (itChannel->isMode('k') == true) {
-                if (listKey != NULL && itKey != listKey.end()) {
-                    if (*listKey != itChannel->getPw()) {
-                        _rep.E475(cUser.getFd(), cUser.getNick(), *itChannel);
+                if (listKey.size() != 0 && itKey != listKey.end()) {
+                    if (*itKey != itChannel->getPw()) {
+                        _rep.E475(cUser.getFd(), cUser.getNick(), itChannel->getName());
                         return;
                     }
                 }
                 else {
-                    _rep.E475(cUser.getFd(), cUser.getNick(), *itChannel);
+                    _rep.E475(cUser.getFd(), cUser.getNick(), itChannel->getName());
                     return;
                 }
             }
             itChannel->addUser(cUser);
-            //envoyer RPL_TOPIC ?
+            itChannel->incrUsrCon();
+            if (itChannel->getIsTopic() == true)
+                _rep.R332(cUser.getFd(), cUser.getNick(), itChannel->getName(), itChannel->getSubject());
         }
     }
 }

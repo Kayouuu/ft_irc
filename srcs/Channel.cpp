@@ -6,7 +6,7 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:44:15 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/15 17:29:08 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/17 12:40:33 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ Channel::Channel()
 
 }
 
-Channel::Channel(const std::string &name, User &opUser) : _name(name), _usrNbMax(1024), _usrConnected(1), _pw(NULL)
+Channel::Channel(const std::string &name, User &opUser) : _name(name), _usrNbMax(1024), _usrCon(1), _pw(NULL), _isTopic(false)
 {
 	_opUsers.insert(_opUsers.begin(), opUser);
 	_mode.insert(std::pair<char, bool>('i', false));
@@ -101,6 +101,26 @@ bool Channel::isBanned(User &user)
 	return false;
 }
 
+const std::string Channel::getPw() const  
+{
+	return _pw;	
+}
+
+unsigned short Channel::getUsrCon() const
+{
+	return _usrCon;
+}
+
+unsigned short Channel::getUsrNbMax() const 
+{
+	return _usrNbMax;
+}
+
+bool Channel::getIsTopic() const
+{
+	return _isTopic;	
+}
+
 void Channel::setName(const std::string &name)
 {
 	_name = name;
@@ -109,9 +129,10 @@ void Channel::setName(const std::string &name)
 void Channel::setSubject(const std::string &subject)
 {
 	_subject = subject;
+	setIsTopic(true);
 }
 
-void Channel::setMode(char &modeName, bool &isMode)
+void Channel::setMode(char const &modeName, bool const &isMode)
 {
 	std::map<char, bool>::iterator it = _mode.find(modeName);
 	if (it == _mode.end())
@@ -142,6 +163,26 @@ void Channel::addOpUser(User &opUser)
 void Channel::banUser(User &user)
 {
 	_bannedUsers.push_back(user);
+}
+
+void Channel::setPw(std::string pw)
+{
+	_pw = pw;	
+}
+
+void Channel::incrUsrCon()
+{
+	_usrCon++;
+}
+
+void Channel::setUsrNbMax(unsigned short nbr)
+{
+	_usrNbMax = nbr;	
+}
+
+void Channel::setIsTopic(bool status)
+{
+	_isTopic = status;
 }
 
 bool Channel::operator==(const Channel &rhs) const
