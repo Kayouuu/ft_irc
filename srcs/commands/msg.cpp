@@ -6,7 +6,7 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/15 12:01:26 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/15 17:28:22 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
     std::vector<std::string>::iterator it = input.begin();
     std::vector<std::string>::iterator itTmp;
     std::vector<User>::iterator itClient = _clients.begin();
+    std::string msg;
     it++;
     if (it[0] == "#") {
         std::cout << "msg to channel\n";
@@ -34,13 +35,20 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
             return;
         }
         it++;
+        if (it >= input.end()) {
+            _rep.E412(cUser.getFd(), cUser.getNick());
+            return;
+        }
         for (itClient; itClient < _clients.end(); itClient++) {
             itTmp = it;
+            //a voir ce que weechat ecrit avant ce message
             for (it; it < input.end(); it++) {
-                _io.emit(*it, itClient->getFd());
+                msg = msg.append(*it);
                 if (it < --input.end())
-                    _io.emit(" ", itClient->getFd());
+                    msg = msg.append(" ");
             }
+            _io.emit(msg + "\r\n", itClient->getFd());
+            msg.clear();
             it = itTmp;
         }
     }
@@ -66,13 +74,19 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
                 itClient++;
             }
             if (itClient != _clients.end()){
+                if (it >= input.end()) {
+                    _rep.E412(cUser.getFd(), cUser.getNick());
+                    return;
+                }
                 itTmp = it;
                 _io.emit("MSG(" + cUser.getNick() + "):", itClient->getFd());
                 for (it; it < input.end(); it++) {
-                    _io.emit(*it, itClient->getFd());
+                    msg = msg.append(*it);
                     if (it < --input.end())
-                        _io.emit(" ", itClient->getFd());
+                        msg = msg.append(" ");
                 }
+                _io.emit(msg + "\r\n", itClient->getFd());
+                msg.clear();
                 it = itTmp;
             }
             else

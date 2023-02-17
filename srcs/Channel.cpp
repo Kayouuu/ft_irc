@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbouron <dbouron@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:44:15 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/08 11:44:15 by dbouron          ###   ########.fr       */
+/*   Updated: 2023/02/15 17:29:08 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ bool Channel::operator==(const Channel &rhs) const
 		   _opUsers == rhs._opUsers &&
 		   _bannedUsers == rhs._bannedUsers &&
 		   _usrNbMax == rhs._usrNbMax &&
-		   _mdp == rhs._mdp;
+		   _pw == rhs._pw;
 }
 
 bool Channel::operator!=(const Channel &rhs) const

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:58:58 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/14 16:29:33 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/15 15:38:00 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "Channel.hpp"
 # include <netinet/in.h>
 // #include "Server.hpp"
+# define MAX_CHAN 50
 
 class Channel;
 
@@ -34,6 +35,8 @@ class User
 		bool					_right_password;
 		struct sockaddr_in		_address;
 		socklen_t				_addrlen;
+		int						_chanConnected;
+
 	public:
 		User();
 		User(const std::string &_nick, const std::string& _user);
@@ -52,7 +55,7 @@ class User
 		void	setIrcOp(bool ircOp);
 		void	setRegister(bool const &input);
 		void	setRPassword(bool const &input);
-
+		void 	incrChanConnected();
 		int const					&getFd() const;
 		std::string const			&getNick() const;
 		std::string const			&getUser() const;
@@ -63,6 +66,7 @@ class User
 		bool const					&getRPassword() const;
 		struct sockaddr_in			&getAdress();
 		socklen_t					&getAdressLen();
+		int const 					&getChanConnected() const;
 };
 
 #endif

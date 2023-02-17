@@ -6,7 +6,7 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:43:58 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/08 20:21:45 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/15 15:06:16 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ class Channel
 		std::vector<User>		_opUsers;
 		std::vector<User>		_bannedUsers;
 		unsigned short			_usrNbMax;
-		std::string 			_mdp;
+		std::string 			_pw;
 
 		Channel();
 };
