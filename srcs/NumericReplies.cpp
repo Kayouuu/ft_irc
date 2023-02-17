@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 15:41:10 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/16 14:56:07 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/17 12:23:28 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,14 +192,6 @@ void Rep::R319(int const &fd, const std::string &cNick, const std::string& query
 	clearBuffer();
 }
 
-void Rep::R324(int const &fd, const std::string &cNick, const std::string& chanName, const std::string& chanModeStr, const std::string& chanModeArgs)
-{
-	output << "324 " << cNick << " " << chanName << " " << chanModeStr << " " << chanModeArgs;
-	std::string str = output.str();
-	io.emit(str, fd);
-	clearBuffer();
-}
-
 void	Rep::R322(int const &fd, const std::string &cNick, int nuser, const std::string& topic, const std::string& chanName)
 {
 	output << "322 " << cNick << " " << chanName << " " << nuser << " :" << topic;
@@ -211,6 +203,14 @@ void	Rep::R322(int const &fd, const std::string &cNick, int nuser, const std::st
 void	Rep::R323(int const &fd, const std::string &cNick)
 {
 	output << "323 " << cNick << " :End of LIST";
+	std::string str = output.str();
+	io.emit(str, fd);
+	clearBuffer();
+}
+
+void	Rep::R324(int const &fd, const std::string &cNick, const std::string& chanName, const std::string& chanModeStr, const std::string& chanModeArgs)
+{
+	output << "324 " << cNick << " " << chanName << " " << chanModeStr << " " << chanModeArgs;
 	std::string str = output.str();
 	io.emit(str, fd);
 	clearBuffer();
@@ -492,7 +492,7 @@ void Rep::E471(int const &fd, const std::string &cNick, const std::string& chanN
 	clearBuffer();
 }
 
-void Rep::E472(int const &fd, const std::string &cNick, const std::string& modeChar)
+void Rep::E472(int const &fd, const std::string &cNick, const char& modeChar)
 {
 	output << "472 " << cNick << " " << modeChar << " :is unknown mode char to me";
 	std::string str = output.str();

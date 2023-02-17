@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
-//TODO test msg to channel
+//TODO test msg to channel + voir si possible d'avoir plusieur destinataire qui sont des channel
 void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
 
     if (input[1] == "TheMysteryMachine")
@@ -40,6 +40,8 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
         else if (itChannel->isBanned(cUser) == 1) {
             return;
         }
+        if (itChannel->isMode('n') == true)
+            return;
         it++;
         for (itClient; itClient < _clients.end(); itClient++) {
             itTmp = it;

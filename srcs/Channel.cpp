@@ -17,7 +17,7 @@ Channel::Channel()
 
 }
 
-Channel::Channel(const std::string &name, User &opUser) : _name(name)
+Channel::Channel(const std::string &name, User &opUser) : _name(name), _usrNbMax(1024), _usrConnected(1), _pw(NULL)
 {
 	_opUsers.insert(_opUsers.begin(), opUser);
 	_mode.insert(std::pair<char, bool>('i', false));

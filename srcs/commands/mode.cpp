@@ -3,16 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dbouron <dbouron@student.42lyon.fr>        +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 13:47:31 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/15 13:47:31 by dbouron          ###   ########.fr       */
+/*   Updated: 2023/02/17 12:22:15 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
 
-
+void	Server::notAMode(std::string const &which, std::string const &input, User &cUser)
+{
+	if (which == "channel")
+	{
+		for (int i = 1; input[i]; i++)
+		{
+			if (input[i] != 'k' || input[i] != 'l' || input[i] != 'm' 
+					|| input[i] != 'n' || input[i] != 'o' || input[i] != 'p'
+					|| input[i] != 'r' || input[i] != 's' || input[i] != 't'
+					|| input[i] != 'v')
+				_rep.E472(cUser.getFd(), cUser.getNick(), input[i]);
+		}
+	}
+	else if (which == "user")
+	{
+		for (int i = 1; input[i]; i++)
+		{
+			if (input[i] != 'a' || input[i] != 'c' || input[i] != 'g' 
+					|| input[i] != 'h' || input[i] != 'i' || input[i] != 'o'
+					|| input[i] != 's' || input[i] != 'w')
+				_rep.E472(cUser.getFd(), cUser.getNick(), input[i]);
+		}		
+	}
+}
 /**
  * Change mode for a channel:	/MODE <channelName> <+|-> <mode> [parametres]
  * Change mode for a user:		/MODE <nickname> <+|-> <mode>
@@ -29,8 +52,29 @@ void Server::modeCmd(std::vector<std::string> &input, int fd, User &cUser)
 	}
 	if (input[1][0] == '#') // mode for a channel
 	{
-		//	If <target> is a channel that does not exist on the network,
-		//	the ERR_NOSUCHCHANNEL (403) numeric is returned.
+		std::vector<Channel>::iterator	it;
+		for (it = _channels.begin(); it != _channels.end(); it++)
+			if (it->getName() == input[1])
+				break ;
+		if (it == _channels.end())
+		{
+			_rep.E403(fd, cUser.getNick(), input[1]); // TOCHECK if enough + if need to substr the '#' from input[1]
+			return ;
+		}
+		if (input[2][0] != '+' || input[2][0] != '-')
+		{
+			_rep.R324(fd, cUser.getNick(), input[1], input[2], input[3]);
+			return ;
+		}
+		notAMode("channel", input[2], cUser);
+		for (int i = 1; input[2][i]; i++)
+		{
+			if (!std::isalpha(input[2][i]))
+			{
+				_rep.E472(fd, cUser.getNick(), input[2][i]);
+				return ;
+			}
+		}
 		//	If <modestring> is not given, the RPL_CHANNELMODEIS (324) numeric is returned.
 		//	Servers MAY choose to hide sensitive information such as channel keys when sending the current modes.
 		//	Servers MAY also return the RPL_CREATIONTIME (329) numeric following RPL_CHANNELMODEIS.
@@ -57,12 +101,17 @@ void Server::modeCmd(std::vector<std::string> &input, int fd, User &cUser)
 		{
 			if (user->getNick() == input[1])
 			{
+				//	If <target> is a different nick than the user who sent the command,
+				//	the ERR_USERSDONTMATCH (502) numeric is returned.
+				if (cUser.getNick() != user->getNick())
+				{
+					_rep.E502(fd, cUser.getNick());
+					return;
+				}
 
 			}
 		}
 		_rep.E401(fd, cUser.getNick(), input[1]);
-		//	If <target> is a different nick than the user who sent the command,
-		//	the ERR_USERSDONTMATCH (502) numeric is returned.
 		//	If <modestring> is not given,
 		//	the RPL_UMODEIS (221) numeric is sent back containing the current modes of the target user.
 		//	If <modestring> is given, the supplied modes will be applied,
