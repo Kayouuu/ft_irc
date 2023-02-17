@@ -6,7 +6,7 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:44:15 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/17 18:06:45 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/17 18:09:14 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 Channel::Channel()
 {
-
+	
 }
 
-Channel::Channel(const std::string &name, User &opUser) : _name(name), _usrNbMax(1024), _usrCon(1), _pw(NULL), _isTopic(false)
+Channel::Channel(const std::string &name, User &opUser) : _name(name), _usrNbMax(1024), _usrCon(1), _pw(""), _isTopic(false)
 {
 	_opUsers.insert(_opUsers.begin(), opUser);
 	_mode.insert(std::pair<char, bool>('i', false));

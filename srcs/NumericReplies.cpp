@@ -63,6 +63,7 @@ void Rep::R212(int const &fd, const std::string &cNick, const std::string& infos
 	io.emit(str, fd);
 	clearBuffer();
 }
+
 void Rep::R219(int const &fd, const std::string &cNick, const std::string& letters)
 {
 	output << "219 " << cNick << " " << letters << " :End of STATS report";
@@ -70,6 +71,15 @@ void Rep::R219(int const &fd, const std::string &cNick, const std::string& lette
 	io.emit(str, fd);
 	clearBuffer();
 }
+
+void	Rep::R221(int const &fd, const std::string &cNick, const std::string& userModes)
+{
+	output << "221 " << cNick << " " << userModes;
+	std::string str = output.str();
+	io.emit(str, fd);
+	clearBuffer();
+}
+
 void Rep::R242(int const &fd, const std::string &cNick, const std::string& infostr)
 {
 	output << "242 " << cNick << " :" << infostr;
@@ -80,14 +90,6 @@ void Rep::R242(int const &fd, const std::string &cNick, const std::string& infos
 void Rep::R243(int const &fd, const std::string &cNick, const std::string& infostr)
 {
 	output << "243 " << cNick << " " << infostr;
-	std::string str = output.str();
-	io.emit(str, fd);
-	clearBuffer();
-}
-
-void Rep::R221(int const &fd, const std::string &cNick, const std::string& modes)
-{
-	output << "221 " << cNick << " " << modes;
 	std::string str = output.str();
 	io.emit(str, fd);
 	clearBuffer();

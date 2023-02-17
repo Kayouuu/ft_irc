@@ -51,12 +51,12 @@ void User::setPrefix(const std::string &prefix)
 	_prefix = prefix;
 }
 
-bool User::isMode(char mode)
+void User::setMode(char const &modeName, bool const &isMode)
 {
-	std::map<char, bool>::iterator it = _mode.find(mode);
+	std::map<char, bool>::iterator it = _mode.find(modeName);
 	if (it == _mode.end())
 		throw std::exception(); //TODO error msg
-	return it->second;
+	it->second = isMode;
 }
 
 void	User::setRegister(bool const &input)
@@ -104,12 +104,26 @@ std::string const &User::getPrefix() const
 	return (_prefix);
 }
 
-void User::setMode(char &modeName, bool &isMode)
+bool User::isMode(char mode)
 {
-	std::map<char, bool>::iterator it = _mode.find(modeName);
+	std::map<char, bool>::iterator it = _mode.find(mode);
 	if (it == _mode.end())
 		throw std::exception(); //TODO error msg
-	it->second = isMode;
+	return it->second;
+}
+
+std::string User::getModes()
+{
+	std::string modes;
+	for (std::map<char, bool>::iterator mode = _mode.begin(); mode != _mode.end(); mode++)
+	{
+		if (mode->second)
+			modes.append(&"+" [mode->first]);
+	}
+	std::cout << modes << std::endl;//TODO: to remove later, it's for debugging
+	if (modes.empty())
+		return "no modes yet";
+	return modes;
 }
 
 std::vector<Channel> const &User::getOpChannels() const
