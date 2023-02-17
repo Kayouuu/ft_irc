@@ -6,7 +6,7 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/17 11:08:52 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/17 14:04:39 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ class Server
 		void		commandHandler(std::string const &output, int const &current);
 	
 	private:
+		void	notAMode(std::string const &which, std::string const &input, User &cUser);
+	
 		void	joinCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	nickCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	passCmd(std::vector<std::string> &input, int fd, User &cUser);

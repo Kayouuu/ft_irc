@@ -6,7 +6,7 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:31:44 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/15 15:46:39 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/17 14:04:25 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ class Rep
 		void E465(NR_ARG);
 
 		void E471(NR_ARG, const std::string& chanName);
-		void E472(NR_ARG, const std::string& modeChar);
+		void E472(NR_ARG, const char& 		 modeChar);
 		void E473(NR_ARG, const std::string& chanName);
 		void E474(NR_ARG, const std::string& chanName);
 		void E475(NR_ARG, const std::string& chanName);
