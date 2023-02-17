@@ -57,12 +57,17 @@ void Server::modeCmd(std::vector<std::string> &input, int fd, User &cUser)
 		{
 			if (user->getNick() == input[1])
 			{
+				//	If <target> is a different nick than the user who sent the command,
+				//	the ERR_USERSDONTMATCH (502) numeric is returned.
+				if (cUser.getNick() != user->getNick())
+				{
+					_rep.E502(fd, cUser.getNick());
+					return;
+				}
 
 			}
 		}
 		_rep.E401(fd, cUser.getNick(), input[1]);
-		//	If <target> is a different nick than the user who sent the command,
-		//	the ERR_USERSDONTMATCH (502) numeric is returned.
 		//	If <modestring> is not given,
 		//	the RPL_UMODEIS (221) numeric is sent back containing the current modes of the target user.
 		//	If <modestring> is given, the supplied modes will be applied,
