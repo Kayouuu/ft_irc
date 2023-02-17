@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:02:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/17 14:24:59 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/17 15:21:56 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 void	Server::joinCmd(std::vector<std::string> &input, int fd, User &cUser)
 {
+    std::cout << "entre cmd JOIN\n";
 	std::vector<std::string>::iterator it = input.begin();
     it++;
     if (it >= input.end())
@@ -52,24 +53,30 @@ void	Server::joinCmd(std::vector<std::string> &input, int fd, User &cUser)
     listKey.push_back(tmp);
     tmp.clear();  
     }
-    std::vector<std::string>::iterator itKey = listKey.begin();     
+    std::vector<std::string>::iterator itKey = listKey.begin();
+    std::cout << "fin parsing\n";
     for (std::vector<std::string>::iterator itLst = listChan.begin(); itLst < listChan.end(); itLst++) {
         for(std::vector<Channel>::iterator itChannel = _channels.begin(); itChannel < _channels.end(); itChannel++) {
             if (itChannel->getName() == *itLst)
                 break;
         }
         if (itChannel == _channels.end()) { //channel n'existe pas
+            std::cout << "chan existe pas\n";
             if (cUser.getChanConnected() > MAX_CHAN)
             {
                 _rep.E405(cUser.getFd(), cUser.getNick(),*itLst);
                 return;
             }
-            _channels.push_back(Channel(*itLst, cUser));
+            std::cout << *itLst << " : chan avant creation\n";
+            Channel newChan = Channel(*itLst, cUser);
+            std::cout << "chan cree\n";
             if (listKey.size() != 0 && itKey != listKey.end()) {
-                itChannel->setMode('k', true);
-                itChannel->setPw(*itKey);
+                newChan.setMode('k', true);
+                std::cout << "HERE\n";
+                newChan.setPw(*itKey);
                 itKey++;
             }
+            _channels.push_back(newChan);
         }
         else { //channel existe
             if (itChannel->isMode('i') == true) {
@@ -94,6 +101,7 @@ void	Server::joinCmd(std::vector<std::string> &input, int fd, User &cUser)
             else if (itChannel->isMode('k') == true) {
                 if (listKey.size() != 0 && itKey != listKey.end()) {
                     if (*itKey != itChannel->getPw()) {
+                         std::cout << "une cle\n";
                         _rep.E475(cUser.getFd(), cUser.getNick(), itChannel->getName());
                         return;
                     }
@@ -108,5 +116,6 @@ void	Server::joinCmd(std::vector<std::string> &input, int fd, User &cUser)
             if (itChannel->getIsTopic() == true)
                 _rep.R332(cUser.getFd(), cUser.getNick(), itChannel->getName(), itChannel->getSubject());
         }
+        _rep.R353(fd, cUser.getNick(), *itLst, cUser.getNick(), '#', ' ');
     }
 }

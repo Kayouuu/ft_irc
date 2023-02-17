@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/17 14:04:39 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/17 17:25:45 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,19 +69,19 @@ class Server
 		void	initCommands();
 		void	acceptClient();
 		void	manageClient(int &index);
+		void	commandHandler(std::string const &output, int const &current);
+		void	modeHandler(User &cUser, Channel &cChannel, char &mode, std::string const &modeArg, bool set);
+		void	notAMode(std::string const &which, std::string const &input, User &cUser);
 
 	public:
 		Server(int port, std::string password);
 		~Server();
 
-		void		starting();
-		void		run();
-		void		shutdown();
-		void		commandHandler(std::string const &output, int const &current);
+		void						starting();
+		void						run();
+		void						shutdown();
 	
 	private:
-		void	notAMode(std::string const &which, std::string const &input, User &cUser);
-	
 		void	joinCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	nickCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	passCmd(std::vector<std::string> &input, int fd, User &cUser);
@@ -92,6 +92,17 @@ class Server
 		void	quitCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	modeCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	noticeCmd(std::vector<std::string> &input, int fd, User &cUser);
+
+		void	bMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
+		void	iMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
+		void	kMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
+		void	lMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
+		void	mMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
+		void	nMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
+		void	oMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
+		void	pMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
+		void	tMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
+		void	vMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 };
 
 /*
