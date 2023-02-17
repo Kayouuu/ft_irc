@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:10:46 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/16 15:21:42 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/16 17:51:47 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 Bot::Bot(SocketIO &io) : _io(io)
 {
 	_announce_msg = "---Bot conversation incoming---";
-	_scoob_msg = "You are in ScoobIRC, the best IRC server !";
-	_velma_msg = "Jinkies!";
+	_scoob_msg = "Ruh-roh--RAGGY!!!!";
 	_shaggy_msg = "Zoinks Scoob!";
+	_velma_msg = "Jinkies!";
+	_daphne_msg = "Would you do it for a Scooby Snack?";
+	_fred_msg = "Looks like we've got another mystery on our hands !";
 	_curr_time = std::time(NULL);
 }
 
@@ -53,6 +55,10 @@ void	Bot::setMsg(std::vector<std::string> &input, User &cUser)
 		_velma_msg = new_msg;
 	else if (who == ":SHAGGY")
 		_shaggy_msg = new_msg;
+	else if (who == ":FRED")
+		_fred_msg = new_msg;
+	else if (who == ":DAPHNE")
+		_daphne_msg = new_msg;
 	else
 	{
 		_io.emit(":TheMysteryMachine NOTICE Usage => /msg TheMysteryMachine [SCOOBY, VELMA, SHAGGY] message ... ...", cUser.getFd());
@@ -82,6 +88,8 @@ void	Bot::sendMsg(std::vector<User> &clients)
 			_io.emit(":SCOOBY-DOO NOTICE " + it->getNick() + " " + _scoob_msg, it->getFd());
 			_io.emit(":VELMA NOTICE " + it->getNick() + " " + _velma_msg, it->getFd());
 			_io.emit(":SHAGGY NOTICE " + it->getNick() + " " + _shaggy_msg, it->getFd());
+			_io.emit(":DAPHNE NOTICE " + it->getNick() + " " + _daphne_msg, it->getFd());
+			_io.emit(":FRED NOTICE " + it->getNick() + " " + _fred_msg, it->getFd());
 		}
 	}
 }
