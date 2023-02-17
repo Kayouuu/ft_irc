@@ -6,7 +6,7 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/15 14:25:39 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/17 11:08:52 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ class Server
 		void	inviteCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	kickCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	quitCmd(std::vector<std::string> &input, int fd, User &cUser);
+		void	modeCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	noticeCmd(std::vector<std::string> &input, int fd, User &cUser);
 };
 

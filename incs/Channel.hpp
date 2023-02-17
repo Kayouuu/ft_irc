@@ -6,7 +6,7 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:43:58 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/15 15:06:16 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/17 11:11:14 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ class Channel
 		Channel &operator=(const Channel &rhs);
 		virtual ~Channel();
 
-		const std::string &getName() const;
-		const std::string &getSubject() const;
-		bool isMode(char mode);
-		const std::vector<User> &getUsers() const;
-		bool isUser(User &user);
-		bool isOpUser(User &user);
-		bool isBanned(User &user);
+		const std::string		&getName() const;
+		const std::string		&getSubject() const;
+		bool					isMode(char mode);
+		const std::vector<User>	&getUsers() const;
+		bool					isUser(User &user);
+		bool					isOpUser(User &user);
+		bool					isBanned(User &user);
 
 		void setName(const std::string &name);
 		void setSubject(const std::string &subject);
@@ -55,9 +55,10 @@ class Channel
 		std::vector<User>		_opUsers;
 		std::vector<User>		_bannedUsers;
 		unsigned short			_usrNbMax;
+		unsigned short			_usrConnected;
 		std::string 			_pw;
 
 		Channel();
-};
+};y
 
 #endif //CHANNEL_HPP

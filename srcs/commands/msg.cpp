@@ -6,14 +6,21 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/15 17:28:22 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/17 11:23:56 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
-//TODO test msg to channel
+//TODO test msg to channel + voir si possible d'avoir plusieur destinataire qui sont des channel
 void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
+
+    if (input[1] == "TheMysteryMachine")
+    {
+        _bot.setMsg(input, cUser);
+        return ;
+    }
     std::cout << "---entering msgCmd---\n";
+    std::string msg;
     std::vector<std::string>::iterator it = input.begin();
     std::vector<std::string>::iterator itTmp;
     std::vector<User>::iterator itClient = _clients.begin();
@@ -34,6 +41,8 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
         else if (itChannel->isBanned(cUser) == 1) {
             return;
         }
+        if (itChannel->isMode('n') == true)
+            return;
         it++;
         if (it >= input.end()) {
             _rep.E412(cUser.getFd(), cUser.getNick());
@@ -41,13 +50,13 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
         }
         for (itClient; itClient < _clients.end(); itClient++) {
             itTmp = it;
-            //a voir ce que weechat ecrit avant ce message
+            msg.append(":" + cUser.getNick() + " PRIVMSG " + itClient->getNick() + " ");
             for (it; it < input.end(); it++) {
-                msg = msg.append(*it);
+                msg.append(*it);
                 if (it < --input.end())
-                    msg = msg.append(" ");
+                    msg.append(" ");
             }
-            _io.emit(msg + "\r\n", itClient->getFd());
+            _io.emit(msg, itClient->getFd());
             msg.clear();
             it = itTmp;
         }
@@ -79,13 +88,13 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
                     return;
                 }
                 itTmp = it;
-                _io.emit("MSG(" + cUser.getNick() + "):", itClient->getFd());
+                msg.append(":" + cUser.getNick() + " PRIVMSG " + itClient->getNick() + " ");
                 for (it; it < input.end(); it++) {
-                    msg = msg.append(*it);
+                    msg.append(*it);
                     if (it < --input.end())
-                        msg = msg.append(" ");
+                        msg.append(" ");
                 }
-                _io.emit(msg + "\r\n", itClient->getFd());
+                _io.emit(msg, itClient->getFd());
                 msg.clear();
                 it = itTmp;
             }

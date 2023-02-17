@@ -13,7 +13,7 @@
 #include "../../incs/Server.hpp"
 
 /**
- * /kick <channelName> <nickname> [message] (kick a client from a channel)
+ * /KICK <channelName> <nickname> [message] (kick a client from a channel)
  * @param input
  * @param fd
  * @param cUser
@@ -51,8 +51,9 @@ void Server::kickCmd(std::vector<std::string> &input, int fd, User &cUser)
 				{
 					chan->removeUser(*user);
 					if (!input[3].empty())
-						_io.emit(input[3], fd); // send message if it exists
-					//QUESTION: Does it send a response to the client ? Apparently not
+						_io.emit(": " + cUser.getNick() + " " + input[0] + " " + user->getNick() + " " + input[3], fd); // send message if it exists
+					else
+						_io.emit(": " + cUser.getNick() + " " + input[0] + " " + user->getNick(), fd); // TODO not sure if I have to send this
 					return ;
 				}
 			}
@@ -73,6 +74,7 @@ void Server::kickCmd(std::vector<std::string> &input, int fd, User &cUser)
 // The KICK command is used to forcibly remove a user from a channel (force PART).
 // Only a channel operator can kick another user from a channel.
 
+//QUESTION: Does it send a response to the client ? Apparently not
 //QUESTION: do we have to create a blacklist of people who cannot longer join the channel from wich they've been kicked ? NO
 //QUESTION: is the kicked client notified he's been kicked ?
 //QUESTION: is a message sent in the channel to notify the other users in the channel than someone's been kicked ?

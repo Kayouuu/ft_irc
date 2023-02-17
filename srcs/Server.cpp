@@ -6,7 +6,7 @@
 /*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/15 17:32:09 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/17 11:10:32 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,9 @@ void	Server::initCommands()
 	_commands.insert(std::make_pair(std::string("USER"), &Server::userCmd));
 	_commands.insert(std::make_pair(std::string("MSG"), &Server::msgCmd));
 	_commands.insert(std::make_pair(std::string("NOTICE"), &Server::noticeCmd));
-	
+	_commands.insert(std::make_pair(std::string("INVITE"), &Server::inviteCmd));
+	_commands.insert(std::make_pair(std::string("KICK"), &Server::kickCmd));
+	_commands.insert(std::make_pair(std::string("MODE"), &Server::modeCmd));
 }
 
 void	Server::run()
