@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 13:47:31 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/17 12:22:15 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/17 12:33:25 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void Server::modeCmd(std::vector<std::string> &input, int fd, User &cUser)
 	}
 	if (input[1][0] == '#') // mode for a channel
 	{
+		//	If <modestring> is not given, the RPL_CHANNELMODEIS (324) numeric is returned.
 		std::vector<Channel>::iterator	it;
 		for (it = _channels.begin(); it != _channels.end(); it++)
 			if (it->getName() == input[1])
@@ -61,27 +62,17 @@ void Server::modeCmd(std::vector<std::string> &input, int fd, User &cUser)
 			_rep.E403(fd, cUser.getNick(), input[1]); // TOCHECK if enough + if need to substr the '#' from input[1]
 			return ;
 		}
-		if (input[2][0] != '+' || input[2][0] != '-')
+		if ((input[2][0] != '+' || input[2][0] != '-') || input[2].length() < 2) // TOCHECK
 		{
 			_rep.R324(fd, cUser.getNick(), input[1], input[2], input[3]);
 			return ;
 		}
 		notAMode("channel", input[2], cUser);
-		for (int i = 1; input[2][i]; i++)
-		{
-			if (!std::isalpha(input[2][i]))
-			{
-				_rep.E472(fd, cUser.getNick(), input[2][i]);
-				return ;
-			}
-		}
-		//	If <modestring> is not given, the RPL_CHANNELMODEIS (324) numeric is returned.
-		//	Servers MAY choose to hide sensitive information such as channel keys when sending the current modes.
-		//	Servers MAY also return the RPL_CREATIONTIME (329) numeric following RPL_CHANNELMODEIS.
 		//	If <modestring> is given,
 		//	the user sending the command MUST have appropriate channel privileges on the target channel to change the modes given.
 		//	If a user does not have appropriate privileges to change modes on the target channel,
 		//	the server MUST NOT process the message, and ERR_CHANOPRIVSNEEDED (482) numeric is returned.
+		
 		//	If the user has permission to change modes on the target,
 		//	the supplied modes will be applied based on the type of the mode (see below).
 		//	For type A, B, and C modes, arguments will be sequentially obtained from <mode arguments>.
