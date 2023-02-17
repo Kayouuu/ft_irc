@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msg.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/17 11:27:04 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/17 14:07:50 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
     std::vector<std::string>::iterator it = input.begin();
     std::vector<std::string>::iterator itTmp;
     std::vector<User>::iterator itClient = _clients.begin();
-    std::string msg;
     it++;
     if (it[0] == "#") {
         std::cout << "msg to channel\n";

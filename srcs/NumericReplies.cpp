@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   NumericReplies.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 15:41:10 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/17 14:05:03 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/17 14:14:19 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -359,6 +359,13 @@ void Rep::E403(int const &fd, const std::string &cNick, const std::string& chanN
 void Rep::E404(int const &fd, const std::string &cNick, const std::string& chanName)
 {
 	output << "404 " << cNick << " " << chanName << " :Cannot send to channel";
+	io.emit(output.str(), fd);
+	clearBuffer();
+}
+
+void Rep::E405(int const &fd, const std::string &cNick, const std::string& chanName)
+{
+	output << "405 " << cNick << " " << chanName <<  " :You have joined too many channels";	
 	io.emit(output.str(), fd);
 	clearBuffer();
 }
