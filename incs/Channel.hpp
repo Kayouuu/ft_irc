@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:43:58 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/16 15:37:53 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/17 12:38:58 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,27 +35,35 @@ class Channel
 		bool					isUser(User &user);
 		bool					isOpUser(User &user);
 		bool					isBanned(User &user);
+		const std::string		getPw() const;
+		unsigned short			getUsrCon() const;
+		unsigned short			getUsrNbMax() const;
+		bool					getIsTopic() const;
 
 		void setName(const std::string &name);
 		void setSubject(const std::string &subject);
-		void setMode(char &modeName, bool &isMode);
+		void setMode(char const &modeName, bool const &isMode);
 		void addUser(User &user);
 		void removeUser(User &user);
 		void addOpUser(User &opUser);
 		void banUser(User &user);
-
+		void setPw(std::string pw);
+		void incrUsrCon();
+		void setUsrNbMax(unsigned short nbr);
+		void setIsTopic(bool status);
 		bool operator==(const Channel &rhs) const;
 		bool operator!=(const Channel &rhs) const;
-
+		
 	private:
 		std::string				_name; //200 char max
 		std::string 			_subject;
+		bool					_isTopic;
 		std::map<char, bool>	_mode;
 		std::vector<User>		_users;
 		std::vector<User>		_opUsers;
 		std::vector<User>		_bannedUsers;
 		unsigned short			_usrNbMax;
-		unsigned short			_usrConnected;
+		unsigned short			_usrCon;
 		std::string 			_pw;
 
 		Channel();

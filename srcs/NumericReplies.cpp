@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 15:41:10 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/17 12:23:28 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/17 14:14:19 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -361,8 +361,14 @@ void Rep::E403(int const &fd, const std::string &cNick, const std::string& chanN
 void Rep::E404(int const &fd, const std::string &cNick, const std::string& chanName)
 {
 	output << "404 " << cNick << " " << chanName << " :Cannot send to channel";
-	std::string str = output.str();
-	io.emit(str, fd);
+	io.emit(output.str(), fd);
+	clearBuffer();
+}
+
+void Rep::E405(int const &fd, const std::string &cNick, const std::string& chanName)
+{
+	output << "405 " << cNick << " " << chanName <<  " :You have joined too many channels";	
+	io.emit(output.str(), fd);
 	clearBuffer();
 }
 

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/16 15:37:29 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/17 14:07:50 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,10 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
         if (itChannel->isMode('n') == true)
             return;
         it++;
+        if (it >= input.end()) {
+            _rep.E412(cUser.getFd(), cUser.getNick());
+            return;
+        }
         for (itClient; itClient < _clients.end(); itClient++) {
             itTmp = it;
             msg.append(":" + cUser.getNick() + " PRIVMSG " + itClient->getNick() + " ");
@@ -78,6 +82,10 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
                 itClient++;
             }
             if (itClient != _clients.end()){
+                if (it >= input.end()) {
+                    _rep.E412(cUser.getFd(), cUser.getNick());
+                    return;
+                }
                 itTmp = it;
                 msg.append(":" + cUser.getNick() + " PRIVMSG " + itClient->getNick() + " ");
                 for (it; it < input.end(); it++) {

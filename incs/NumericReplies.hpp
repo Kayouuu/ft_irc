@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:31:44 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/17 12:20:39 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/17 14:15:39 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ class Rep
 		void E401(NR_ARG, const std::string& inputNick);
 		void E403(NR_ARG, const std::string& chanName);
 		void E404(NR_ARG, const std::string& chanName);
+		void E405(int const &fd, const std::string &cNick, const std::string& chanName);
 
 		void E411(NR_ARG, const std::string& cmd);
 		void E412(NR_ARG);

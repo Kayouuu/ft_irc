@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/17 12:16:23 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/17 14:04:39 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ class Server
 		void	kickCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	quitCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	modeCmd(std::vector<std::string> &input, int fd, User &cUser);
+		void	noticeCmd(std::vector<std::string> &input, int fd, User &cUser);
 };
 
 /*
