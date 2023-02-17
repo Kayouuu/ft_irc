@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/14 16:37:55 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/17 10:29:41 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void	Server::initCommands()
 	_commands.insert(std::make_pair(std::string("QUIT"), &Server::quitCmd));
 	_commands.insert(std::make_pair(std::string("USER"), &Server::userCmd));
 	_commands.insert(std::make_pair(std::string("MSG"), &Server::msgCmd));
+	_commands.insert(std::make_pair(std::string("PRIVMSG"), &Server::msgCmd));
 	_commands.insert(std::make_pair(std::string("INVITE"), &Server::inviteCmd));
 	_commands.insert(std::make_pair(std::string("KICK"), &Server::kickCmd));
 	_commands.insert(std::make_pair(std::string("MODE"), &Server::modeCmd));
@@ -266,6 +267,8 @@ void		Server::commandHandler(std::string const &output, int const &current)
 	/*****************************************************************************************************/
 
 	// Find the command by his name, needs to be registered to use them excepts the necessary commands to log in
+	if (parsed_output[0] == "PING")
+		_io.emit("PONG " + parsed_output[1], current);
 	if (_commands.find(parsed_output[0]) != _commands.end())
 		if (_clients[user_index].getRegister() || parsed_output[0] == "PASS" || parsed_output[0] == "NICK" || parsed_output[0] == "USER")
 			(this->*_commands[parsed_output[0]])(parsed_output, current, _clients[user_index]); // Execute command corresponding to the input
@@ -282,4 +285,9 @@ void	Server::shutdown()
 	}
 	close(_server_fd);
 
+}
+
+const Rep &Server::getRep() const
+{
+	return _rep;
 }

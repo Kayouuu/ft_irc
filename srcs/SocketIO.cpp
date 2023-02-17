@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:45:14 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/14 16:34:27 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/17 11:10:18 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@ SocketIO::~SocketIO() { }
 
 void	SocketIO::emit(std::string const &input, int const &fd) const
 {
-	int error;
+	std::string	msg = input + "\r\n";
+	int 		error;
 
-	std::cout << "Message sent: " << input;
-	error = send(fd, input.c_str(), input.size(), 0);
+	std::cout << "Message sent: " << input << std::endl;
+	error = send(fd, msg.c_str(), msg.size(), 0);
 	if (error < 0)
 	{
 		std::perror("send");
@@ -37,20 +38,20 @@ int	SocketIO::receive(std::string &output, int const &fd)
 
 	while (1)
 	{
+		std::memset(&buffer, 1, 1024);
 		rvalue = recv(fd, &buffer, 1024, 0);
 		if (rvalue < 0)
 		{
 			std::perror("recv");
 			throw std::exception();
 		}
+		if (buffer[rvalue] == 0 || rvalue == 0)
+			break ;
 		buffer[rvalue] = '\0';
 		output.append(buffer);
 		loop_exit = output.find(10);
 		if (loop_exit >= 0 || loop_exit <= output.size())
-		{
-			std::cout << output.find(10) << std::endl;
 			break ;
-		}
 	}
 	return (rvalue);
 }

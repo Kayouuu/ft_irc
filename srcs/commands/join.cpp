@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:02:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/13 15:03:04 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/17 11:28:45 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-/*
+
 #include "../../incs/Server.hpp"
+/*
 //TODO finish file
 void	Server::joinCmd(std::vector<std::string> const &input, int fd, User &cUser)
 {

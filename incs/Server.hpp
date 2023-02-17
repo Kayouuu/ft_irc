@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/14 16:28:43 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/17 12:16:23 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,12 @@ class Server
 		void		run();
 		void		shutdown();
 		void		commandHandler(std::string const &output, int const &current);
-	
+
+		const Rep 	&getRep() const;
+
 	private:
+		void	notAMode(std::string const &which, std::string const &input, User &cUser);
+	
 		void	joinCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	nickCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	passCmd(std::vector<std::string> &input, int fd, User &cUser);
