@@ -59,8 +59,6 @@ class User
 		void	setRPassword(bool const &input);
 		void 	incrChanConnected();
 
-		void 	oMode(std::string &input, User &cUser);
-
 		int const					&getFd() const;
 		std::string const			&getNick() const;
 		std::string const			&getUser() const;

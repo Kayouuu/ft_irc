@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+         #
+#    By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/18 14:38:40 by psaulnie          #+#    #+#              #
-#    Updated: 2023/02/13 16:10:57 by lbattest         ###   ########.fr        #
+#    Updated: 2023/02/17 14:50:48 by psaulnie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ DIR_OBJ = .objs
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS = -std=c++98
-#CFLAGS += -fsanitize=address -g3
+CFLAGS += -fsanitize=address -g3
 
 # **************************************************************************** #
 #                                    COLORS                                    #
