@@ -12,6 +12,10 @@
 
 #include "../../incs/Server.hpp"
 
+void iMode()
+{
+
+}
 
 /**
  * Change mode for a channel:	/MODE <channelName> <+|-> <mode> [parametres]
@@ -22,7 +26,7 @@
  */
 void Server::modeCmd(std::vector<std::string> &input, int fd, User &cUser)
 {
-	if (input[1].empty() || input[2].empty() || input[3].empty())
+	if (input[1].empty() || input[2].empty())
 	{
 		_rep.E461(fd, cUser.getNick(), input[0]); // ERR_NEEDMOREPARAMS
 		return;
