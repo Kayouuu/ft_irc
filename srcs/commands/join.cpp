@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:02:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/17 14:16:56 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/17 14:24:59 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,16 @@ void	Server::joinCmd(std::vector<std::string> &input, int fd, User &cUser)
     std::vector<std::string>::iterator itKey = listKey.begin();     
     for (std::vector<std::string>::iterator itLst = listChan.begin(); itLst < listChan.end(); itLst++) {
         for(std::vector<Channel>::iterator itChannel = _channels.begin(); itChannel < _channels.end(); itChannel++) {
-            if (itChannel->getName() == *it)
+            if (itChannel->getName() == *itLst)
                 break;
         }
         if (itChannel == _channels.end()) { //channel n'existe pas
             if (cUser.getChanConnected() > MAX_CHAN)
             {
-                _rep.E405(cUser.getFd(), *it);
+                _rep.E405(cUser.getFd(), cUser.getNick(),*itLst);
                 return;
             }
-            _channels.push_back(Channel(*it, cUser));
+            _channels.push_back(Channel(*itLst, cUser));
             if (listKey.size() != 0 && itKey != listKey.end()) {
                 itChannel->setMode('k', true);
                 itChannel->setPw(*itKey);
@@ -74,21 +74,21 @@ void	Server::joinCmd(std::vector<std::string> &input, int fd, User &cUser)
         else { //channel existe
             if (itChannel->isMode('i') == true) {
                 if (cUser.isMode('i') == false) {
-                    _rep.E473(cUser.getFd(), cUser.getNick(), *it);
+                    _rep.E473(cUser.getFd(), cUser.getNick(), *itLst);
                     return;
                 }
             }
             if (itChannel->isMode('l') == true && itChannel->getUsrCon() + 1 > itChannel->getUsrNbMax()) {
-                _rep.E471(cUser.getFd(), cUser.getNick(), *it);
+                _rep.E471(cUser.getFd(), cUser.getNick(), *itLst);
                 return;
             }
             else if (itChannel->isBanned(cUser) == true) {
-                _rep.E474(cUser.getFd(), cUser.getNick(), *it);
+                _rep.E474(cUser.getFd(), cUser.getNick(), *itLst);
                 return;
             }
             if (cUser.getChanConnected() > MAX_CHAN)
             {
-                _rep.E405(cUser.getFd(), cUser.getNick(),*it);
+                _rep.E405(cUser.getFd(), cUser.getNick(),*itLst);
                 return;
             }
             else if (itChannel->isMode('k') == true) {
