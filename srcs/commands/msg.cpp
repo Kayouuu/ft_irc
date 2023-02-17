@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   msg.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/16 15:37:29 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/17 11:27:04 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
     std::vector<std::string>::iterator it = input.begin();
     std::vector<std::string>::iterator itTmp;
     std::vector<User>::iterator itClient = _clients.begin();
+    std::string msg;
     it++;
     if (it[0] == "#") {
         std::cout << "msg to channel\n";
@@ -43,6 +44,10 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
         if (itChannel->isMode('n') == true)
             return;
         it++;
+        if (it >= input.end()) {
+            _rep.E412(cUser.getFd(), cUser.getNick());
+            return;
+        }
         for (itClient; itClient < _clients.end(); itClient++) {
             itTmp = it;
             msg.append(":" + cUser.getNick() + " PRIVMSG " + itClient->getNick() + " ");
@@ -78,6 +83,10 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
                 itClient++;
             }
             if (itClient != _clients.end()){
+                if (it >= input.end()) {
+                    _rep.E412(cUser.getFd(), cUser.getNick());
+                    return;
+                }
                 itTmp = it;
                 msg.append(":" + cUser.getNick() + " PRIVMSG " + itClient->getNick() + " ");
                 for (it; it < input.end(); it++) {

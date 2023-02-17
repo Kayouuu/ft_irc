@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 11:00:21 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/13 11:16:13 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/17 11:10:53 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/User.hpp"
 
-User::User() : _nick(""), _user(""), _prefix("") { _fd = -1; _right_password = false; _is_registered = false; }
+User::User() : _nick(""), _user(""), _prefix("") { _fd = -1; _right_password = false; _is_registered = false; _chanConnected = 0; }
 
 User::User(const std::string &_nick, const std::string &_user)
 {
@@ -20,6 +20,7 @@ User::User(const std::string &_nick, const std::string &_user)
 	this->_user = _user;
 	this->_right_password = false;
 	this->_is_registered = false;
+	this->_chanConnected = 0;
 	_mode.insert(std::pair<char, bool>('i', false));
 	_mode.insert(std::pair<char, bool>('s', false));
 	_mode.insert(std::pair<char, bool>('w', false));
@@ -79,6 +80,10 @@ void User::setIrcOp(bool ircOp)
 	_ircOp = ircOp;
 }
 
+void User::incrChanConnected() {
+	_chanConnected++;
+}
+
 int const &User::getFd() const
 {
 	return (_fd);
@@ -110,6 +115,10 @@ void User::setMode(char &modeName, bool &isMode)
 std::vector<Channel> const &User::getOpChannels() const
 {
 	return _chanOp;
+}
+
+int const &User::getChanConnected() const {
+	return _chanConnected;
 }
 
 bool User::isIrcOp() const
