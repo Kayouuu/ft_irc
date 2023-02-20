@@ -148,7 +148,7 @@ void	Server::modeHandler(User &cUser, Channel &cChannel, char &mode, std::string
 			bMode(cUser, cChannel, modeArg, set);
 			break ;
 		case 'i':
-			iMode(cUser, cChannel, modeArg, set);
+			iMode(cChannel, set);
 			break ;
 		case 'k':
 			kMode(cUser, cChannel, modeArg, set);
@@ -169,7 +169,7 @@ void	Server::modeHandler(User &cUser, Channel &cChannel, char &mode, std::string
 			pMode(cUser, cChannel, modeArg, set);
 			break ;
 		case 't':
-			tMode(cUser, cChannel, modeArg, set);
+			tMode(cChannel, set);
 			break ;
 		case 'v':
 			vMode(cUser, cChannel, modeArg, set);
@@ -201,5 +201,6 @@ void Server::oMode(int fd, std::string &input, User &cUser)
 void Server::sMode(int fd, std::string &input, User &cUser)
 {
 	//TODO
+	//Display server messages for the user
 
 }
