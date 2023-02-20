@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 13:47:31 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/17 17:24:28 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/20 14:08:22 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	Server::modeCmd(std::vector<std::string> &input, int fd, User &cUser)
 			set = true;
 		for (int i = 1; input[2][i]; i++)
 		{
-			modeHandler(cUser, *it, input[2][i], input[3], set);
+			modeHandler(cUser, *it, input[2][i], input, set);
 		}
 		//	If the user has permission to change modes on the target,
 		//	the supplied modes will be applied based on the type of the mode (see below).
@@ -138,41 +138,45 @@ void	Server::modeCmd(std::vector<std::string> &input, int fd, User &cUser)
 	}
 }
 
-void	Server::modeHandler(User &cUser, Channel &cChannel, char &mode, std::string const &modeArg, bool set)
+void	Server::modeHandler(User &cUser, Channel &cChannel, char &mode, std::vector<std::string> &input, bool set)
 {
 	switch(mode)
 	{
 		case 'b':
-			bMode(cUser, cChannel, modeArg, set);
+			bMode(cUser, cChannel, input[3], set);
 			break ;
 		case 'i':
-			iMode(cUser, cChannel, modeArg, set);
+			iMode(cUser, cChannel, input[3], set);
 			break ;
 		case 'k':
-			kMode(cUser, cChannel, modeArg, set);
+			kMode(cUser, cChannel, input[3], set);
 			break ;
 		case 'l':
-			lMode(cUser, cChannel, modeArg, set);
+			lMode(cUser, cChannel, input[3], set);
 			break ;
 		case 'm':
-			mMode(cUser, cChannel, modeArg, set);
+			mMode(cUser, cChannel, input[3], set);
 			break ;
 		case 'n':
-			nMode(cUser, cChannel, modeArg, set);
+			nMode(cUser, cChannel, input[3], set);
 			break ;
 		case 'o':
-			oMode(cUser, cChannel, modeArg, set);
+			oMode(cUser, cChannel, input[3], set);
 			break ;
 		case 'p':
-			pMode(cUser, cChannel, modeArg, set);
+			pMode(cUser, cChannel, input[3], set);
 			break ;
 		case 't':
-			tMode(cUser, cChannel, modeArg, set);
+			tMode(cUser, cChannel, input[3], set);
 			break ;
 		case 'v':
-			vMode(cUser, cChannel, modeArg, set);
+			vMode(cUser, cChannel, input[3], set);
 			break ;
+		default:
+			return ;
 	}
+	_rep.R324(cUser.getFd(), cUser.getNick(), input[1], input[2], input[3]);
+
 }
 
 void	Server::modeHandlerUser(int fd, std::string &input, User &cUser, char &mode)

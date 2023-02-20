@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 16:03:13 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/20 10:59:48 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/20 14:32:50 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ void	Server::bMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 	else
 	{
 		// TODO user not found
+		// RPL_BANLIST
+		// RPL_ENDBANLIST
 	}
 }
 
@@ -54,6 +56,12 @@ void	Server::kMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 {
 	char mode = 'k';
 
+	cChannel.setMode(mode, set);
+	if (set == true)
+		cChannel.setPw(modeArg);
+	else
+		cChannel.setPw("");
+	
 }
 
 void	Server::lMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
@@ -66,6 +74,7 @@ void	Server::mMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 {
 	char mode = 'm';
 
+	cChannel.setMode(mode, set);
 }
 
 void	Server::nMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
@@ -96,4 +105,5 @@ void	Server::vMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 {
 	char mode = 'v';
 
+	cUser.setMode(mode, set);
 }
