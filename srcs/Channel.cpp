@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:44:15 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/20 10:34:23 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/20 11:49:34 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,27 @@ unsigned short Channel::getUsrNbMax() const
 bool Channel::getIsTopic() const
 {
 	return _isTopic;	
+}
+
+char Channel::getChanPrefix()
+{
+	if 	(isMode('s') == true)
+		return '@';
+	else if (isMode('p') == true)
+		return '*';
+	return '=';
+}
+
+char Channel::getUserPrefix()
+{
+	std::vector<User>::iterator it = _users.begin();
+	if (it == _users.end())
+		return 'u';
+	if (it->isMode('o'))
+		return '@';
+	if (it->isMode('v') == true)
+		return '+';
+	return 'u';
 }
 
 void Channel::setName(const std::string &name)

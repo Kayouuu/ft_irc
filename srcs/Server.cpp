@@ -287,3 +287,8 @@ void	Server::shutdown()
 	close(_server_fd);
 
 }
+
+const Rep &Server::getRep() const
+{
+	return _rep;
+}

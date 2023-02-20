@@ -52,17 +52,19 @@ class User
 		void	setNick(const std::string &nick);
 		void	setUser(const std::string &user);
 		void	setPrefix(const std::string &prefix);
-		bool	isMode(char mode);
+		void 	setMode(char const &modeName, bool const &isMode);
 		void	addOpChannel(Channel &channel);
 		void	setIrcOp(bool ircOp);
 		void	setRegister(bool const &input);
 		void	setRPassword(bool const &input);
 		void 	incrChanConnected();
+
 		int const					&getFd() const;
 		std::string const			&getNick() const;
 		std::string const			&getUser() const;
 		std::string const			&getPrefix() const;
-		void 						setMode(char &modeName, bool &isMode);
+		bool						isMode(char mode);
+		std::string					getModes();
 		std::vector<Channel> const	&getOpChannels() const;
 		bool 						isIrcOp() const;
 		bool const					&getRegister() const;

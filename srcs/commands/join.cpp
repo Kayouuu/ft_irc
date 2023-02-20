@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:02:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/17 15:21:56 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/17 18:09:08 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,11 @@ void	Server::joinCmd(std::vector<std::string> &input, int fd, User &cUser)
             itChannel->incrUsrCon();
             if (itChannel->getIsTopic() == true)
                 _rep.R332(cUser.getFd(), cUser.getNick(), itChannel->getName(), itChannel->getSubject());
+            for (std::vector<User>::iterator itU = _clients.begin(); itU < _clients.end(); itU++) {
+                _rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix());
+            }
+            _rep.R366(cUser.getFd(), cUser.getNick(), itChannel->getName());
+            _io.emit(":" + cUser.getNick() + " JOIN " + itChannel->getName(),cUser.getFd());
         }
         _rep.R353(fd, cUser.getNick(), *itLst, cUser.getNick(), '#', ' ');
     }

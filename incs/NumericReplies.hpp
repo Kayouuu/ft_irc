@@ -42,10 +42,9 @@ class Rep
 		void R211(NR_ARG, const std::string& infostr); //RPL_STATSLINKINFO
 		void R212(NR_ARG, const std::string& infostr); //RPL_STATSCOMMANDS
 		void R219(NR_ARG, const std::string& letters); //RPL_ENDOFSTATS
+		void R221(NR_ARG, const std::string& userModes); //RPL_UMODEIS
 		void R242(NR_ARG, const std::string& infostr); //RPL_STATSUPTIME
 		void R243(NR_ARG, const std::string& infostr); //RPL_STATSOLINE
-
-		void R221(NR_ARG, const std::string& modes);
 
 		void R251(NR_ARG, const std::string& infostr);
 		void R252(NR_ARG, int ops);
