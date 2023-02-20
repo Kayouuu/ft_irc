@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/20 14:07:39 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/20 14:54:56 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,6 @@ class Server
 		void		starting();
 		void		run();
 		void		shutdown();
-
-		const Rep 	&getRep() const;
 
 	private:
 		void	joinCmd(std::vector<std::string> &input, int fd, User &cUser);

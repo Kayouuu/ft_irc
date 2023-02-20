@@ -14,6 +14,9 @@
 
 void	Server::notAMode(std::string const &which, std::string const &input, User &cUser)
 {
+	for (int j = 1; input[j]; j++)
+		if (!isalpha(input[j]))
+			_rep.E472(cUser.getFd(), cUser.getNick(), input[j]);
 	if (which == "channel")
 	{
 		for (int i = 1; input[i]; i++)
@@ -21,7 +24,7 @@ void	Server::notAMode(std::string const &which, std::string const &input, User &
 			if (input[i] != 'k' || input[i] != 'l' || input[i] != 'm'
 					|| input[i] != 'n' || input[i] != 'o' || input[i] != 'p'
 					|| input[i] != 't' || input[i] != 'v')
-				_rep.E472(cUser.getFd(), cUser.getNick(), input[i]);
+				_rep.E501(cUser.getFd(), cUser.getNick());
 		}
 	}
 	else if (which == "user")
@@ -29,7 +32,7 @@ void	Server::notAMode(std::string const &which, std::string const &input, User &
 		for (int i = 1; input[i]; i++)
 		{
 			if (input[i] != 'o' || input[i] != 's')
-				_rep.E472(cUser.getFd(), cUser.getNick(), input[i]);
+				_rep.E501(cUser.getFd(), cUser.getNick());
 		}
 	}
 }
@@ -120,12 +123,11 @@ void	Server::modeCmd(std::vector<std::string> &input, int fd, User &cUser)
 
 				notAMode("user", input[2], cUser);
 
-				bool	set = false;
 				if (input[2][0] == '+')
-					set = true;
 				for (int i = 1; input[2][i]; i++)
 				{
 					modeHandlerUser(fd, input[2], cUser, input[2][i]);
+					return;
 				}
 			}
 		}
@@ -134,7 +136,7 @@ void	Server::modeCmd(std::vector<std::string> &input, int fd, User &cUser)
 		//	and a MODE message will be sent to the user containing the changed modes.
 		//	If one or more modes sent are not implemented on the server,
 		//	the server MUST apply the modes that are implemented,
-		//	and then send the ERR_UMODEUNKNOWNFLAG (501) in reply along with the MODE message. //TODO
+		//	and then send the ERR_UMODEUNKNOWNFLAG (501) in reply along with the MODE message.
 	}
 }
 
@@ -203,4 +205,5 @@ void Server::oMode(int fd, std::string &input, User &cUser)
 void Server::sMode(int fd, std::string &input, User &cUser)
 {
 	//TODO
+
 }
