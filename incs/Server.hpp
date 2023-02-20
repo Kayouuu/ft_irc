@@ -82,8 +82,6 @@ class Server
 		void		run();
 		void		shutdown();
 
-		const Rep 	&getRep() const;
-
 	private:
 		void	joinCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	nickCmd(std::vector<std::string> &input, int fd, User &cUser);

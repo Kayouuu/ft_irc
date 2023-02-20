@@ -201,4 +201,5 @@ void Server::oMode(int fd, std::string &input, User &cUser)
 void Server::sMode(int fd, std::string &input, User &cUser)
 {
 	//TODO
+
 }
