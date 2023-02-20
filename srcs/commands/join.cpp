@@ -69,13 +69,14 @@ void	Server::joinCmd(std::vector<std::string> &input, int fd, User &cUser)
             }
             std::cout << *itLst << " : chan avant creation\n";
             Channel newChan = Channel(*itLst, cUser);
-            std::cout << "chan cree\n";
-            if (listKey.size() != 0 && itKey != listKey.end()) {
-                newChan.setMode('k', true);
-                std::cout << "HERE\n";
-                newChan.setPw(*itKey);
-                itKey++;
-            }
+            std::cout << "chan cree, " << &newChan << std::endl;
+			// a refaire la condition
+//            if (listKey.size() != 0 && itKey != listKey.end()) {
+//                newChan.setMode('k', true);
+//                std::cout << "HERE\n";
+//                newChan.setPw(*itKey);
+//                itKey++;
+//            }
             _channels.push_back(newChan);
         }
         else { //channel existe
@@ -115,12 +116,16 @@ void	Server::joinCmd(std::vector<std::string> &input, int fd, User &cUser)
             itChannel->incrUsrCon();
             if (itChannel->getIsTopic() == true)
                 _rep.R332(cUser.getFd(), cUser.getNick(), itChannel->getName(), itChannel->getSubject());
-            for (std::vector<User>::iterator itU = _clients.begin(); itU < _clients.end(); itU++) {
-                _rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix());
-            }
-            _rep.R366(cUser.getFd(), cUser.getNick(), itChannel->getName());
-            _io.emit(":" + cUser.getNick() + " JOIN " + itChannel->getName(),cUser.getFd());
         }
-        _rep.R353(fd, cUser.getNick(), *itLst, cUser.getNick(), '#', ' ');
-    }
+//		for(std::vector<Channel>::iterator itChannel = _channels.begin(); itChannel < _channels.end(); itChannel++) {
+//			if (itChannel->getName() == *itLst)
+//				break;
+//		}
+//		std::vector<User> users = itChannel->getUsers();
+//		for (std::vector<User>::iterator itU = users.begin(); itU < users.end(); itU++) {
+//			_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix());
+//		}
+//		_rep.R366(cUser.getFd(), cUser.getNick(), itChannel->getName());
+//		_io.emit(":" + cUser.getNick() + " JOIN " + itChannel->getName(),cUser.getFd());
+	}
 }

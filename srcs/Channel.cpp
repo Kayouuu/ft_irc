@@ -123,6 +123,7 @@ bool Channel::getIsTopic() const
 
 char Channel::getChanPrefix()
 {
+	std::cout << "-----------------------------------bonjour--------------------------------\n";
 	if 	(isMode('s') == true)
 		return '@';
 	else if (isMode('p') == true)

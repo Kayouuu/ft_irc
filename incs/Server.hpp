@@ -81,7 +81,6 @@ class Server
 		void		starting();
 		void		run();
 		void		shutdown();
-		void		commandHandler(std::string const &output, int const &current);
 
 		const Rep 	&getRep() const;
 

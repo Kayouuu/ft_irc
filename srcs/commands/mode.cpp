@@ -120,12 +120,11 @@ void	Server::modeCmd(std::vector<std::string> &input, int fd, User &cUser)
 
 				notAMode("user", input[2], cUser);
 
-				bool	set = false;
 				if (input[2][0] == '+')
-					set = true;
 				for (int i = 1; input[2][i]; i++)
 				{
 					modeHandlerUser(fd, input[2], cUser, input[2][i]);
+					return;
 				}
 			}
 		}
