@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:43:58 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/17 17:19:42 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/20 10:31:34 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ class Channel
 		void removeUser(User &user);
 		void addOpUser(User &opUser);
 		void banUser(User &user);
+		void unbanUser(User &user);
 		void setPw(std::string pw);
 		void incrUsrCon();
 		void setUsrNbMax(unsigned short nbr);
