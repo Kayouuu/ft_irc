@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/17 18:21:25 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/20 14:54:56 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ class Server
 		void	acceptClient();
 		void	manageClient(int &index);
 		void	commandHandler(std::string const &output, int const &current);
-		void	modeHandler(User &cUser, Channel &cChannel, char &mode, std::string const &modeArg, bool set);
+		void	modeHandler(User &cUser, Channel &cChannel, char &mode, std::vector<std::string> &input, bool set);
 		void	modeHandlerUser(int fd, std::string &input, User &cUser, char &mode);
 		void	notAMode(std::string const &which, std::string const &input, User &cUser);
 
@@ -95,14 +95,14 @@ class Server
 		void	noticeCmd(std::vector<std::string> &input, int fd, User &cUser);
 
 		void	bMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
-		void	iMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
+		void	iMode(Channel &cChannel, bool set);
 		void	kMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	lMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	mMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	nMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	oMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	pMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
-		void	tMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
+		void	tMode(Channel &cChannel, bool set);
 		void	vMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 
 		void 	oMode(int fd, std::string &input, User &cUser);
@@ -112,7 +112,7 @@ class Server
 /*
 
 Server algorithm:
-
+const
 1-Use of socket and bind, init sockaddr_in struct, listen in a "start" function
 2-While loop
 	a.Clear fdset and reinit all the clients in it 

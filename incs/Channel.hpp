@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:43:58 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/17 18:09:00 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/20 11:13:49 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ class Channel
 		void removeUser(User &user);
 		void addOpUser(User &opUser);
 		void banUser(User &user);
+		void unbanUser(User &user);
 		void setPw(std::string pw);
 		void incrUsrCon();
 		void setUsrNbMax(unsigned short nbr);
