@@ -55,7 +55,7 @@ void User::setMode(char const &modeName, bool const &isMode)
 {
 	std::map<char, bool>::iterator it = _mode.find(modeName);
 	if (it == _mode.end())
-		throw std::exception(); //TODO error msg
+		std::cout << "No mode " << modeName << std::endl; //TODO error msg
 	it->second = isMode;
 }
 
@@ -78,6 +78,16 @@ void	User::setUnusedNick(bool const &input)
 void User::addOpChannel(Channel &channel)
 {
 	_chanOp.push_back(channel);
+}
+
+void User::removeOpChannel(Channel &channel)
+{
+	std::vector<Channel>::iterator it = _chanOp.begin();
+	for (; it < _chanOp.end(); it++)
+	{
+		if (*it == channel)
+			_chanOp.erase(it);
+	}
 }
 
 void User::setIrcOp(bool ircOp)
@@ -118,7 +128,7 @@ bool User::isMode(char mode)
 {
 	std::map<char, bool>::iterator it = _mode.find(mode);
 	if (it == _mode.end())
-		std::cout << "no mode " << mode << std::endl; //TODO error msg
+		std::cout << "No mode " << mode << std::endl; //TODO error msg
 	return it->second;
 }
 

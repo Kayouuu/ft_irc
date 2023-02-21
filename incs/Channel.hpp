@@ -46,6 +46,7 @@ class Channel
 		void setMode(char const &modeName, bool const &isMode);
 		void addUser(User &user);
 		void removeUser(User &user);
+		void removeOpUser(User &user);
 		void addOpUser(User &opUser);
 		void banUser(User &user);
 		void unbanUser(User &user);

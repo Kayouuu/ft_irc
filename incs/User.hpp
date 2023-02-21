@@ -40,8 +40,9 @@ class User
 		socklen_t				_addrlen;
 		int						_chanConnected;
 
-	public:
 		User();
+
+	public:
 		User(const std::string &_nick, const std::string& _user);
 		User(const User &src);
 		virtual ~User();
@@ -56,6 +57,7 @@ class User
 		void	setPrefix(const std::string &prefix);
 		void 	setMode(char const &modeName, bool const &isMode);
 		void	addOpChannel(Channel &channel);
+		void	removeOpChannel(Channel &channel)
 		void	addVoicedChan(Channel &voicedChan);
 		void	setIrcOp(bool ircOp);
 		void	setRegister(bool const &input);

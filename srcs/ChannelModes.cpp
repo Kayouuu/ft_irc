@@ -78,23 +78,45 @@ void Server::lMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 		cChannel.setUsrNbMax(1024);
 }
 
-void	Server::mMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
+void Server::mMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
 {
 	char mode = 'm';
 
 	cChannel.setMode(mode, set);
 }
 
-void	Server::nMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
+void Server::nMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
 {
 	char mode = 'n';
 
 }
 
-void	Server::oMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
+void Server::oMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
 {
-	char mode = 'o';
-
+	if (set)
+	{
+		std::vector<User> chanUsers = cChannel.getUsers();
+		for (std::vector<User>::iterator itUser = chanUsers.begin(); itUser != chanUsers.end(); itUser++)
+		{
+			if (itUser->getNick() == modeArg)
+			{
+				itUser->addOpChannel(cChannel);
+				cChannel.addOpUser(*itUser);
+			}
+		}
+	}
+	else
+	{
+		std::vector<User> chanUsers = cChannel.getUsers();
+		for (std::vector<User>::iterator itUser = chanUsers.begin(); itUser != chanUsers.end(); itUser++)
+		{
+			if (itUser->getNick() == modeArg)
+			{
+				itUser->removeOpChannel(cChannel);
+				cChannel.removeOpUser(*itUser);
+			}
+		}
+	}
 }
 
 void	Server::pMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)

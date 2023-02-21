@@ -62,7 +62,7 @@ bool Channel::isMode(char mode)
 {
 	std::map<char, bool>::iterator it = _mode.find(mode);
 	if (it == _mode.end())
-		throw std::exception(); //TODO error msg
+		std::cout << "No mode " << mode << std::endl; //TODO error msg
 	return it->second;
 }
 
@@ -163,7 +163,7 @@ void Channel::setMode(char const &modeName, bool const &isMode)
 {
 	std::map<char, bool>::iterator it = _mode.find(modeName);
 	if (it == _mode.end())
-		throw std::exception(); //TODO error msg
+		std::cout << "No mode " << modeName << std::endl; //TODO error msg
 	it->second = isMode;
 }
 
@@ -179,6 +179,16 @@ void Channel::removeUser(User &user)
 	{
 		if (*it == user)
 			_users.erase(it);
+	}
+}
+
+void Channel::removeOpUser(User &user)
+{
+	std::vector<User>::iterator it = _opUsers.begin();
+	for (it; it < _opUsers.end(); it++)
+	{
+		if (*it == user)
+			_opUsers.erase(it);
 	}
 }
 
