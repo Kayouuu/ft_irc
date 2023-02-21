@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 11:00:21 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/17 11:10:53 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/21 15:09:58 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/User.hpp"
 
-User::User() : _nick(""), _user(""), _prefix("") { _fd = -1; _right_password = false; _is_registered = false; _chanConnected = 0; }
+User::User() : _nick(""), _user(""), _prefix("") { _fd = -1; _right_password = false; _is_registered = false; _chanConnected = 0; _unused_nick = false; }
 
 User::User(const std::string &_nick, const std::string &_user)
 {
@@ -20,6 +20,7 @@ User::User(const std::string &_nick, const std::string &_user)
 	this->_user = _user;
 	this->_right_password = false;
 	this->_is_registered = false;
+	this->_unused_nick = false;
 	this->_chanConnected = 0;
 	_mode.insert(std::pair<char, bool>('i', false));
 	_mode.insert(std::pair<char, bool>('s', false));
@@ -69,6 +70,11 @@ void	User::setRPassword(bool const &input)
 	_right_password = input;
 }
 
+void	User::setUnusedNick(bool const &input)
+{
+	_unused_nick = input;
+}
+
 
 void User::addOpChannel(Channel &channel)
 {
@@ -104,6 +110,11 @@ std::string const &User::getPrefix() const
 	return (_prefix);
 }
 
+bool const	&User::getUnusedNick() const
+{
+	return (_unused_nick);
+}
+		
 bool User::isMode(char mode)
 {
 	std::map<char, bool>::iterator it = _mode.find(mode);

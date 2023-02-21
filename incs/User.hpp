@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:58:58 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/15 15:38:00 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/21 15:08:01 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ class User
 		bool					_ircOp;//true: user is irc operator, false: user is not irc operator
 		bool					_is_registered;
 		bool					_right_password;
+		bool					_unused_nick;
 		struct sockaddr_in		_address;
 		socklen_t				_addrlen;
 		int						_chanConnected;
@@ -57,6 +58,7 @@ class User
 		void	setIrcOp(bool ircOp);
 		void	setRegister(bool const &input);
 		void	setRPassword(bool const &input);
+		void	setUnusedNick(bool const &input);
 		void 	incrChanConnected();
 
 		int const					&getFd() const;
@@ -69,6 +71,7 @@ class User
 		bool 						isIrcOp() const;
 		bool const					&getRegister() const;
 		bool const					&getRPassword() const;
+		bool const					&getUnusedNick() const;
 		struct sockaddr_in			&getAdress();
 		socklen_t					&getAdressLen();
 		int const 					&getChanConnected() const;
