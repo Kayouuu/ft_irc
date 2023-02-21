@@ -95,14 +95,14 @@ class Server
 		void	noticeCmd(std::vector<std::string> &input, int fd, User &cUser);
 
 		void	bMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
-		void	iMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
+		void	iMode(Channel &cChannel, bool set);
 		void	kMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	lMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	mMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	nMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	oMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	pMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
-		void	tMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
+		void	tMode(Channel &cChannel, bool set);
 		void	vMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 
 		void 	oMode(int fd, std::string &input, User &cUser);

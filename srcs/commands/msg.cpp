@@ -25,7 +25,10 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
     std::vector<std::string>::iterator itTmp;
     std::vector<User>::iterator itClient = _clients.begin();
     it++;
-    if (it[0] == "#") {
+    msg = *it;
+    if (msg[0] == '#') {
+        itClient++;
+        msg.clear();
         std::cout << "msg to channel\n";
         std::vector<Channel>::iterator itChannel = _channels.begin();
         while (itChannel != _channels.end()) {
@@ -47,20 +50,26 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
             _rep.E412(cUser.getFd(), cUser.getNick());
             return;
         }
+        std::cout << "juste avant la boucle\n";
         for (itClient; itClient < _clients.end(); itClient++) {
-            itTmp = it;
-            msg.append(":" + cUser.getNick() + " PRIVMSG " + itClient->getNick() + " ");
-            for (it; it < input.end(); it++) {
-                msg.append(*it);
-                if (it < --input.end())
-                    msg.append(" ");
+            if (itClient->getFd() != -1) {
+                itTmp = it;
+                msg.append(":" + cUser.getNick() + " PRIVMSG " + itClient->getNick() + " ");
+                for (it; it < input.end(); it++) {
+                    msg.append(*it);
+                    if (it < --input.end())
+                        msg.append(" ");
+                }
+                std::cout << "av emit\n";
+                _io.emit(msg, itClient->getFd());
+                std::cout << "ap emit\n";
+                msg.clear();
+                it = itTmp;
             }
-            _io.emit(msg, itClient->getFd());
-            msg.clear();
-            it = itTmp;
         }
     }
     else {
+        msg.clear();
         std::vector<std::string>    listUsers;
         std::string                 tmp;
         std::string                 str = *it;

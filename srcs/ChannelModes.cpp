@@ -46,10 +46,9 @@ void	Server::bMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 	}
 }
 
-void	Server::iMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
+void Server::iMode(Channel &cChannel, bool set)
 {
-	char mode = 'i';
-
+	cChannel.setMode('i', set);
 }
 
 void	Server::kMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
@@ -64,10 +63,19 @@ void	Server::kMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 	
 }
 
-void	Server::lMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
+void Server::lMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
 {
-	char mode = 'l';
-
+	cChannel.setMode('l', set);
+	for (int i = 0; modeArg[i]; i++) //if mode argument is not valid, displays an error
+	{
+		if (!isdigit(modeArg[i]))
+			std::cout << cUser.getNick() << " " << modeArg << "is not valid\n";
+		return;
+	}
+	if (!modeArg.empty() && set)
+		cChannel.setUsrNbMax(static_cast<unsigned short>(std::strtoul(modeArg.c_str(), NULL, 0)));
+	else
+		cChannel.setUsrNbMax(1024);
 }
 
 void	Server::mMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
@@ -95,10 +103,9 @@ void	Server::pMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 
 }
 
-void	Server::tMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
+void Server::tMode(Channel &cChannel, bool set)
 {
-	char mode = 't';
-
+	cChannel.setMode('t', set);
 }
 
 void	Server::vMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
