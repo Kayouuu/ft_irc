@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:10:55 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/15 17:13:19 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/21 15:10:57 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,30 @@ void	Server::nickCmd(std::vector<std::string> &input, int fd, User &cUser)
 	{
 		if (it->getNick() == input[1] || input[1] == "TheMysteryMachine")
 		{
+			cUser.setNick(input[1]);
 			_rep.E433(fd, cUser.getNick(), input[1]);
 			return;
 		}
 	}
 	if (cUser.getRegister())
-		_rep.R001(fd, input[1]);
+	{
+		// for (it; it < _clients.end(); it++)
+		// {
+		// 	if (it->getNick() == input[1] || input[1] == "TheMysteryMachine")
+		// 	{
+		// 		_rep.E433(fd, cUser.getNick(), input[1]);
+		// 		return;
+		// 	}
+		// }
+		_io.emit(":" + cUser.getNick() + " NICK " + input[1], fd);
+		cUser.setNick(input[1]);
+		cUser.setUnusedNick(true);
+		_rep.R001(cUser.getFd(), cUser.getNick());
+		_rep.R002(cUser.getFd(), cUser.getNick(), "ScoobyIRC", "1.0");
+		_rep.R003(cUser.getFd(), cUser.getNick(), _date);
+		_rep.R004(cUser.getFd(), cUser.getNick());
+		return ;
+	}
 	cUser.setNick(input[1]); //TOCHECK: set index 1 for the moment but review the input vector construction (wich index for the nickname) (?)
+	cUser.setUnusedNick(true);
 }

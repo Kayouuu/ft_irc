@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/20 14:54:56 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/20 15:21:47 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,22 +110,18 @@ class Server
 };
 
 /*
-
 Server algorithm:
-const
 1-Use of socket and bind, init sockaddr_in struct, listen in a "start" function
 2-While loop
 	a.Clear fdset and reinit all the clients in it 
-	  (used by select to check all the clients that need to be checked, 
-	  cf. codingbison tuto)
+	  (used by select to check all the clients that need to be checked)
 	b.Use select() to listen for incoming events
 	c.select will identify the fd that has events :
 		-If it's the server fd, then we can accept a new client
 		-If it's another fd(except -1 that will cause to break to loop
-	    and exit the program), then we can manage the client associated with the fd
+	    and exit the program), then we capp window  aspectn manage the client associated with the fd
 	    and using recv to get what they send and eventually send them datas
 	d.Looping
-
 */
 
 #endif
