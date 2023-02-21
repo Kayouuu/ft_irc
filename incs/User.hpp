@@ -30,6 +30,7 @@ class User
 		std::string				_user;
 		std::string				_prefix;
 		std::map<char, bool>	_mode;
+		std::vector<Channel>	_voicedChan;
 		std::vector<Channel>	_chanOp;//array of channels in which the user is operator
 		bool					_ircOp;//true: user is irc operator, false: user is not irc operator
 		bool					_is_registered;
@@ -54,6 +55,7 @@ class User
 		void	setPrefix(const std::string &prefix);
 		void 	setMode(char const &modeName, bool const &isMode);
 		void	addOpChannel(Channel &channel);
+		void	addVoicedChan(Channel &voicedChan);
 		void	setIrcOp(bool ircOp);
 		void	setRegister(bool const &input);
 		void	setRPassword(bool const &input);
@@ -67,6 +69,7 @@ class User
 		std::string					getModes();
 		std::vector<Channel> const	&getOpChannels() const;
 		bool 						isIrcOp() const;
+		bool						isVoicedChan(Channel &channel);
 		bool const					&getRegister() const;
 		bool const					&getRPassword() const;
 		struct sockaddr_in			&getAdress();

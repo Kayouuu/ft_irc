@@ -21,10 +21,9 @@ User::User(const std::string &_nick, const std::string &_user)
 	this->_right_password = false;
 	this->_is_registered = false;
 	this->_chanConnected = 0;
-	_mode.insert(std::pair<char, bool>('i', false));
-	_mode.insert(std::pair<char, bool>('s', false));
-	_mode.insert(std::pair<char, bool>('w', false));
 	_mode.insert(std::pair<char, bool>('o', false));
+	_mode.insert(std::pair<char, bool>('s', false));
+	_mode.insert(std::pair<char, bool>('v', false));
 }
 
 User::~User()
@@ -108,7 +107,7 @@ bool User::isMode(char mode)
 {
 	std::map<char, bool>::iterator it = _mode.find(mode);
 	if (it == _mode.end())
-		throw std::exception(); //TODO error msg
+		std::cout << "no mode " << mode << std::endl; //TODO error msg
 	return it->second;
 }
 
@@ -189,4 +188,19 @@ struct sockaddr_in	&User::getAdress()
 socklen_t			&User::getAdressLen()
 {
 	return (_addrlen);
+}
+
+bool User::isVoicedChan(Channel &channel)
+{
+	for (std::vector<Channel>::iterator it = _voicedChan.begin(); it != _voicedChan.end(); it++)
+	{
+		if (*it == channel)
+			return true;
+	}
+	return false;
+}
+
+void User::addVoicedChan(Channel &voicedChan)
+{
+	_voicedChan.push_back(voicedChan);
 }

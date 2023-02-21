@@ -113,4 +113,6 @@ void	Server::vMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 	char mode = 'v';
 
 	cUser.setMode(mode, set);
+	//TODO add voicedChannel in user
+
 }

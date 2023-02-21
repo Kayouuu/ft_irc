@@ -40,7 +40,7 @@ class Channel
 		unsigned short			getUsrNbMax() const;
 		bool					getIsTopic() const;
 		char					getChanPrefix();
-		char					getUserPrefix();
+		char			 		getUserPrefix(User &cUser, Channel chan);
 		void setName(const std::string &name);
 		void setSubject(const std::string &subject);
 		void setMode(char const &modeName, bool const &isMode);
