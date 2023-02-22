@@ -257,8 +257,8 @@ void		Server::commandHandler(std::string const &output, int const &current)
 		else
 			tmp.push_back(c);
 	}
-
-	parsed_output.push_back(tmp);
+	if (tmp != "")
+		parsed_output.push_back(tmp);
 
 	/****************************************************************************************************/
 	// TOREMOVE used only for tests

@@ -19,7 +19,6 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
         _bot.setMsg(input, cUser);
         return ;
     }
-    std::cout << "---entering msgCmd---\n";
     std::string msg;
     std::vector<std::string>::iterator it = input.begin();
     std::vector<std::string>::iterator itTmp;
@@ -29,7 +28,6 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
     if (msg[0] == '#') {
         itClient++;
         msg.clear();
-        std::cout << "msg to channel\n";
         std::vector<Channel>::iterator itChannel = _channels.begin();
         while (itChannel != _channels.end()) {
             if (itChannel->getName() == *it)
@@ -50,7 +48,6 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
             _rep.E412(cUser.getFd(), cUser.getNick());
             return;
         }
-        std::cout << "juste avant la boucle\n";
         for (itClient; itClient < _clients.end(); itClient++) {
             if (itClient->getFd() != -1) {
                 if (*itClient == cUser)
@@ -110,5 +107,4 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
                 _rep.E401(cUser.getFd(), cUser.getNick(), *itList);
         }
     }
-    std::cout << "---leaving msgCmd---\n";
 }

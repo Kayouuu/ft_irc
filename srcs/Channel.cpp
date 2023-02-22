@@ -41,10 +41,14 @@ Channel &Channel::operator=(const Channel &rhs)
 {
 	_name=rhs._name;
 	_subject=rhs._subject;
+	_isTopic=rhs._isTopic;
 	_mode=rhs._mode;
 	_users=rhs._users;
 	_opUsers=rhs._opUsers;
 	_bannedUsers=rhs._bannedUsers;
+	_usrNbMax=rhs._usrNbMax;
+	_usrCon=rhs._usrCon;
+	_pw=rhs._pw;
 	return *this;
 }
 
@@ -216,7 +220,8 @@ void Channel::unbanUser(User &user)
 
 void Channel::setPw(std::string pw)
 {
-	_pw = pw;	
+	_pw = pw;
+	std::cout << "dans setPw() -> " << _pw << std::endl;
 }
 
 void Channel::incrUsrCon()

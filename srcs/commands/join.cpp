@@ -28,6 +28,7 @@ void	Server::joinCmd(std::vector<std::string> &input, int fd, User &cUser)
     std::string tmp;
     std::vector<std::string> listChan;
     std::vector<std::string> listKey;
+    bool isPw = false;
     for (size_t i = 0; i < str.length(); i++) {
         char c = str[i];
         if (c == ',') {
@@ -40,6 +41,8 @@ void	Server::joinCmd(std::vector<std::string> &input, int fd, User &cUser)
     listChan.push_back(tmp);
     tmp.clear();
     it++;
+    str.clear();
+    str = *it;
     if (it != input.end()) {
         for (size_t i = 0; i < str.length(); i++) {
             char c = str[i];
@@ -50,8 +53,9 @@ void	Server::joinCmd(std::vector<std::string> &input, int fd, User &cUser)
             else
                 tmp.push_back(c);
         }
-    listKey.push_back(tmp);
-    tmp.clear();  
+        listKey.push_back(tmp);
+        tmp.clear();
+        isPw = true;
     }
     str.clear();
     std::vector<std::string>::iterator itKey = listKey.begin();
@@ -76,16 +80,12 @@ void	Server::joinCmd(std::vector<std::string> &input, int fd, User &cUser)
                 _rep.E405(cUser.getFd(), cUser.getNick(),*itLst);
                 return;
             }
-            // std::cout << *itLst << " : chan avant creation\n";
             Channel newChan = Channel(*itLst, cUser);
-            // std::cout << "chan cree, " << &newChan << std::endl;
-			// a refaire la condition
-//            if (listKey.size() != 0 && itKey != listKey.end()) {
-//                newChan.setMode('k', true);
-//                std::cout << "HERE\n";
-//                newChan.setPw(*itKey);
-//                itKey++;
-//            }
+            if (isPw == true && itKey != listKey.end()) {
+               newChan.setMode('k', true);
+               newChan.setPw(*itKey);
+               itKey++;
+           }
 			_channels.push_back(newChan);
 			for(itChannel = _channels.begin(); itChannel < _channels.end(); itChannel++) {
 				if (itChannel->getName() == *itLst) {
@@ -128,9 +128,8 @@ void	Server::joinCmd(std::vector<std::string> &input, int fd, User &cUser)
                    return;
             }
             else if (itChannel->isMode('k') == true) {
-                if (listKey.size() != 0 && itKey != listKey.end()) {
+                if (isPw == true && itKey != listKey.end()) {
                     if (*itKey != itChannel->getPw()) {
-                         std::cout << "une cle\n";
                         _rep.E475(cUser.getFd(), cUser.getNick(), itChannel->getName());
                         return;
                     }
