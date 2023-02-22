@@ -24,6 +24,7 @@ Channel::~Channel()
 
 Channel::Channel(const std::string &name, User &opUser) : _name(name), _usrNbMax(1024), _usrCon(1), _pw(""), _isTopic(false)
 {
+	_users.insert(_users.begin(), opUser);
 	_opUsers.insert(_opUsers.begin(), opUser);
 	_mode.insert(std::pair<char, bool>('i', false));
 	_mode.insert(std::pair<char, bool>('k', false));
@@ -34,7 +35,6 @@ Channel::Channel(const std::string &name, User &opUser) : _name(name), _usrNbMax
 	_mode.insert(std::pair<char, bool>('r', false));
 	_mode.insert(std::pair<char, bool>('s', false));
 	_mode.insert(std::pair<char, bool>('t', false));
-	_mode.insert(std::pair<char, bool>('v', false));
 }
 
 Channel::Channel(const Channel &src)
@@ -67,7 +67,7 @@ bool Channel::isMode(char mode)
 {
 	std::map<char, bool>::iterator it = _mode.find(mode);
 	if (it == _mode.end())
-		throw std::exception(); //TODO error msg
+		std::cout << "No mode " << mode << std::endl; //TODO error msg
 	return it->second;
 }
 
@@ -128,7 +128,6 @@ bool Channel::getIsTopic() const
 
 char Channel::getChanPrefix()
 {
-	std::cout << "-----------------------------------bonjour--------------------------------\n";
 	if 	(isMode('s') == true)
 		return '@';
 	else if (isMode('p') == true)
@@ -136,15 +135,21 @@ char Channel::getChanPrefix()
 	return '=';
 }
 
-char Channel::getUserPrefix()
+char Channel::getUserPrefix(User &cUser, Channel chan)
 {
-	std::vector<User>::iterator it = _users.begin();
+	std::vector<User>::iterator it;
+	for (it = _users.begin(); it != _users.end(); it++) {
+		if (it->getNick() == cUser.getNick())
+			break;
+	}
 	if (it == _users.end())
 		return 'u';
-	if (it->isMode('o'))
+	if (isOpUser(*it))
 		return '@';
-	if (it->isMode('v') == true)
-		return '+';
+	if (it->isMode('v') == true) {
+		if (it->isVoicedChan(chan))
+			return '+';
+	}
 	return 'u';
 }
 
@@ -163,7 +168,7 @@ void Channel::setMode(char const &modeName, bool const &isMode)
 {
 	std::map<char, bool>::iterator it = _mode.find(modeName);
 	if (it == _mode.end())
-		throw std::exception(); //TODO error msg
+		std::cout << "No mode " << modeName << std::endl; //TODO error msg
 	it->second = isMode;
 }
 
@@ -179,6 +184,16 @@ void Channel::removeUser(User &user)
 	{
 		if (*it == user)
 			_users.erase(it);
+	}
+}
+
+void Channel::removeOpUser(User &user)
+{
+	std::vector<User>::iterator it = _opUsers.begin();
+	for (it; it < _opUsers.end(); it++)
+	{
+		if (*it == user)
+			_opUsers.erase(it);
 	}
 }
 
