@@ -53,16 +53,16 @@ void Server::msgCmd(std::vector<std::string> &input, int fd, User &cUser) {
         std::cout << "juste avant la boucle\n";
         for (itClient; itClient < _clients.end(); itClient++) {
             if (itClient->getFd() != -1) {
+                if (*itClient == cUser)
+                    continue;
                 itTmp = it;
-                msg.append(":" + cUser.getNick() + " PRIVMSG " + itClient->getNick() + " ");
+                msg.append(":" + cUser.getNick() + " PRIVMSG " + itChannel->getName() + " ");
                 for (it; it < input.end(); it++) {
                     msg.append(*it);
                     if (it < --input.end())
                         msg.append(" ");
                 }
-                std::cout << "av emit\n";
                 _io.emit(msg, itClient->getFd());
-                std::cout << "ap emit\n";
                 msg.clear();
                 it = itTmp;
             }
