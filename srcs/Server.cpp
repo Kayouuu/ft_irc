@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/20 12:02:08 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/22 15:34:57 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,17 +110,19 @@ void	Server::starting()
 
 void	Server::initCommands()
 {
-	_commands.insert(std::make_pair(std::string("JOIN"), &Server::joinCmd));
-	_commands.insert(std::make_pair(std::string("NICK"), &Server::nickCmd));
-	_commands.insert(std::make_pair(std::string("PASS"), &Server::passCmd));
-	_commands.insert(std::make_pair(std::string("QUIT"), &Server::quitCmd));
-	_commands.insert(std::make_pair(std::string("USER"), &Server::userCmd));
-	_commands.insert(std::make_pair(std::string("MSG"), &Server::msgCmd));
-	_commands.insert(std::make_pair(std::string("PRIVMSG"), &Server::msgCmd));
-	_commands.insert(std::make_pair(std::string("NOTICE"), &Server::noticeCmd));
+	_commands.insert(std::make_pair(std::string("DIE"), &Server::dieCmd));
 	_commands.insert(std::make_pair(std::string("INVITE"), &Server::inviteCmd));
+	_commands.insert(std::make_pair(std::string("JOIN"), &Server::joinCmd));
 	_commands.insert(std::make_pair(std::string("KICK"), &Server::kickCmd));
 	_commands.insert(std::make_pair(std::string("MODE"), &Server::modeCmd));
+	_commands.insert(std::make_pair(std::string("MSG"), &Server::msgCmd));
+	_commands.insert(std::make_pair(std::string("NICK"), &Server::nickCmd));
+	_commands.insert(std::make_pair(std::string("NOTICE"), &Server::noticeCmd));
+	_commands.insert(std::make_pair(std::string("PASS"), &Server::passCmd));
+	_commands.insert(std::make_pair(std::string("PRIVMSG"), &Server::msgCmd));
+	_commands.insert(std::make_pair(std::string("QUIT"), &Server::quitCmd));
+	_commands.insert(std::make_pair(std::string("TOPIC"), &Server::topicCmd));
+	_commands.insert(std::make_pair(std::string("USER"), &Server::userCmd));
 }
 
 void	Server::run()
@@ -155,7 +157,7 @@ void	Server::run()
 			if (_clients[i].getFd() > 0 && FD_ISSET(_clients[i].getFd(), &read_fd_set)) // If one is triggered, handle it
 				manageClient(i);
 		}
-		// _bot.check(_clients);
+		_bot.check(_clients);
 	}
 }
 
@@ -291,5 +293,8 @@ void	Server::shutdown()
 			close(it->getFd());
 	}
 	close(_server_fd);
-
+	_channels.clear();
+	_clients.clear();
+	_commands.clear();
+	std::exit(1);
 }

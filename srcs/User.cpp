@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 11:00:21 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/21 15:09:58 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/22 15:38:59 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ User::User(const std::string &_nick, const std::string &_user)
 
 User::~User()
 {
+	_mode.clear();
+	_chanOp.clear();
 }
 
 void User::setFd(int new_fd)

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/20 15:21:47 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/22 14:21:19 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,16 +83,19 @@ class Server
 		void		shutdown();
 
 	private:
-		void	joinCmd(std::vector<std::string> &input, int fd, User &cUser);
-		void	nickCmd(std::vector<std::string> &input, int fd, User &cUser);
-		void	passCmd(std::vector<std::string> &input, int fd, User &cUser);
-		void	userCmd(std::vector<std::string> &input, int fd, User &cUser);
-		void	msgCmd(std::vector<std::string> &input, int fd, User &cUser);
+		void	dieCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	inviteCmd(std::vector<std::string> &input, int fd, User &cUser);
+		void	joinCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	kickCmd(std::vector<std::string> &input, int fd, User &cUser);
-		void	quitCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	modeCmd(std::vector<std::string> &input, int fd, User &cUser);
+		void	msgCmd(std::vector<std::string> &input, int fd, User &cUser);
+		void	nickCmd(std::vector<std::string> &input, int fd, User &cUser);
 		void	noticeCmd(std::vector<std::string> &input, int fd, User &cUser);
+		void	passCmd(std::vector<std::string> &input, int fd, User &cUser);
+		void	quitCmd(std::vector<std::string> &input, int fd, User &cUser);
+		void	topicCmd(std::vector<std::string> &input, int fd, User &cUser);
+		void	userCmd(std::vector<std::string> &input, int fd, User &cUser);
+
 
 		void	bMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	iMode(Channel &cChannel, bool set);

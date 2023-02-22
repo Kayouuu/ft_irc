@@ -6,15 +6,20 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:44:15 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/20 11:49:34 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/22 15:39:18 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/Channel.hpp"
 
-Channel::Channel()
+Channel::Channel() {}
+
+Channel::~Channel()
 {
-	
+	_users.clear();
+	_opUsers.clear();
+	_bannedUsers.clear();
+	_mode.clear();
 }
 
 Channel::Channel(const std::string &name, User &opUser) : _name(name), _usrNbMax(1024), _usrCon(1), _pw(""), _isTopic(false)
@@ -234,9 +239,4 @@ bool Channel::operator==(const Channel &rhs) const
 bool Channel::operator!=(const Channel &rhs) const
 {
 	return !(rhs == *this);
-}
-
-Channel::~Channel()
-{
-
 }
