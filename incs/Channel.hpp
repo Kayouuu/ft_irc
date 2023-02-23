@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:43:58 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/20 11:13:49 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/23 10:19:30 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ class Channel
 		void unbanUser(User &user);
 		void setPw(std::string pw);
 		void incrUsrCon();
+		void decrUsrCon();
 		void setUsrNbMax(unsigned short nbr);
 		void setIsTopic(bool status);
 		bool operator==(const Channel &rhs) const;

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 08:14:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/23 09:05:33 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/23 10:20:27 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,6 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
 			}
 			itChannel->removeOpUser(cUser);
 			itChannel->removeUser(cUser);
+			itChannel->decrUsrCon();
 		}
 }

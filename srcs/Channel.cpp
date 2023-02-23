@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:44:15 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/22 15:39:18 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/23 10:20:17 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,6 +232,11 @@ void Channel::setPw(std::string pw)
 void Channel::incrUsrCon()
 {
 	_usrCon++;
+}
+
+void Channel::decrUsrCon()
+{
+	_usrCon--;
 }
 
 void Channel::setUsrNbMax(unsigned short nbr)
