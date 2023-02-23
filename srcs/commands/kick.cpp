@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:33:55 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/13 10:20:25 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/23 08:47:49 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
  * @param fd
  * @param cUser
  */
-void Server::kickCmd(std::vector<std::string> &input, int fd, User &cUser)
+void Server::kickCmd(std::vector<std::string> &input, User &cUser)
 {
 	if (input[1].empty() || input[2].empty())
 	{
-		_rep.E461(fd, cUser.getNick(), input[0]); // ERR_NEEDMOREPARAMS
+		_rep.E461(cUser.getFd(), cUser.getNick(), input[0]); // ERR_NEEDMOREPARAMS
 		return;
 	}
 	for (std::vector<Channel>::iterator chan = _channels.begin(); chan < _channels.end(); chan++)
@@ -32,14 +32,14 @@ void Server::kickCmd(std::vector<std::string> &input, int fd, User &cUser)
 			//user is on channel ?
 			if (!chan->isUser(cUser))
 			{
-				_rep.E442(fd, cUser.getNick(), chan->getName()); // ERR_NOTONCHANNEL
+				_rep.E442(cUser.getFd(), cUser.getNick(), chan->getName()); // ERR_NOTONCHANNEL
 				return ;
 			}
 
 			//user is op ?
 			if (!chan->isOpUser(cUser))
 			{
-				_rep.E482(fd, cUser.getNick(), chan->getName()); // ERR_CHANOPRIVSNEEDED
+				_rep.E482(cUser.getFd(), cUser.getNick(), chan->getName()); // ERR_CHANOPRIVSNEEDED
 				return;
 			}
 
@@ -51,24 +51,24 @@ void Server::kickCmd(std::vector<std::string> &input, int fd, User &cUser)
 				{
 					chan->removeUser(*user);
 					if (!input[3].empty())
-						_io.emit(": " + cUser.getNick() + " " + input[0] + " " + user->getNick() + " " + input[3], fd); // send message if it exists
+						_io.emit(": " + cUser.getNick() + " " + input[0] + " " + user->getNick() + " " + input[3], cUser.getFd()); // send message if it exists
 					else
-						_io.emit(": " + cUser.getNick() + " " + input[0] + " " + user->getNick(), fd); // TODO not sure if I have to send this
+						_io.emit(": " + cUser.getNick() + " " + input[0] + " " + user->getNick(), cUser.getFd()); // TODO not sure if I have to send this
 					return ;
 				}
 			}
-			_rep.E442(fd, input[2], chan->getName()); // ERR_NOTONCHANNEL
+			_rep.E442(cUser.getFd(), input[2], chan->getName()); // ERR_NOTONCHANNEL
 			return ;
 		}
 	}
-	_rep.E403(fd, cUser.getNick(), input[1]); // ERR_NOSUCHCHANNEL
+	_rep.E403(cUser.getFd(), cUser.getNick(), input[1]); // ERR_NOSUCHCHANNEL
 }
 
-//_rep.E461(fd, cUser.getNick(), input[0]);			// ERR_NEEDMOREPARAMS		[OK]
-//_rep.E403(fd, cUser.getNick(), input[1]);			// ERR_NOSUCHCHANNEL		[OK]
+//_rep.E461(cUser.getFd(), cUser.getNick(), input[0]);			// ERR_NEEDMOREPARAMS		[OK]
+//_rep.E403(cUser.getFd(), cUser.getNick(), input[1]);			// ERR_NOSUCHCHANNEL		[OK]
 //_rep.E476(fd, chan->getName());					// ERR_BADCHANMASK			[MISSING]
-//_rep.E482(fd, cUser.getNick(), chan->getName());	// ERR_CHANOPRIVSNEEDED		[OK]
-//_rep.E442(fd, cUser.getNick(), chan->getName());	// ERR_NOTONCHANNEL			[OK]
+//_rep.E482(cUser.getFd(), cUser.getNick(), chan->getName());	// ERR_CHANOPRIVSNEEDED		[OK]
+//_rep.E442(cUser.getFd(), cUser.getNick(), chan->getName());	// ERR_NOTONCHANNEL			[OK]
 //_rep.E442(fd, input[2], chan->getName());			// ERR_NOTONCHANNEL			[OK]
 
 // The KICK command is used to forcibly remove a user from a channel (force PART).

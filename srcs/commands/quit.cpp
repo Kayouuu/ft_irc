@@ -6,13 +6,13 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:40:03 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/14 16:37:16 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/23 08:50:13 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
 
-void	Server::quitCmd(std::vector<std::string> &input, int fd, User &cUser)
+void	Server::quitCmd(std::vector<std::string> &input, User &cUser)
 {
 	close(cUser.getFd());
 	cUser.setFd(-1);

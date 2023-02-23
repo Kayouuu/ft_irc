@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/22 15:34:57 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/23 08:51:12 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ void	Server::initCommands()
 	_commands.insert(std::make_pair(std::string("MSG"), &Server::msgCmd));
 	_commands.insert(std::make_pair(std::string("NICK"), &Server::nickCmd));
 	_commands.insert(std::make_pair(std::string("NOTICE"), &Server::noticeCmd));
+	_commands.insert(std::make_pair(std::string("PART"), &Server::partCmd));
 	_commands.insert(std::make_pair(std::string("PASS"), &Server::passCmd));
 	_commands.insert(std::make_pair(std::string("PRIVMSG"), &Server::msgCmd));
 	_commands.insert(std::make_pair(std::string("QUIT"), &Server::quitCmd));
@@ -278,7 +279,7 @@ void		Server::commandHandler(std::string const &output, int const &current)
 	{
 		if ((_clients[user_index].getRegister() && _clients[user_index].getRPassword()) || parsed_output[0] == "PASS" || parsed_output[0] == "NICK" || parsed_output[0] == "USER")
 		{
-			(this->*_commands[parsed_output[0]])(parsed_output, current, _clients[user_index]); // Execute command corresponding to the input
+			(this->*_commands[parsed_output[0]])(parsed_output, _clients[user_index]); // Execute command corresponding to the input
 		}
 	}
 

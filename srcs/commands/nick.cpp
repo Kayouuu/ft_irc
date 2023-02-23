@@ -6,22 +6,22 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:10:55 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/21 15:10:57 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/23 08:48:49 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
 
-void	Server::nickCmd(std::vector<std::string> &input, int fd, User &cUser)
+void	Server::nickCmd(std::vector<std::string> &input, User &cUser)
 {
 	if (input[1] == "")
 	{
-		_rep.E431(fd, cUser.getNick());
+		_rep.E431(cUser.getFd(), cUser.getNick());
 		return ;
 	}
 	if (input[1].size() > 9) // TODO check unwanted character
 	{
-		_rep.E432(fd, cUser.getNick(), input[1]);
+		_rep.E432(cUser.getFd(), cUser.getNick(), input[1]);
 		return ;
 	}
 	std::vector<User>::iterator it = _clients.begin();
@@ -30,21 +30,14 @@ void	Server::nickCmd(std::vector<std::string> &input, int fd, User &cUser)
 		if (it->getNick() == input[1] || input[1] == "TheMysteryMachine")
 		{
 			cUser.setNick(input[1]);
-			_rep.E433(fd, cUser.getNick(), input[1]);
+			_rep.E433(cUser.getFd(), cUser.getNick(), input[1]);
 			return;
 		}
 	}
 	if (cUser.getRegister())
 	{
-		// for (it; it < _clients.end(); it++)
-		// {
-		// 	if (it->getNick() == input[1] || input[1] == "TheMysteryMachine")
-		// 	{
-		// 		_rep.E433(fd, cUser.getNick(), input[1]);
-		// 		return;
-		// 	}
-		// }
-		_io.emit(":" + cUser.getNick() + " NICK " + input[1], fd);
+
+		_io.emit(":" + cUser.getNick() + " NICK " + input[1], cUser.getFd());
 		cUser.setNick(input[1]);
 		cUser.setUnusedNick(true);
 		_rep.R001(cUser.getFd(), cUser.getNick());

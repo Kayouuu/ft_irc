@@ -6,13 +6,13 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:21:31 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/23 08:05:37 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/23 08:47:21 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
 
-void	Server::topicCmd(std::vector<std::string> &input, int fd, User &cUser)
+void	Server::topicCmd(std::vector<std::string> &input, User &cUser)
 {
 	std::vector<Channel>::iterator	itChannel;
 	std::vector<User> users;

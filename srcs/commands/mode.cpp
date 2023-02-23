@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 13:47:31 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/20 14:08:22 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/23 08:48:39 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ void	Server::notAMode(std::string const &which, std::string const &input, User &
  * @param fd
  * @param cUser
  */
-void	Server::modeCmd(std::vector<std::string> &input, int fd, User &cUser)
+void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 {
 	if (input[1].empty() || input[2].empty())
 	{
-		_rep.E461(fd, cUser.getNick(), input[0]); // ERR_NEEDMOREPARAMS
+		_rep.E461(cUser.getFd(), cUser.getNick(), input[0]); // ERR_NEEDMOREPARAMS
 		return;
 	}
 	if (input[1][0] == '#') // mode for a channel
@@ -60,22 +60,22 @@ void	Server::modeCmd(std::vector<std::string> &input, int fd, User &cUser)
 				break ;
 		if (it == _channels.end())
 		{
-			_rep.E403(fd, cUser.getNick(), input[1]); // TOCHECK if enough + if need to substr the '#' from input[1]
+			_rep.E403(cUser.getFd(), cUser.getNick(), input[1]); // TOCHECK if enough + if need to substr the '#' from input[1]
 			return ;
 		}
 		if (!it->isUser(cUser))
 		{
-			_rep.E442(fd, cUser.getNick(), input[1]);
+			_rep.E442(cUser.getFd(), cUser.getNick(), input[1]);
 			return ;
 		}
 		if (!it->isOpUser(cUser))
 		{
-			_rep.E482(fd, cUser.getNick(), input[1]);
+			_rep.E482(cUser.getFd(), cUser.getNick(), input[1]);
 			return ;
 		}
 		if ((input[2][0] != '+' || input[2][0] != '-') || input[2].length() < 2) // TOCHECK
 		{
-			_rep.R324(fd, cUser.getNick(), input[1], input[2], input[3]);
+			_rep.R324(cUser.getFd(), cUser.getNick(), input[1], input[2], input[3]);
 			return ;
 		}
 		notAMode("channel", input[2], cUser);
@@ -110,14 +110,14 @@ void	Server::modeCmd(std::vector<std::string> &input, int fd, User &cUser)
 				//	the ERR_USERSDONTMATCH (502) numeric is returned.
 				if (cUser.getNick() != user->getNick())
 				{
-					_rep.E502(fd, cUser.getNick());
+					_rep.E502(cUser.getFd(), cUser.getNick());
 					return;
 				}
 				//	If <modestring> is not given,
 				//	the RPL_UMODEIS (221) numeric is sent back containing the current modes of the target user.
 				if (input[2][0] != '+' || input[2][0] != '-')
 				{
-					_rep.R221(fd, cUser.getNick(), cUser.getModes());
+					_rep.R221(cUser.getFd(), cUser.getNick(), cUser.getModes());
 					return ;
 				}
 
@@ -126,12 +126,12 @@ void	Server::modeCmd(std::vector<std::string> &input, int fd, User &cUser)
 				if (input[2][0] == '+')
 				for (int i = 1; input[2][i]; i++)
 				{
-					modeHandlerUser(fd, input[2], cUser, input[2][i]);
+					modeHandlerUser(cUser.getFd(), input[2], cUser, input[2][i]);
 					return;
 				}
 			}
 		}
-		_rep.E401(fd, cUser.getNick(), input[1]);
+		_rep.E401(cUser.getFd(), cUser.getNick(), input[1]);
 		//	If <modestring> is given, the supplied modes will be applied,
 		//	and a MODE message will be sent to the user containing the changed modes.
 		//	If one or more modes sent are not implemented on the server,
@@ -199,7 +199,7 @@ void Server::oMode(int fd, std::string &input, User &cUser)
 	int i = 0;
 	if (input[i] == '-')
 		cUser.setMode('o', false);
-	_rep.R221(fd, cUser.getNick(), cUser.getModes());
+	_rep.R221(cUser.getFd(), cUser.getNick(), cUser.getModes());
 }
 
 void Server::sMode(int fd, std::string &input, User &cUser)
