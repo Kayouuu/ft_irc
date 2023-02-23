@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:10:46 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/22 17:09:48 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/23 07:53:02 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	Bot::sendMsg(std::vector<User> &clients)
 	it++; // Skip the server fd
 	for (it; it != clients.end(); it++)
 	{
-		if (it->getFd() != -1 && it->getRegister())
+		if (it->getFd() != -1 && it->getRegister() && it->getRPassword())
 		{
 			_io.emit(":TheMysteryMachine NOTICE " + it->getNick() + " " + _announce_msg, it->getFd());
 			_io.emit(":SCOOBY-DOO NOTICE " + it->getNick() + " " + _scoob_msg, it->getFd());

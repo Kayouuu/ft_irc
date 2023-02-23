@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:21:31 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/23 07:39:53 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/23 08:05:37 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,50 @@
 
 void	Server::topicCmd(std::vector<std::string> &input, int fd, User &cUser)
 {
-	std::vector<Channel>::iterator	it;
-	if (input.size() < 3)
+	std::vector<Channel>::iterator	itChannel;
+	std::vector<User> users;
+
+	if (input.size() < 2)
 	{
 		_rep.E461(cUser.getFd(), cUser.getNick(), input[0]);
 		return ;
 	}
-	for (it = _channels.begin(); it != _channels.end(); it++)
-	{
-		if (it->getName() == input[1])
+	for (itChannel = _channels.begin(); itChannel != _channels.end(); itChannel++)
+		if (itChannel->getName() == input[1])
 			break ;
-	}
-	if (it == _channels.end())
+	if (itChannel == _channels.end())
 	{
-		// TODO channel don't exist
+		_rep.E403(cUser.getFd(), cUser.getNick(), input[1]);
 		return ;
 	}
-	std::vector<User> users = it->getUsers();
-	if (input.size() == 3)
+	users = itChannel->getUsers();
+	if (input.size() == 2)
 	{
-		// _rep.R332(cUser.getFd(), cUser.getNick(), input[0], it->); TODO getTopic() function
+		if (itChannel->getIsTopic())
+			_rep.R332(cUser.getFd(), cUser.getNick(), input[1], itChannel->getSubject());
+		else
+			_rep.R331(cUser.getFd(), cUser.getNick(), input[1]);
 	}
 	else
 	{
-		if (it->isOpUser(cUser))
+		if (itChannel->isOpUser(cUser))
 		{
-			std::string	subject;
-			
-			for (std::vector<std::string>::iterator it = input.begin(); it != input.end(); it++)
+			std::string							subject;
+			std::vector<std::string>::iterator	itSubject = input.begin();
+
+			itSubject++;
+			itSubject++;
+			for (itSubject; itSubject != input.end(); itSubject++)
 			{
-				if (*it != "")
-					subject.append(*it);
+				if (*itSubject != "")
+					subject.append(*itSubject);
 			}
-			// TODO set topic
-			it->setSubject(subject);
-			it->setIsTopic(true);
+			if (subject[0] == ':')
+				subject.erase(subject.begin());
+			itChannel->setSubject(subject);
+			itChannel->setIsTopic(true);
 		}
 		else
-		{
 			_rep.E482(cUser.getFd(), cUser.getNick(), input[1]);
-		}
 	}
 }
