@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 08:14:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/23 08:47:21 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/23 09:05:33 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
 				_rep.E442(cUser.getFd(), cUser.getNick(), *itListChannel); // ERR_NOTONCHANNEL
 				continue ; // TOCHECK maybe return ? Either we continue browsing the list of channels or we stop when a channel don't exist
 			}
-			// TODO removeUser() function in User class
+			itChannel->removeOpUser(cUser);
+			itChannel->removeUser(cUser);
 		}
 }

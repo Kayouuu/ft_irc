@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:02:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/23 08:50:04 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/23 10:03:25 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 			}
 			_rep.R366(cUser.getFd(), cUser.getNick(), itChannel->getName());
 			_io.emit(":" + cUser.getNick() + " JOIN " + itChannel->getName(),cUser.getFd());
+            users.clear();
 		}
         else if (itChannel->isUser(cUser) == false) { //channel existe
 			// std::cout << "chan existe\n";
@@ -157,6 +158,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 			}
 			_rep.R366(cUser.getFd(), cUser.getNick(), itChannel->getName());
 			_io.emit(":" + cUser.getNick() + " JOIN " + itChannel->getName(),cUser.getFd());
+            users.clear();
 		}
         std::cout << itChannel->getName() << " " << cUser.getNick() << " " << itChannel->isUser(cUser) << std::endl;
 		// std::cout << "avant msg fin join\n";

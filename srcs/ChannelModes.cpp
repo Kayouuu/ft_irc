@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 16:03:13 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/20 14:32:50 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/23 10:03:07 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,7 @@ void Server::oMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 				cChannel.addOpUser(*itUser);
 			}
 		}
+		chanUsers.clear();
 	}
 	else
 	{
@@ -116,6 +117,7 @@ void Server::oMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 				cChannel.removeOpUser(*itUser);
 			}
 		}
+		chanUsers.clear();
 	}
 }
 

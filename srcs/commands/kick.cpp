@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:33:55 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/23 08:47:49 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/23 10:03:46 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void Server::kickCmd(std::vector<std::string> &input, User &cUser)
 				}
 			}
 			_rep.E442(cUser.getFd(), input[2], chan->getName()); // ERR_NOTONCHANNEL
+			users.clear();
 			return ;
 		}
 	}
