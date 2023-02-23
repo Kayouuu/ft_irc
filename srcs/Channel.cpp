@@ -226,7 +226,6 @@ void Channel::unbanUser(User &user)
 void Channel::setPw(std::string pw)
 {
 	_pw = pw;
-	std::cout << "dans setPw() -> " << _pw << std::endl;
 }
 
 void Channel::incrUsrCon()

@@ -13,6 +13,16 @@
 #include "../../incs/Server.hpp"
 //TODO finish file
 
+void    usrJoinChan(User &cUser, std::string chanName)
+{
+    std::vector<std::string> input;
+
+    input.push_back("PRIVMSG");
+    input.push_back(chanName);
+    input.push_back(cUser.getNick() + "() has joined " + chanName);
+    Server::noticeCmd(input, cUser);
+}
+
 void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 {
     // std::cout << "entre cmd JOIN\n";
@@ -41,9 +51,9 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
     listChan.push_back(tmp);
     tmp.clear();
     it++;
-    str.clear();
-    str = *it;
     if (it != input.end()) {
+        str.clear();
+        str = *it;
         for (size_t i = 0; i < str.length(); i++) {
             char c = str[i];
             if (c == ',') {
@@ -152,6 +162,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 				// std::cout << "probleme de type pas cree";
 				return;
 			}
+            //fonction USERJOINSERV
 			std::vector<User> users = itChannel->getUsers();
 			for (std::vector<User>::iterator itU = users.begin(); itU < users.end(); itU++) {
 				_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix(*itU, *itChannel));
@@ -160,22 +171,6 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 			_io.emit(":" + cUser.getNick() + " JOIN " + itChannel->getName(),cUser.getFd());
             users.clear();
 		}
-        std::cout << itChannel->getName() << " " << cUser.getNick() << " " << itChannel->isUser(cUser) << std::endl;
-		// std::cout << "avant msg fin join\n";
-//		for(itChannel = _channels.begin(); itChannel < _channels.end(); itChannel++) {
-//				if (itChannel->getName() == *itLst)
-//					break;
-//			}
-//		if (itChannel == _channels.end()){
-//			std::cout << "probleme de type pas cree";
-//			return;
-//		}
-//    	std::vector<User> users = itChannel->getUsers();
-//	    for (std::vector<User>::iterator itU = users.begin(); itU < users.end(); itU++) {
-//		    _rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix());
-//	    }
-//	    _rep.R366(cUser.getFd(), cUser.getNick(), itChannel->getName());
-//	    _io.emit(":" + cUser.getNick() + " JOIN " + itChannel->getName(),cUser.getFd(), cUser.getNick());
     }
     // std::cout << "fin cmd JOIN\n";
 }

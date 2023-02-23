@@ -29,7 +29,6 @@ void Server::noticeCmd(std::vector<std::string> &input, User &cUser) {
             itChannel++;
         }
         if (itChannel == _channels.end()) {
-            _rep.E404(cUser.getFd(), cUser.getNick(), itChannel->getName());
             return;
         }
         else if (itChannel->isBanned(cUser) == 1) {
@@ -39,7 +38,6 @@ void Server::noticeCmd(std::vector<std::string> &input, User &cUser) {
             return;
         it++;
         if (it >= input.end()) {
-            _rep.E412(cUser.getFd(), cUser.getNick());
             return;
         }
         for (itClient; itClient < _clients.end(); itClient++) {
@@ -83,7 +81,6 @@ void Server::noticeCmd(std::vector<std::string> &input, User &cUser) {
             }
             if (itClient != _clients.end()){
                 if (it >= input.end()) {
-                    _rep.E412(cUser.getFd(), cUser.getNick());
                     return;
                 }
                 itTmp = it;
@@ -97,8 +94,6 @@ void Server::noticeCmd(std::vector<std::string> &input, User &cUser) {
                 msg.clear();
                 it = itTmp;
             }
-            else
-                _rep.E401(cUser.getFd(), cUser.getNick(), *itList);
         }
     }
 }
