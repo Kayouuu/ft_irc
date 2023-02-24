@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
+//TODO if user change his nickname in channel, change new username in database Channel ET Server
 
 void	Server::nickCmd(std::vector<std::string> &input, User &cUser)
 {

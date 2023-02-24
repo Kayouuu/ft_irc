@@ -13,13 +13,15 @@
 #include "../../incs/Server.hpp"
 //TODO finish file
 
-void    Server::usrJoinChan(User &cUser, std::string chanName)
+void    Server::usrJoinChan(User &cUser, Channel chan)
 {
     std::vector<std::string> input;
 
-    input.push_back("PRIVMSG");
-    input.push_back(chanName);
-    input.push_back(cUser.getNick() + "() has joined " + chanName);
+	chan.addUser(cUser);
+	chan.incrUsrCon();
+    input.push_back("NOTICE");
+    input.push_back(chan.getName());
+    input.push_back("has joined " + chan.getName());
     noticeCmd(input, cUser);
 }
 
@@ -117,19 +119,21 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 			_io.emit(":" + cUser.getNick() + " JOIN " + itChannel->getName(),cUser.getFd());
             users.clear();
 		}
-        else if (itChannel->isUser(cUser) == false) { //channel existe
+        else if (!itChannel->isUser(cUser)) { //channel existe
 			// std::cout << "chan existe\n";
-            if (itChannel->isMode('i') == true) {
-                if (cUser.isMode('i') == false) {
+            if (itChannel->isMode('i')) {
+				std::cout << "chan mode i\n";
+                if (!cUser.isInviteChan(*itChannel)) {
                     _rep.E473(cUser.getFd(), cUser.getNick(), *itLst);
                     return;
                 }
+				cUser.removeInviteChan(*itChannel);
             }
-            if (itChannel->isMode('l') == true && itChannel->getUsrCon() + 1 > itChannel->getUsrNbMax()) {
+            if (itChannel->isMode('l') && itChannel->getUsrCon() + 1 > itChannel->getUsrNbMax()) {
                 _rep.E471(cUser.getFd(), cUser.getNick(), *itLst);
                 return;
             }
-            else if (itChannel->isBanned(cUser) == true) {
+            else if (itChannel->isBanned(cUser)) {
                 _rep.E474(cUser.getFd(), cUser.getNick(), *itLst);
                 return;
             }
@@ -138,8 +142,8 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
                 _rep.E405(cUser.getFd(), cUser.getNick(),*itLst);
                    return;
             }
-            else if (itChannel->isMode('k') == true) {
-                if (isPw == true && itKey != listKey.end()) {
+            else if (itChannel->isMode('k')) {
+                if (isPw && itKey != listKey.end()) {
                     if (*itKey != itChannel->getPw()) {
                         _rep.E475(cUser.getFd(), cUser.getNick(), itChannel->getName());
                         return;
@@ -150,9 +154,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
                     return;
                 }
             }
-            itChannel->addUser(cUser);
-            itChannel->incrUsrCon();
-            if (itChannel->getIsTopic() == true)
+            if (itChannel->getIsTopic())
                 _rep.R332(cUser.getFd(), cUser.getNick(), itChannel->getName(), itChannel->getSubject());
 			for(itChannel = _channels.begin(); itChannel < _channels.end(); itChannel++) {
 				if (itChannel->getName() == *itLst)
@@ -162,7 +164,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 				// std::cout << "probleme de type pas cree";
 				return;
 			}
-            //fonction USERJOINSERV
+			usrJoinChan(cUser, *itChannel);
 			std::vector<User> users = itChannel->getUsers();
 			for (std::vector<User>::iterator itU = users.begin(); itU < users.end(); itU++) {
 				_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix(*itU, *itChannel));

@@ -22,7 +22,7 @@ Channel::~Channel()
 	_mode.clear();
 }
 
-Channel::Channel(const std::string &name, User &opUser) : _name(name), _usrNbMax(1024), _usrCon(1), _pw(""), _isTopic(false)
+Channel::Channel(const std::string &name, User &opUser) : _name(name), _usrNbMax(MAX_CONNECTIONS), _usrCon(1), _pw(""), _isTopic(false)
 {
 	_users.insert(_users.begin(), opUser);
 	_opUsers.insert(_opUsers.begin(), opUser);
@@ -69,6 +69,7 @@ const std::string &Channel::getSubject() const
 
 bool Channel::isMode(char mode)
 {
+	std::cout << "IS MODE CHANNEL --------------------------------------\n";
 	std::map<char, bool>::iterator it = _mode.find(mode);
 	if (it == _mode.end())
 		std::cout << "No mode " << mode << std::endl; //TODO error msg

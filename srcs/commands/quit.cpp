@@ -23,3 +23,5 @@ void	Server::quitCmd(std::vector<std::string> &input, User &cUser)
 	cUser.setRPassword(false);
 	_connected_clients--;
 }
+
+//QUESTION: do we have to remove user from channels he's in ?

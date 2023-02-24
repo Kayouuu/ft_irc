@@ -92,6 +92,26 @@ void User::removeOpChannel(Channel &channel)
 	}
 }
 
+void User::addVoicedChan(Channel &voicedChan)
+{
+	_voicedChan.push_back(voicedChan);
+}
+
+void User::addInviteChan(Channel &inviteChan)
+{
+	_inviteChan.push_back(inviteChan);
+}
+
+void User::removeInviteChan(Channel &inviteChan)
+{
+	std::vector<Channel>::iterator it = _inviteChan.begin();
+	for (; it < _inviteChan.end(); it++)
+	{
+		if (*it == inviteChan)
+			_inviteChan.erase(it);
+	}
+}
+
 void User::setIrcOp(bool ircOp)
 {
 	_ircOp = ircOp;
@@ -230,7 +250,12 @@ bool User::isVoicedChan(Channel &channel)
 	return false;
 }
 
-void User::addVoicedChan(Channel &voicedChan)
+bool User::isInviteChan(Channel &inviteChan)
 {
-	_voicedChan.push_back(voicedChan);
+	for (std::vector<Channel>::iterator it = _inviteChan.begin(); it != _inviteChan.end(); it++)
+	{
+		if (*it == inviteChan)
+			return true;
+	}
+	return false;
 }

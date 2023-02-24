@@ -13,9 +13,9 @@
 #ifndef NUMERICREPLIES_HPP
 # define NUMERICREPLIES_HPP
 
-#include "SocketIO.hpp"
+# include "SocketIO.hpp"
 
-#define MAX_CONNECTIONS	1024
+# define MAX_CONNECTIONS 1024
 
 class	SocketIO;
 
@@ -23,8 +23,8 @@ class	SocketIO;
 # define CHANNELMODE_CHARLIST "opsitnmlbvk"
 # define NR_ARG int const &fd, const std::string& cNick
 
-#include <ctime>
-#include <sstream>
+# include <ctime>
+# include <sstream>
 
 class Rep
 {

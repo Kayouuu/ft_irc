@@ -36,8 +36,8 @@
 # include "NumericReplies.hpp"
 # include "Bot.hpp"
 
-// #define MAX_CONNECTIONS	1024
-#define	MAX_INCONNECTIONS 50
+//# define MAX_CONNECTIONS 1024
+# define MAX_INCONNECTIONS 50
 
 class	SocketIO;
 class	Rep;
@@ -112,7 +112,7 @@ class Server
 		void 	oMode(int fd, std::string &input, User &cUser);
 		void 	sMode(int fd, std::string &input, User &cUser);
 
-		void    usrJoinChan(User &cUser, std::string chanName);
+		void    usrJoinChan(User &cUser, Channel chan);
 
 };
 
