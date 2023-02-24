@@ -112,7 +112,7 @@ class Server
 		void 	oMode(int fd, std::string &input, User &cUser);
 		void 	sMode(int fd, std::string &input, User &cUser);
 
-		void    usrJoinChan(User &cUser, Channel chan);
+		void    usrJoinChan(User &cUser, Channel &chan);
 
 };
 

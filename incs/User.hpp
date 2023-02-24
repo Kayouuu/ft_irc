@@ -59,6 +59,7 @@ class User
 		void	addOpChannel(Channel &channel);
 		void	removeOpChannel(Channel &channel);
 		void	addVoicedChan(Channel &voicedChan);
+		void	removeVoicedChannel(Channel &voicedChan);
 		void	addInviteChan(Channel &inviteChan);
 		void	removeInviteChan(Channel &inviteChan);
 		void	setIrcOp(bool ircOp);

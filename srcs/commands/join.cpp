@@ -13,7 +13,7 @@
 #include "../../incs/Server.hpp"
 //TODO finish file
 
-void    Server::usrJoinChan(User &cUser, Channel chan)
+void    Server::usrJoinChan(User &cUser, Channel &chan)
 {
     std::vector<std::string> input;
 
@@ -129,10 +129,15 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
                 }
 				cUser.removeInviteChan(*itChannel);
             }
-            if (itChannel->isMode('l') && itChannel->getUsrCon() + 1 > itChannel->getUsrNbMax()) {
-                _rep.E471(cUser.getFd(), cUser.getNick(), *itLst);
-                return;
-            }
+			std::cout << itChannel->getUsrCon() << " nb personne co avant toi bg\n";
+			// condition a change apres la pause
+            if (itChannel->isMode('l')) {
+				std::cout << "chan mode +l avec en max " << itChannel->getUsrNbMax() << std::endl;
+				if (itChannel->getUsrCon() + 1 > itChannel->getUsrNbMax()) {
+					_rep.E471(cUser.getFd(), cUser.getNick(), *itLst);
+					return;
+				}
+			}
             else if (itChannel->isBanned(cUser)) {
                 _rep.E474(cUser.getFd(), cUser.getNick(), *itLst);
                 return;
@@ -165,6 +170,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 				return;
 			}
 			usrJoinChan(cUser, *itChannel);
+			std::cout << itChannel->getUsrCon() << " nb personne co apres toi bg\n";
 			std::vector<User> users = itChannel->getUsers();
 			for (std::vector<User>::iterator itU = users.begin(); itU < users.end(); itU++) {
 				_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix(*itU, *itChannel));

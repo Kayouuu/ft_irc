@@ -43,6 +43,10 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
         }
         if (itChannel->isMode('n') == true)
             return;
+		else if (itChannel->isMode('m') == true) {
+			if (!cUser.isVoicedChan(*itChannel))
+				return;
+		}
         it++;
         if (it >= input.end()) {
             _rep.E412(cUser.getFd(), cUser.getNick());

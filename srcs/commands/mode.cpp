@@ -198,7 +198,8 @@ void	Server::modeHandler(User &cUser, Channel &cChannel, char &mode, std::vector
 			return ;
 	}
 	_rep.R324(cUser.getFd(), cUser.getNick(), input[1], input[2], input[3]);
-
+	for (int i = 0; i < 4; i++)
+		input[i].clear();
 }
 
 void	Server::modeHandlerUser(int fd, std::string &input, User &cUser, char &mode)

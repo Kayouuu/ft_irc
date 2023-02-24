@@ -65,18 +65,27 @@ void	Server::kMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 
 void Server::lMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
 {
-	std::cout << "----------------HERE----------------\n";
+	std::cout << "----------------HOHO----------------\n";
 	cChannel.setMode('l', set);
 	for (int i = 0; modeArg[i]; i++) //if mode argument is not valid, displays an error
 	{
+		std::cout << "I'm in l mode, in for\n";
 		if (!isdigit(modeArg[i]))
+		{
 			std::cout << cUser.getNick() << " " << modeArg << "is not valid\n";
-		return;
+			return;
+		}
 	}
 	if (!modeArg.empty() && set)
+	{
+		std::cout << "SET limited user connection\n";
 		cChannel.setUsrNbMax(static_cast<unsigned short>(std::strtoul(modeArg.c_str(), NULL, 0)));
+	}
 	else
+	{
+		std::cout << "MAX CONNECTION -\n";
 		cChannel.setUsrNbMax(MAX_CONNECTIONS);
+	}
 }
 
 void Server::mMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
@@ -138,6 +147,26 @@ void	Server::vMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 	char mode = 'v';
 
 	cUser.setMode(mode, set);
-	//TODO add voicedChannel in user
-
+	if (set)
+	{
+		for (std::vector<User>::iterator itUser = _clients.begin(); itUser != _clients.end(); itUser++)
+		{
+			if (modeArg == itUser->getNick())
+			{
+				itUser->addVoicedChan(cChannel);
+				return;
+			}
+		}
+	}
+	else
+	{
+		for (std::vector<User>::iterator itUser = _clients.begin(); itUser != _clients.end(); itUser++)
+		{
+			if (modeArg == itUser->getNick())
+			{
+				itUser->removeVoicedChannel(cChannel);
+				return;
+			}
+		}
+	}
 }

@@ -97,6 +97,16 @@ void User::addVoicedChan(Channel &voicedChan)
 	_voicedChan.push_back(voicedChan);
 }
 
+void User::removeVoicedChannel(Channel &voicedChan)
+{
+	std::vector<Channel>::iterator it = _voicedChan.begin();
+	for (; it < _voicedChan.end(); it++)
+	{
+		if (*it == voicedChan)
+			_voicedChan.erase(it);
+	}
+}
+
 void User::addInviteChan(Channel &inviteChan)
 {
 	_inviteChan.push_back(inviteChan);
