@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:10:46 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/24 11:16:45 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/24 11:26:50 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	Bot::setMsg(std::vector<std::string> &input, User &cUser)
 
 void	Bot::check(std::vector<User> &clients)
 {
-	if (std::difftime(std::time(NULL), _curr_time) >= 10)
+	if (std::difftime(std::time(NULL), _curr_time) >= 300)
 	{
 		sendMsg(clients);
 		_curr_time = std::time(NULL);
