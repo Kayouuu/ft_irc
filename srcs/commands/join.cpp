@@ -6,21 +6,21 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:02:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/23 10:03:25 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/24 10:19:50 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
 //TODO finish file
 
-void    usrJoinChan(User &cUser, std::string chanName)
+void    Server::usrJoinChan(User &cUser, std::string chanName)
 {
     std::vector<std::string> input;
 
     input.push_back("PRIVMSG");
     input.push_back(chanName);
     input.push_back(cUser.getNick() + "() has joined " + chanName);
-    Server::noticeCmd(input, cUser);
+    noticeCmd(input, cUser);
 }
 
 void	Server::joinCmd(std::vector<std::string> &input, User &cUser)

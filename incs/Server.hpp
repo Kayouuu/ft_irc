@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/23 08:50:40 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/24 10:20:35 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,9 @@ class Server
 
 		void 	oMode(int fd, std::string &input, User &cUser);
 		void 	sMode(int fd, std::string &input, User &cUser);
+
+		void    usrJoinChan(User &cUser, std::string chanName);
+
 };
 
 /*
