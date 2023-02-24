@@ -6,13 +6,13 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:10:46 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/23 08:51:47 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/24 11:16:45 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/Bot.hpp"
 
-Bot::Bot(SocketIO &io) : _io(io)
+Bot::Bot(SocketIO &io, std::vector<Channel> &channels) : _io(io), _channels(channels), _isChan(false)
 {
 	_announce_msg = "---Bot conversation incoming---";
 	_scoob_msg = "Ruh-roh--RAGGY!!!!";
@@ -59,17 +59,22 @@ void	Bot::setMsg(std::vector<std::string> &input, User &cUser)
 		_fred_msg = new_msg;
 	else if (who == ":DAPHNE")
 		_daphne_msg = new_msg;
-	else
+	else if (who == ":CHANNEL" && input[4] != "")
 	{
-		_io.emit(":TheMysteryMachine NOTICE Usage => /msg TheMysteryMachine [SCOOBY, VELMA, SHAGGY] message ... ...", cUser.getFd());
+		setChannel(input[3], cUser);
 		return ;
 	}
-	_io.emit(":TheMysteryMachine NOTICE " + cUser.getNick() + " " + who.substr(1, who.length() - 1) + " will now say: " + "\"" + new_msg + "\"", cUser.getFd());
+	else
+	{
+		_io.emit(":TheMysteryMachine PRIVMSG " + cUser.getNick() + " Usage => /msg TheMysteryMachine [SCOOBY, VELMA, SHAGGY, DAPHNE, FRED, CHANNEL] [message, #channelname] {...} {...}", cUser.getFd());
+		return ;
+	}
+	_io.emit(":TheMysteryMachine PRIVMSG " + cUser.getNick() + " " + who.substr(1, who.length() - 1) + " will now say: " + "\"" + new_msg + "\"", cUser.getFd());
 }
 
 void	Bot::check(std::vector<User> &clients)
 {
-	if (std::difftime(std::time(NULL), _curr_time) >= 300)
+	if (std::difftime(std::time(NULL), _curr_time) >= 10)
 	{
 		sendMsg(clients);
 		_curr_time = std::time(NULL);
@@ -78,18 +83,53 @@ void	Bot::check(std::vector<User> &clients)
 
 void	Bot::sendMsg(std::vector<User> &clients)
 {
-	std::vector<User>::iterator it = clients.begin();
-	it++; // Skip the server fd
-	for (it; it != clients.end(); it++)
+	std::vector<Channel>::iterator it;
+
+	if (_currChannel == "")
+		return ;
+	for (it = _channels.begin(); it != _channels.end(); it++)
 	{
-		if (it->getFd() != -1 && it->getRegister() && it->getRPassword())
+		if (_currChannel == it->getName())
+			break ;
+	}
+	std::vector<User>			users = it->getUsers();
+	std::vector<User>::iterator itUsers = clients.begin();
+	for (itUsers; itUsers != clients.end(); itUsers++)
+	{
+		if (itUsers->getFd() != -1 && itUsers->getRegister() && itUsers->getRPassword())
 		{
-			_io.emit(":TheMysteryMachine NOTICE " + it->getNick() + " " + _announce_msg, it->getFd());
-			_io.emit(":SCOOBY-DOO NOTICE " + it->getNick() + " " + _scoob_msg, it->getFd());
-			_io.emit(":VELMA NOTICE " + it->getNick() + " " + _velma_msg, it->getFd());
-			_io.emit(":SHAGGY NOTICE " + it->getNick() + " " + _shaggy_msg, it->getFd());
-			_io.emit(":DAPHNE NOTICE " + it->getNick() + " " + _daphne_msg, it->getFd());
-			_io.emit(":FRED NOTICE " + it->getNick() + " " + _fred_msg, it->getFd());
+			_io.emit(":TheMysteryMachine PRIVMSG " + it->getName() + " " + _announce_msg, itUsers->getFd());
+			_io.emit(":SCOOBY-DOO PRIVMSG " + it->getName() + " " + _scoob_msg, itUsers->getFd());
+			_io.emit(":VELMA PRIVMSG " + it->getName() + " " + _velma_msg, itUsers->getFd());
+			_io.emit(":SHAGGY PRIVMSG " + it->getName() + " " + _shaggy_msg, itUsers->getFd());
+			_io.emit(":DAPHNE PRIVMSG " + it->getName() + " " + _daphne_msg, itUsers->getFd());
+			_io.emit(":FRED PRIVNSG " + it->getName() + " " + _fred_msg, itUsers->getFd());
 		}
 	}
+	users.clear();
+}
+
+void	Bot::setChannel(std::string const &chanName, User &cUser)
+{
+	std::vector<Channel>::iterator it;
+
+	if (!cUser.isIrcOp())
+	{
+		_io.emit(":TheMysteryMachine PRIVMSG " + cUser.getNick() + " You need to be the IRC operator!", cUser.getFd());
+		return ;
+	}
+	for (it = _channels.begin(); it != _channels.end(); it++)
+	{
+		std::cout << chanName << std::endl;
+		if (chanName == it->getName())
+			break ;
+	}
+	if (it == _channels.end())
+	{
+		_io.emit(":TheMysteryMachine PRIVMSG " + cUser.getNick() + " There is no such channel!", cUser.getFd());
+		return ;
+	}
+	_io.emit(":TheMysteryMachine PRIVMSG " + it->getName() + " Bot will send messages here!", cUser.getFd());
+
+	_currChannel = chanName;
 }
