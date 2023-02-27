@@ -6,7 +6,7 @@
 /*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:40:03 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/27 14:45:32 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/27 15:03:12 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,7 @@ void	Server::quitCmd(std::vector<std::string> &input, User &cUser)
         itChan->removeUser(cUser);
         itChan->decrUsrCon();
     }
-	close(cUser.getFd());
-	cUser.setFd(-1);
-	cUser.setNick("");
-	cUser.setPrefix("");
-	cUser.setUser("");
-	cUser.setRegister(false);
-	cUser.setRPassword(false);
+	cUser.resetUser();
 	_connected_clients--;
 }
 
