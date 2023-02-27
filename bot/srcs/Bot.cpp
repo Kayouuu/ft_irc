@@ -6,15 +6,15 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:10:46 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/27 14:35:35 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/27 20:35:40 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/bot/Bot.hpp"
+#include "../incs/Bot.hpp"
 
 Bot::Bot(int const &port, std::string const &pass, std::string const &ip) : _port(port), _pass(pass), _ip(ip)
 {
-	_log_msg = "PASS " + pass + "\r\nNICK TheMysteryMachine\r\nUSER TheMysteryMachine 0 * :TheMysteryMachine";
+	_log_msg = "PASS " + pass + "\r\nNICK MysteryIc\r\nUSER MysteryIc 0 * :MysteryIc";
 	_announce_msg = "---Bot conversation incoming---";
 	_scoob_msg = "Ruh-roh--RAGGY!!!!";
 	_shaggy_msg = "Zoinks Scoob!";
@@ -73,21 +73,62 @@ void	Bot::run()
 	int			rvalue;
 	std::string	output;
 
+	receive(output, _socketFd);
+	
+	if (!output.find("001 MysteryIc") == 0)
+	{
+		std::cerr << "internal error: Couldn't connect to the irc server" << std::endl;
+		return ;
+	}
+	output.clear();
 	while (true)
 	{
 		receive(output, _socketFd);
-		
-		if (output.find("001 TheMysteryMachine") == 0)
+		std::cout << output << std::endl;
+		if (output.find(":MysteryIc JOIN ") != std::string::npos)
 		{
-			_isConnected = true;
-		}
-		if (_isConnected)
-		{
-			
-		}
+			std::cout << "sal" << std::endl;
+			_currChannel = _possibleMsg;
+			emit(":MysteryIc PRIVMSG " + _currChannel + " Bot will send messages here!", _socketFd);
+		}	// receive(output, _socketFd); // TODO only use one recv, put it in handle()
+	// std::cout << ":MysteryIc JOIN " + chanName << std::endl;
+	// std::cout << output.find(":MysteryIc JOIN " + chanName) << std::endl;
+	// if (output.find(":MysteryIc JOIN " + chanName) != std::string::npos)
+	// {
+	// 	std::cout << "sal" << std::endl;
+	// 	_currChannel = chanName;
+	// 	emit(":MysteryIc PRIVMSG " + _currChannel + " Bot will send messages here!", _socketFd);
+	// }
+		handle(output);
+		if (_currChannel != "")
+			check();
+		output.clear();
 	}
 }
 
+void	Bot::handle(std::string const &output)
+{
+	std::vector<std::string>	parsed_output;
+	std::string					tmp;
+
+	for (size_t i = 0; i < output.length(); i++)
+	{
+		char c = output[i];
+		if (std::isspace(c))
+		{
+			parsed_output.push_back(tmp);
+			tmp.clear();
+		}
+		else
+			tmp.push_back(c);
+	}
+	if (tmp != "")
+		parsed_output.push_back(tmp);
+
+	if (parsed_output[1] == "PRIVMSG")
+		setMsg(parsed_output);
+}
+		
 void	Bot::emit(std::string const &input, int const &fd) const
 {
 	std::string	msg = input + "\r\n";
@@ -131,8 +172,8 @@ int	Bot::receive(std::string &output, int const &fd)
 void	Bot::setMsg(std::vector<std::string> &input)
 {
 	std::string::const_iterator msg_it;
-	std::string	user = input[1];
-	std::string	who = input[2];
+	std::string	user = input[0].substr(0, 1);
+	std::string	who = input[3];
 	std::string	new_msg;
 
 	std::vector<std::string>::iterator it = input.begin();
@@ -165,20 +206,20 @@ void	Bot::setMsg(std::vector<std::string> &input)
 		_daphne_msg = new_msg;
 	else if (who == ":CHANNEL" && input[4] != "")
 	{
-		setChannel(input[3]);
+		setChannel(input[4]);
 		return ;
 	}
 	else
 	{
-		emit(":TheMysteryMachine PRIVMSG " + user + " Usage => /msg TheMysteryMachine [SCOOBY, VELMA, SHAGGY, DAPHNE, FRED, CHANNEL] [message, #channelname] {...} {...}", _socketFd);
+		emit(":MysteryIc PRIVMSG " + user + " Usage => /msg MysteryIc [SCOOBY, VELMA, SHAGGY, DAPHNE, FRED, CHANNEL] [message, #channelname] {...} {...}", _socketFd);
 		return ;
 	}
-	emit(":TheMysteryMachine PRIVMSG " + user + " " + who.substr(1, who.length() - 1) + " will now say: " + "\"" + new_msg + "\"", _socketFd);
+	emit(":MysteryIc PRIVMSG " + user + " " + who.substr(1, who.length() - 1) + " will now say: " + "\"" + new_msg + "\"", _socketFd);
 }
 
 void	Bot::check()
 {
-	if (std::difftime(std::time(NULL), _curr_time) >= 300)
+	if (std::difftime(std::time(NULL), _curr_time) >= 5)
 	{
 		sendMsg();
 		_curr_time = std::time(NULL);
@@ -189,7 +230,7 @@ void	Bot::sendMsg()
 {
 	if (_currChannel == "")
 		return ;
-	emit(":TheMysteryMachine PRIVMSG " + _currChannel + " " + _announce_msg, _socketFd);
+	emit(":MysteryIc PRIVMSG " + _currChannel + " " + _announce_msg, _socketFd);
 	emit(":SCOOBY-DOO PRIVMSG " + _currChannel + " " + _scoob_msg, _socketFd);
 	emit(":VELMA PRIVMSG " + _currChannel + " " + _velma_msg, _socketFd);
 	emit(":SHAGGY PRIVMSG " + _currChannel + " " + _shaggy_msg, _socketFd);
@@ -199,11 +240,18 @@ void	Bot::sendMsg()
 
 void	Bot::setChannel(std::string const &chanName)
 {
-	// Instead emit command NAMES
-	// if (!cUser.isIrcOp())
+	std::string	output;
+	// TOCHECK for checking if a chan operator emit NAMES command
+	emit("JOIN " + chanName, _socketFd);
+	_possibleMsg = chanName;
+	// receive(output, _socketFd); // TODO only use one recv, put it in handle()
+	// std::cout << ":MysteryIc JOIN " + chanName << std::endl;
+	// std::cout << output.find(":MysteryIc JOIN " + chanName) << std::endl;
+	// if (output.find(":MysteryIc JOIN " + chanName) != std::string::npos)
 	// {
-	// 	_io.emit(":TheMysteryMachine PRIVMSG " + cUser.getNick() + " You need to be the IRC operator!", cUser.getFd());
-	// 	return ;
+	// 	std::cout << "sal" << std::endl;
+	// 	_currChannel = chanName;
+	// 	emit(":MysteryIc PRIVMSG " + _currChannel + " Bot will send messages here!", _socketFd);
 	// }
 	// emit JOIN with the channel
 	// for (it = _channels.begin(); it != _channels.end(); it++)
@@ -214,10 +262,7 @@ void	Bot::setChannel(std::string const &chanName)
 	// }
 	// if (it == _channels.end())
 	// {
-	// 	emit(":TheMysteryMachine PRIVMSG " + _currChannel + " There is no such channel!", _socketFd);
+	// 	emit(":MysteryIc PRIVMSG " + _currChannel + " There is no such channel!", _socketFd);
 	// 	return ;
 	// }
-	emit(":TheMysteryMachine PRIVMSG " + _currChannel + " Bot will send messages here!", _socketFd);
-
-	_currChannel = chanName;
 }

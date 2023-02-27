@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/27 12:32:30 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/27 19:41:51 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,6 @@ void		Server::commandHandler(std::string const &output, int const &current)
 	std::vector<std::string>	parsed_output;
 	std::string					tmp;
 	int							user_index;
-	int							vector_it;
 	int							size;
 
 	for (user_index = 0; user_index < MAX_CONNECTIONS; user_index++)
@@ -248,7 +247,6 @@ void		Server::commandHandler(std::string const &output, int const &current)
 		{
 			parsed_output.push_back(tmp);
 			tmp.clear();
-			vector_it++;
 		}
 		// else if (c == '\"')
 		// {

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:11:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/27 14:26:31 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/27 20:32:55 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ class Bot
 		std::time_t 			_curr_time;
 		bool					_isChan;
 		std::string				_currChannel;
+		std::string				_possibleMsg;
 		std::string				_announce_msg;
 
 		std::string				_scoob_msg;
@@ -53,6 +54,7 @@ class Bot
 		void	run();
 		int		receive(std::string &output, int const &fd);
 		void	emit(std::string const &input, int const &fd) const;
+		void	handle(std::string const &output);
 	public:
 		Bot(int const &port, std::string const &pass, std::string const &ip);
 		~Bot();

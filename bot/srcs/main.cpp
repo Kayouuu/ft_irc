@@ -6,11 +6,11 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 12:31:44 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/27 14:18:23 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/27 19:51:25 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../incs/bot/Bot.hpp"
+#include "../incs/Bot.hpp"
 
 int	main(int argc, char *argv[])
 {
