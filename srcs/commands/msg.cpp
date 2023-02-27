@@ -103,7 +103,8 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
                     if (it < --input.end())
                         msg.append(" ");
                 }
-                _io.emit(msg, itClient->getFd());
+				_io.emit(msg, itClient->getFd());
+				_io.emit(msg, cUser.getFd()); //TODO find a condition to make this append only the first time a user talk to another user
                 msg.clear();
                 it = itTmp;
             }
