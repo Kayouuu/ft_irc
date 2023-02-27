@@ -76,9 +76,14 @@ bool Channel::isMode(char mode)
 	return it->second;
 }
 
-const std::vector<User> &Channel::getUsers() const
+std::vector<User> &Channel::getUsers()
 {
 	return _users;
+}
+
+std::vector<User> &Channel::getOpUsers()
+{
+	return _opUsers;
 }
 
 bool Channel::isUser(User &user)

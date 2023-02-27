@@ -20,24 +20,21 @@ void	Server::nickCmd(std::vector<std::string> &input, User &cUser)
 		_rep.E431(cUser.getFd(), cUser.getNick());
 		return ;
 	}
-	if (input[1].size() > 9) // TODO check unwanted character
+	if (input[1].size() > 9 || input[1][0] == '#') // TODO check unwanted character
 	{
 		_rep.E432(cUser.getFd(), cUser.getNick(), input[1]);
 		return ;
 	}
-	std::vector<User>::iterator it = _clients.begin();
-	for (it; it < _clients.end(); it++)
+	for (std::vector<User>::iterator it = _clients.begin(); it < _clients.end(); it++)
 	{
 		if (it->getNick() == input[1] || input[1] == "TheMysteryMachine")
 		{
-			cUser.setNick(input[1]);
 			_rep.E433(cUser.getFd(), cUser.getNick(), input[1]);
 			return;
 		}
 	}
 	if (cUser.getRegister())
 	{
-
 		_io.emit(":" + cUser.getNick() + " NICK " + input[1], cUser.getFd());
 		cUser.setNick(input[1]);
 		cUser.setUnusedNick(true);
@@ -47,6 +44,26 @@ void	Server::nickCmd(std::vector<std::string> &input, User &cUser)
 		_rep.R004(cUser.getFd(), cUser.getNick());
 		return ;
 	}
-	cUser.setNick(input[1]); //TOCHECK: set index 1 for the moment but review the input vector construction (wich index for the nickname) (?)
+	cUser.setNick(input[1]);
 	cUser.setUnusedNick(true);
+	for (std::vector<User>::iterator itUser = _clients.begin(); itUser != _clients.end(); itUser++)
+		if (itUser->getNick() == cUser.getNick())
+			itUser->setNick(input[1]);
+	for (std::vector<Channel>::iterator itChan = _channels.begin(); itChan != _channels.end(); itChan++)
+	{
+		if (itChan->isUser(cUser))
+		{
+			std::vector<User> &chanUsers = itChan->getUsers();
+			for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
+				if (itChanUser->getNick() == cUser.getNick())
+					itChanUser->setNick(input[1]);
+		}
+		if (itChan->isOpUser(cUser))
+		{
+			std::vector<User> &chanOpUsers = itChan->getOpUsers();
+			for (std::vector<User>::iterator itChanOpUser = chanOpUsers.begin(); itChanOpUser != chanOpUsers.end(); itChanOpUser++)
+				if (itChanOpUser->getNick() == cUser.getNick())
+					itChanOpUser->setNick(input[1]);
+		}
+	}
 }
