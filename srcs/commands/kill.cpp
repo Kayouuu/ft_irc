@@ -6,7 +6,7 @@
 /*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:35:47 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/27 14:40:28 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/02/27 14:45:20 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void 	Server::killCmd(std::vector<std::string> &input, User &cUser)
         if (itChan->isOpUser(*itClients))
             itChan->removeOpUser(*itClients);
         itChan->removeUser(*itClients);
+        itChan->decrUsrCon();
     }
     close(itClients->getFd());
 	itClients->setFd(-1);
