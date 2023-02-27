@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   msg.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/23 08:48:24 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/27 12:00:35 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
-//TODO test msg to channel + voir si possible d'avoir plusieur destinataire qui sont des channel
+
 void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
 
     if (input[1] == "TheMysteryMachine")
