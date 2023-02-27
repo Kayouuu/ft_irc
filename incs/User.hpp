@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:58:58 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/21 15:08:01 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/27 14:52:39 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ class User
 		void	setRPassword(bool const &input);
 		void	setUnusedNick(bool const &input);
 		void 	incrChanConnected();
+		void	resetUser();
 
 		int const					&getFd() const;
 		std::string const			&getNick() const;

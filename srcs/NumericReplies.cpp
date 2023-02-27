@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   NumericReplies.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 15:41:10 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/17 14:14:19 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/27 14:17:06 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -536,6 +536,14 @@ void Rep::E475(int const &fd, const std::string &cNick, const std::string& chanN
 void Rep::E476(int const &fd, const std::string &cNick)
 {
 	output << "476 " << cNick << " :Bad Channel Mask";
+	std::string str = output.str();
+	io.emit(str, fd);
+	clearBuffer();
+}
+
+void Rep::E481(int const &fd, const std::string &cNick)
+{
+	output << "481 " << cNick << " :Permission Denied- You're not an IRC operator";
 	std::string str = output.str();
 	io.emit(str, fd);
 	clearBuffer();

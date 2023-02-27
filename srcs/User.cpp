@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 11:00:21 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/22 15:38:59 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/27 15:04:26 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,26 @@ void User::setIrcOp(bool ircOp)
 
 void User::incrChanConnected() {
 	_chanConnected++;
+}
+
+void User::resetUser() {
+	std::map<char, bool>::iterator it = _mode.find('o');
+	it->second = false;
+	it = _mode.find('s');
+	it->second = false;
+	it = _mode.find('v');
+	it->second = false;
+	_voicedChan.clear();
+	_inviteChan.clear();
+	_chanOp.clear();
+	_fd = -1;
+	_nick = "";
+	_prefix = "";
+	_user = "";
+	_is_registered = false;
+	_right_password = false;
+	_chanConnected = 0;
+	_ircOp = false;
 }
 
 int const &User::getFd() const

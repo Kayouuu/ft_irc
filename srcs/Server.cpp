@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/24 11:18:46 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/27 13:35:19 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ void	Server::initCommands()
 	_commands.insert(std::make_pair(std::string("QUIT"), &Server::quitCmd));
 	_commands.insert(std::make_pair(std::string("TOPIC"), &Server::topicCmd));
 	_commands.insert(std::make_pair(std::string("USER"), &Server::userCmd));
+	_commands.insert(std::make_pair(std::string("ISBANNED"), &Server::isbannedCmd));
 }
 
 void	Server::run()

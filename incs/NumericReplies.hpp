@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   NumericReplies.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:31:44 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/17 14:15:39 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/27 14:18:10 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ class Rep
 		void E475(NR_ARG, const std::string& chanName);
 		/* For some ungodly reason, ERR_BADCHANMASK doesn't take the user nick as input, still needs a string tho so it's fine */
 		void E476(NR_ARG);
-
+		void E481(NR_ARG);
 		void E482(NR_ARG, const std::string& chanName);
 
 		void E501(NR_ARG);

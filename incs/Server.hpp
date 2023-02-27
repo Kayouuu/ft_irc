@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/24 10:20:35 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/02/27 14:34:39 by lbattest         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ class Server
 		void	quitCmd(std::vector<std::string> &input, User &cUser);
 		void	topicCmd(std::vector<std::string> &input, User &cUser);
 		void	userCmd(std::vector<std::string> &input, User &cUser);
+		void 	isbannedCmd(std::vector<std::string> &input, User &cUser);
+		void 	killCmd(std::vector<std::string> &input, User &cUser);
 
 
 		void	bMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
