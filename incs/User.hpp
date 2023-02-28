@@ -40,6 +40,7 @@ class User
 		struct sockaddr_in		_address;
 		socklen_t				_addrlen;
 		int						_chanConnected;
+		bool					_initConv;
 
 	public:
 		User();
@@ -68,6 +69,7 @@ class User
 		void	setUnusedNick(bool const &input);
 		void 	incrChanConnected();
 		void	resetUser();
+		void	setInitConv(bool value);
 
 		int const					&getFd() const;
 		std::string const			&getNick() const;
@@ -85,6 +87,7 @@ class User
 		struct sockaddr_in			&getAdress();
 		socklen_t					&getAdressLen();
 		int const 					&getChanConnected() const;
+		bool						isInitConv();
 };
 
 #endif
