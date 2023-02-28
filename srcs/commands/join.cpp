@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
-//TODO finish file
 
 void    Server::usrJoinChan(User &cUser, Channel &chan)
 {
