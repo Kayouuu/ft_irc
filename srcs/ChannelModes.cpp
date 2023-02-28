@@ -99,6 +99,7 @@ void Server::nMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 {
 	char mode = 'n';
 
+	cChannel.setMode(mode, set);
 }
 
 void Server::oMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)

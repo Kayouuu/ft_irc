@@ -125,6 +125,8 @@ void	Server::initCommands()
 	_commands.insert(std::make_pair(std::string("TOPIC"), &Server::topicCmd));
 	_commands.insert(std::make_pair(std::string("USER"), &Server::userCmd));
 	_commands.insert(std::make_pair(std::string("ISBANNED"), &Server::isbannedCmd));
+	_commands.insert(std::make_pair(std::string("KILL"), &Server::killCmd));
+	_commands.insert(std::make_pair(std::string("OP"), &Server::opCmd));
 }
 
 void	Server::run()
