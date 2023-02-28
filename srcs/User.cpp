@@ -12,7 +12,7 @@
 
 #include "../incs/User.hpp"
 
-User::User() : _nick(""), _user(""), _prefix("") { _fd = -1; _right_password = false; _is_registered = false; _chanConnected = 0; _unused_nick = false; }
+User::User() : _nick(""), _user(""), _prefix("") { _fd = -1; _right_password = false; _is_registered = false; _chanConnected = 0; _unused_nick = false; _initConv = false; }
 
 User::User(const std::string &_nick, const std::string &_user)
 {
@@ -22,6 +22,7 @@ User::User(const std::string &_nick, const std::string &_user)
 	this->_is_registered = false;
 	this->_unused_nick = false;
 	this->_chanConnected = 0;
+	this->_initConv = false;
 	_mode.insert(std::pair<char, bool>('o', false));
 	_mode.insert(std::pair<char, bool>('s', false));
 	_mode.insert(std::pair<char, bool>('v', false));
@@ -149,6 +150,11 @@ void User::resetUser() {
 	_right_password = false;
 	_chanConnected = 0;
 	_ircOp = false;
+}
+
+void User::setInitConv(bool value)
+{
+	_initConv = value;
 }
 
 int const &User::getFd() const
@@ -288,4 +294,9 @@ bool User::isInviteChan(Channel &inviteChan)
 			return true;
 	}
 	return false;
+}
+
+bool User::isInitConv()
+{
+	return (_initConv);
 }
