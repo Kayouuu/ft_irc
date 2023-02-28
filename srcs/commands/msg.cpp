@@ -41,9 +41,11 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
         else if (itChannel->isBanned(cUser) == 1) {
             return;
         }
-        if (itChannel->isMode('n') == true)
-            return;
-		else if (itChannel->isMode('m') == true) {
+        if (itChannel->isMode('n')) {
+			if (!itChannel->isUser(cUser))
+				return;
+		}
+		if (itChannel->isMode('m')) {
 			if (!cUser.isVoicedChan(*itChannel))
 				return;
 		}
