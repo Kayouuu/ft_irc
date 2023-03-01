@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:11:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/27 20:32:55 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/01 14:01:43 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,13 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
+#include <fcntl.h>
 
 class Bot
 {
 	private:
+	    static Bot 				*_instance;
+
 		int						_port;
 		std::string				_pass;
 		std::string				_log_msg;

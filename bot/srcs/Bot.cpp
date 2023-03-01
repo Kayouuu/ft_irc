@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:10:46 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/01 12:21:58 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/01 14:03:14 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,15 @@ void	Bot::start()
 	if (_socketFd < 0)
 	{
 		std::perror("socket");
-		return ;
+		shutdown();
 	}
-	
 	_saddr.sin_family = AF_INET;
 	_saddr.sin_port = htons(_port);
 	_local_host = gethostbyname(_ip.c_str());
 	if (_local_host == NULL)
 	{
 		perror("gethostbyname");
-		return ;
+		shutdown();
 	}
 	_saddr.sin_addr = *((struct in_addr *)_local_host->h_addr);
 
@@ -55,17 +54,17 @@ void	Bot::start()
 	if (rvalue < 0)
 	{
 		perror("connect");
-		return ;
+		shutdown();
 	}
-
+	fcntl(_socketFd, F_SETFL, O_NONBLOCK);
 	emit(_log_msg, _socketFd);
-	
 	run();
 }
 
 void	Bot::shutdown()
 {
-	
+	emit("QUIT IRCBot", _socketFd);
+	std::exit(1);
 }
 
 void	Bot::run()
@@ -74,35 +73,34 @@ void	Bot::run()
 	fd_set		read_fd_set;
 	std::string	output;
 
-
+	FD_ZERO(&read_fd_set); //  Cleaning the FD list before filling it
+	FD_SET(_socketFd, &read_fd_set);
+	rvalue = select(FD_SETSIZE, &read_fd_set, NULL, NULL, NULL);
+	if (rvalue < 0)
+	{
+		std::perror("select");
+		throw std::exception();
+	}
 	receive(output, _socketFd);
-	
 	if (!output.find("001 MysteryIc") == 0)
 	{
 		std::cerr << "internal error: Couldn't connect to the irc server" << std::endl;
-		return ;
+		shutdown();
 	}
 	output.clear();
+	std::cout << "Bot connected to the server!" << std::endl;
 	while (true)
 	{
-		// FD_ZERO(&read_fd_set); //  Cleaning the FD list before filling it
-		// FD_SET(_socketFd, &read_fd_set);
-		// rvalue = select(FD_SETSIZE, &read_fd_set, NULL, NULL, NULL);
-		// if (rvalue < 0)
-		// {
-		// 	std::perror("select");
-		// 	throw std::exception();
-		// }
-		receive(output, _socketFd);
-		if (output == "")
+		rvalue = receive(output, _socketFd);
+		if (output == "" && rvalue < 1)
 		{
 			std::cout << "error: connection lost" << std::endl;
-			std::exit(1);
+			shutdown();
 		}
-		handle(output);
+		if (rvalue != 1)
+			handle(output);
 		if (_currChannel != "")
 			check();
-		std::cout << "a" << std::endl;
 		output.clear();
 	}
 }
@@ -160,6 +158,8 @@ int	Bot::receive(std::string &output, int const &fd)
 		rvalue = recv(fd, &buffer, 1024, 0);
 		if (rvalue < 0)
 		{
+			if (errno == EAGAIN)
+				return (1);
 			std::perror("recv");
 			throw std::exception();
 		}
@@ -242,6 +242,7 @@ void	Bot::sendMsg()
 {
 	if (_currChannel == "")
 		return ;
+	std::cout << "Message sent!" << std::endl;
 	emit("NOTICE " + _currChannel + " :" + _announce_msg, _socketFd);
 	emit("PRIVMSG " + _currChannel + " SCOOBY-DOO: " + _scoob_msg, _socketFd);
 	emit("PRIVMSG " + _currChannel + " VELMA: " + _velma_msg, _socketFd);
