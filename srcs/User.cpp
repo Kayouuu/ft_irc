@@ -24,7 +24,6 @@ User::User(const std::string &_nick, const std::string &_user)
 	this->_chanConnected = 0;
 	this->_initConv = false;
 	_mode.insert(std::pair<char, bool>('o', false));
-	_mode.insert(std::pair<char, bool>('s', false));
 	_mode.insert(std::pair<char, bool>('v', false));
 }
 

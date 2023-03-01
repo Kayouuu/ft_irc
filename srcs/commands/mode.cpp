@@ -181,10 +181,6 @@ void	Server::modeHandler(User &cUser, Channel &cChannel, char &mode, std::vector
 			std::cout << "MODE o -----\n";
 			oMode(cUser, cChannel, input[3], set);
 			break ;
-		case 'p':
-			std::cout << "MODE p -----\n";
-			pMode(cUser, cChannel, input[3], set);
-			break ;
 		case 't':
 			std::cout << "MODE t -----\n";
 			tMode(cChannel, set);
@@ -209,9 +205,9 @@ void	Server::modeHandlerUser(int fd, std::string &input, User &cUser, char &mode
 		case 'o':
 			oMode(fd, input, cUser);
 			break ;
-		case 's':
-			sMode(fd, input, cUser);
-			break ;
+		default:
+			std::cout << "MODE default -----\n";
+			return ;
 	}
 }
 
@@ -221,10 +217,4 @@ void Server::oMode(int fd, std::string &input, User &cUser)
 	if (input[i] == '-')
 		cUser.setMode('o', false);
 	_rep.R221(cUser.getFd(), cUser.getNick(), cUser.getModes());
-}
-
-void Server::sMode(int fd, std::string &input, User &cUser)
-{
-	//TODO
-	//Display server messages for the user
 }

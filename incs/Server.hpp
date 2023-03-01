@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/27 14:34:39 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/03/01 14:07:22 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,12 @@
 # include "SocketIO.hpp"
 # include "Channel.hpp"
 # include "NumericReplies.hpp"
-# include "Bot.hpp"
 
 //# define MAX_CONNECTIONS 1024
 # define MAX_INCONNECTIONS 50
 
 class	SocketIO;
 class	Rep;
-class	Bot;
 class	User;
 
 class Server
@@ -51,16 +49,15 @@ class Server
 	private:
 		typedef	void (Server::*cmdHandler)(std::vector<std::string> &, User &); // Array of function pointer for function belonging to the Server class returning void and taking a string (input) and an int (fd)
 
-		Bot									_bot;
 		Rep									_rep;
 		SocketIO							_io;
 		std::vector<User>					_clients;
 		std::vector<Channel>				_channels;
-		char								_buffer[1024];
+		//char								_buffer[1024];
 		int									_server_fd;
 		int									_connected_clients;
 		struct sockaddr_in					_address;
-		socklen_t							_addrlen;
+		//socklen_t							_addrlen;
 		const int							_port;
 		const std::string					_password;
 		std::map<std::string, cmdHandler>	_commands;
@@ -100,7 +97,7 @@ class Server
 		void 	killCmd(std::vector<std::string> &input, User &cUser);
 		void 	opCmd(std::vector<std::string> &input, User &cUser);
 
-
+		//channel modes
 		void	bMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	iMode(Channel &cChannel, bool set);
 		void	kMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
@@ -108,12 +105,11 @@ class Server
 		void	mMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	nMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	oMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
-		void	pMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	tMode(Channel &cChannel, bool set);
 		void	vMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 
+		//user mode
 		void 	oMode(int fd, std::string &input, User &cUser);
-		void 	sMode(int fd, std::string &input, User &cUser);
 
 		void    usrJoinChan(User &cUser, Channel &chan);
 

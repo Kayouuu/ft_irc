@@ -3,22 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   msg.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/27 12:00:35 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/03/01 14:08:13 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
 
 void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
-
-    if (input[1] == "TheMysteryMachine")
-    {
-        _bot.setMsg(input, cUser);
-        return ;
-    }
     std::string msg;
     std::vector<std::string>::iterator it = input.begin();
     std::vector<std::string>::iterator itTmp;

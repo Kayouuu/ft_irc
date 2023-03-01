@@ -132,12 +132,6 @@ void Server::oMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 	}
 }
 
-void	Server::pMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
-{
-	char mode = 'p';
-
-}
-
 void Server::tMode(Channel &cChannel, bool set)
 {
 	cChannel.setMode('t', set);
