@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:11:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/01 14:01:43 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/01 16:42:05 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,11 @@
 #include <netdb.h>
 
 #include <fcntl.h>
+#include <unistd.h>
 
 class Bot
 {
 	private:
-	    static Bot 				*_instance;
-
 		int						_port;
 		std::string				_pass;
 		std::string				_log_msg;
@@ -60,7 +59,7 @@ class Bot
 		void	handle(std::string const &output);
 	public:
 		Bot(int const &port, std::string const &pass, std::string const &ip);
-		~Bot();
+		virtual ~Bot();
 
 		void	start();
 		void	shutdown();
