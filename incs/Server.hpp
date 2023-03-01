@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/27 14:34:39 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/03/01 14:07:22 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,12 @@
 # include "SocketIO.hpp"
 # include "Channel.hpp"
 # include "NumericReplies.hpp"
-# include "Bot.hpp"
 
 //# define MAX_CONNECTIONS 1024
 # define MAX_INCONNECTIONS 50
 
 class	SocketIO;
 class	Rep;
-class	Bot;
 class	User;
 
 class Server
@@ -51,7 +49,6 @@ class Server
 	private:
 		typedef	void (Server::*cmdHandler)(std::vector<std::string> &, User &); // Array of function pointer for function belonging to the Server class returning void and taking a string (input) and an int (fd)
 
-		Bot									_bot;
 		Rep									_rep;
 		SocketIO							_io;
 		std::vector<User>					_clients;
