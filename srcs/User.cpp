@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 11:00:21 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/27 15:04:26 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/03/01 16:30:40 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,13 +217,13 @@ bool User::isIrcOp() const
 	return _ircOp;
 }
 
-bool User::isChanOp(Channel &channel) const {
-	for (std::vector<Channel>::iterator it = _chanOp.begin(); it != _chanOp.end(); it++) {
-		if (*it == channel)
-			return true;
-	}
-	return false
-}
+// bool User::isChanOp(Channel &channel) const {
+// 	for (std::vector<Channel>::iterator it = _chanOp.begin(); it != _chanOp.end(); it++) {
+// 		if (*it == channel)
+// 			return true;
+// 	}
+// 	return false;
+// }
 
 User::User(const User &src)
 {

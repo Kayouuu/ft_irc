@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/03/01 14:08:13 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/01 16:31:32 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
 			if (!itChannel->isUser(cUser))
 				return;
 		}
-		if (itChannel->isMode('m')) {
-			if (!cUser.isVoicedChan(*itChannel) || !cUser.isChanOp(*itChannel))
-				return;
-		}
+		// if (itChannel->isMode('m')) {
+		// 	if (!cUser.isVoicedChan(*itChannel) || !cUser.isChanOp(*itChannel))
+		// 		return;
+		// }
         it++;
         if (it >= input.end()) {
             _rep.E412(cUser.getFd(), cUser.getNick());
