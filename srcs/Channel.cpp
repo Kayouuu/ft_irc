@@ -145,7 +145,7 @@ char Channel::getChanPrefix()
 	return '=';
 }
 
-char Channel::getUserPrefix(User &cUser, Channel chan)
+char Channel::getUserPrefix(User &cUser)
 {
 	std::vector<User>::iterator it;
 	for (it = _users.begin(); it != _users.end(); it++) {
@@ -154,10 +154,13 @@ char Channel::getUserPrefix(User &cUser, Channel chan)
 	}
 	if (it == _users.end())
 		return 'u';
-	if (isOpUser(*it))
+	if (cUser.isIrcOp())
+		return '&';
+	if (isOpUser(*it)) {
 		return '@';
-	if (it->isMode('v') == true) {
-		if (it->isVoicedChan(chan))
+	}
+	if (it->isMode('v')) {
+		if (it->isVoicedChan(*this))
 			return '+';
 	}
 	return 'u';

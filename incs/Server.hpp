@@ -38,6 +38,9 @@
 
 //# define MAX_CONNECTIONS 1024
 # define MAX_INCONNECTIONS 50
+# define CYAN "\033[0;36m"
+# define NO_COLOR "\033[0m"
+# define RED "\033[0;31m"
 
 class	SocketIO;
 class	Rep;
@@ -56,11 +59,9 @@ class Server
 		SocketIO							_io;
 		std::vector<User>					_clients;
 		std::vector<Channel>				_channels;
-		//char								_buffer[1024];
 		int									_server_fd;
 		int									_connected_clients;
 		struct sockaddr_in					_address;
-		//socklen_t							_addrlen;
 		const int							_port;
 		const std::string					_password;
 		std::map<std::string, cmdHandler>	_commands;

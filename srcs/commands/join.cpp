@@ -71,14 +71,15 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
     str.clear();
     std::vector<std::string>::iterator itKey = listKey.begin();
     // std::cout << "fin parsing\n";
+
     for (std::vector<std::string>::iterator itLst = listChan.begin(); itLst < listChan.end(); itLst++) {
         str = *itLst;
-        if(str[0] != '#'){
+        if (str[0] != '#'){
 			str.clear();
-			continue;
+			continue; //QUESTION: pourquoi pas un return ?
 		}
         str.clear();
-        for(; itChannel < _channels.end(); itChannel++) {
+        for (; itChannel < _channels.end(); itChannel++) {
 			// std::cout << *itLst << ", " << itChannel->getName() << std::endl;
 			if (itChannel->getName() == *itLst) {
 				break;
@@ -111,7 +112,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 			for (std::vector<User>::iterator itU = users.begin(); itU != users.end(); itU++) {
 				if (cUser.getFd() != -1) {
 					// std::cout << cUser.getFd(), cUser.getNick() << ", " << cUser.getNick()<< ", " << itChannel->getName()<< ", " << itU->getNick()<< ", " <<itChannel->getChanPrefix()<< ", " << itChannel->getUserPrefix(*itU, *itChannel) <<std::endl;
-					_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix(*itU, *itChannel));
+					_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix(*itU));
 				}
 			}
 			_rep.R366(cUser.getFd(), cUser.getNick(), itChannel->getName());
@@ -172,7 +173,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 			std::cout << itChannel->getUsrCon() << " nb personne co apres toi bg\n";
 			std::vector<User> users = itChannel->getUsers();
 			for (std::vector<User>::iterator itU = users.begin(); itU < users.end(); itU++) {
-				_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix(*itU, *itChannel));
+				_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix(*itU));
 			}
 			_rep.R366(cUser.getFd(), cUser.getNick(), itChannel->getName());
 			_io.emit(":" + cUser.getNick() + " JOIN " + itChannel->getName(),cUser.getFd());

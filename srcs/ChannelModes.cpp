@@ -15,34 +15,33 @@
 void	Server::bMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
 {
 	// TODO send banlist ??
-	char mode = 'b';
-	std::vector<User>::iterator it;
-	for (it = _clients.begin(); it != _clients.end(); it++)
+	std::vector<User>::iterator itUser;
+	for (itUser = _clients.begin(); itUser != _clients.end(); itUser++)
 	{
-		if (it->getNick() == modeArg)
+		if (itUser->getNick() == modeArg)
 			break ;
 	}
-	if (it != _clients.end())
+	if (itUser != _clients.end())
 	{
-		it->setMode(mode, set);
+		itUser->setMode('b', set);
 		if (set == true)
 		{
-			cChannel.banUser(*it);
-			it->setMode(mode, set);
-			_rep.E474(it->getFd(), it->getNick(), cChannel.getName());
+			cChannel.banUser(*itUser);
+			itUser->setMode('b', set);
+			_rep.E474(cUser.getFd(), itUser->getNick(), cChannel.getName());
 		}
 		else
 		{
-			cChannel.unbanUser(*it);
-			it->setMode(mode, set);
+			cChannel.unbanUser(*itUser);
+			itUser->setMode('b', set);
 			// TOCHECK if need to send error msg
 		}
 	}
 	else
 	{
 		// TODO user not found
-		// RPL_BANLIST
-		// RPL_ENDBANLIST
+		// RPL_BANLIST (367)
+		// RPL_ENDBANLIST (368)
 	}
 }
 

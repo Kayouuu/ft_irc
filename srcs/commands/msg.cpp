@@ -59,7 +59,10 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
                 if (*itClient == cUser)
                     continue;
                 itTmp = it;
-                msg.append(":" + cUser.getNick() + " PRIVMSG " + itChannel->getName() + " ");
+				std::string prefix;
+				if (itChannel->getUserPrefix(cUser) != 'u')
+					prefix.append(1, itChannel->getUserPrefix(cUser));
+                msg.append(":" + prefix + cUser.getNick() + " PRIVMSG " + itChannel->getName() + " ");
                 for (it; it < input.end(); it++) {
                     msg.append(*it);
                     if (it < --input.end())
