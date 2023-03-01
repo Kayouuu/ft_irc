@@ -24,6 +24,11 @@ void    Server::usrJoinChan(User &cUser, Channel &chan)
     noticeCmd(input, cUser);
 }
 
+/**
+ * Create a channel or join the channel
+ * @param input
+ * @param cUser
+ */
 void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 {
 	std::vector<std::string>::iterator it = input.begin();
