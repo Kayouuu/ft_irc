@@ -90,7 +90,7 @@ bool Channel::isUser(User &user)
 {
 	for (std::vector<User>::iterator it = _users.begin(); it < _users.end(); it++)
 	{
-		if (user == *it)
+		if (user.getNick() == it->getNick())
 			return true;
 	}
 	return false;
@@ -100,7 +100,7 @@ bool Channel::isOpUser(User &user)
 {
 	for (std::vector<User>::iterator it = _opUsers.begin(); it < _opUsers.end(); it++)
 	{
-		if (user == *it)
+		if (user.getNick() == it->getNick())
 			return true;
 	}
 	return false;
@@ -110,7 +110,7 @@ bool Channel::isBanned(User &user)
 {
 	for (std::vector<User>::iterator it = _bannedUsers.begin(); it < _bannedUsers.end(); it++)
 	{
-		if (user == *it)
+		if (user.getNick() == it->getNick())
 			return true;
 	}
 	return false;
@@ -166,11 +166,6 @@ char Channel::getUserPrefix(User &cUser)
 	return 'u';
 }
 
-void Channel::setName(const std::string &name)
-{
-	_name = name;
-}
-
 void Channel::setSubject(const std::string &subject)
 {
 	_subject = subject;
@@ -213,6 +208,7 @@ void Channel::removeOpUser(User &user)
 void Channel::addOpUser(User &opUser)
 {
 	_opUsers.push_back(opUser);
+	//opUser.setMode('v', true);
 }
 
 void Channel::banUser(User &user)

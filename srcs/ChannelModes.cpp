@@ -87,7 +87,7 @@ void Server::lMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 	}
 }
 
-void Server::mMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
+void Server::mMode(User &cUser, Channel &cChannel, bool set)
 {
 	char mode = 'm';
 

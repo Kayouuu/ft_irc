@@ -76,7 +76,6 @@ void	User::setUnusedNick(bool const &input)
 	_unused_nick = input;
 }
 
-
 void User::addOpChannel(Channel &channel)
 {
 	_chanOp.push_back(channel);
@@ -217,6 +216,14 @@ bool User::isIrcOp() const
 	return _ircOp;
 }
 
+bool User::isChanOp(Channel &channel) {
+	for (std::vector<Channel>::iterator it = _chanOp.begin(); it != _chanOp.end(); it++) {
+		if (it->getName() == channel.getName())
+			return true;
+	}
+	return false;
+}
+
 User::User(const User &src)
 {
 	*this = src;
@@ -279,7 +286,7 @@ bool User::isVoicedChan(Channel &channel)
 {
 	for (std::vector<Channel>::iterator it = _voicedChan.begin(); it != _voicedChan.end(); it++)
 	{
-		if (*it == channel)
+		if (it->getName() == channel.getName())
 			return true;
 	}
 	return false;
@@ -289,7 +296,7 @@ bool User::isInviteChan(Channel &inviteChan)
 {
 	for (std::vector<Channel>::iterator it = _inviteChan.begin(); it != _inviteChan.end(); it++)
 	{
-		if (*it == inviteChan)
+		if (it->getName() == inviteChan.getName())
 			return true;
 	}
 	return false;

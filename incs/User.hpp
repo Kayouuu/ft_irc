@@ -79,6 +79,7 @@ class User
 		std::string					getModes();
 		std::vector<Channel> const	&getOpChannels() const;
 		bool 						isIrcOp() const;
+		bool 						isChanOp(Channel &channel);
 		bool						isVoicedChan(Channel &channel);
 		bool						isInviteChan(Channel &inviteChan);
 		bool const					&getRegister() const;

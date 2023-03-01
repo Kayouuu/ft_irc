@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/27 13:35:19 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/03/01 14:07:37 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/Server.hpp"
 
-Server::Server(int port, std::string password) : _port(port), _password(password), _rep(_io), _connected_clients(0), _bot(_io, _channels) { }
+Server::Server(int port, std::string password) : _port(port), _password(password), _rep(_io), _connected_clients(0) { }
 
 Server::~Server() { }
 
@@ -161,7 +161,6 @@ void	Server::run()
 			if (_clients[i].getFd() > 0 && FD_ISSET(_clients[i].getFd(), &read_fd_set)) // If one is triggered, handle it
 				manageClient(i);
 		}
-		_bot.check(_clients);
 	}
 }
 
@@ -185,6 +184,7 @@ void	Server::acceptClient()
 			_clients[i].setFd(new_connection);
 			_clients[i].setRegister(false);
 			_clients[i].setRPassword(false);
+			std::cout << "CONNECTED CLIENTS: " << RED << _connected_clients << NO_COLOR << std::endl;
 			if (_connected_clients == 0)
 				_clients[i].setIrcOp(true);
 			break ;
@@ -231,7 +231,6 @@ void		Server::commandHandler(std::string const &output, int const &current)
 	std::vector<std::string>	parsed_output;
 	std::string					tmp;
 	int							user_index;
-	int							vector_it;
 	int							size;
 
 	for (user_index = 0; user_index < MAX_CONNECTIONS; user_index++)
@@ -252,7 +251,6 @@ void		Server::commandHandler(std::string const &output, int const &current)
 		{
 			parsed_output.push_back(tmp);
 			tmp.clear();
-			vector_it++;
 		}
 		// else if (c == '\"')
 		// {

@@ -3,29 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   msg.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/27 12:00:35 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/03/01 14:08:13 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
 
+/**
+ *
+ * @param input[1] #channel,... OR user,...
+ * @param input[2,...] msg
+ * @param cUser
+ */
 void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
-
-    if (input[1] == "TheMysteryMachine")
-    {
-        _bot.setMsg(input, cUser);
-        return ;
-    }
     std::string msg;
     std::vector<std::string>::iterator it = input.begin();
     std::vector<std::string>::iterator itTmp;
     std::vector<User>::iterator itClient = _clients.begin();
     it++;
     msg = *it;
-    if (msg[0] == '#') {
+    if (msg[0] == '#') { /* msg to a channel */
         itClient++;
         msg.clear();
         std::vector<Channel>::iterator itChannel = _channels.begin();
@@ -38,23 +38,29 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
             _rep.E404(cUser.getFd(), cUser.getNick(), itChannel->getName());
             return;
         }
-        else if (itChannel->isBanned(cUser) == 1) {
+        if (itChannel->isBanned(cUser) == 1) {
             return;
         }
-        if (itChannel->isMode('n')) {
+        if (itChannel->isMode('n')) { /* can't msg the channel if you're not in it */
 			if (!itChannel->isUser(cUser))
 				return;
 		}
 		if (itChannel->isMode('m')) {
-			if (!cUser.isVoicedChan(*itChannel))
+			std::cout << "--chan mode +m--" << cUser.isVoicedChan(*itChannel) << " " << cUser.isChanOp(*itChannel) << "\n";
+			std::vector<Channel> opChanTEST = cUser.getOpChannels();
+			for (std::vector<Channel>::iterator itTEST = opChanTEST.begin(); itTEST != opChanTEST.end(); itTEST++)
+				std::cout << GREEN << itTEST->getName() << NO_COLOR << std::endl;
+			if (!cUser.isVoicedChan(*itChannel) && !cUser.isChanOp(*itChannel)){
+				std::cout << "je return apres le mode +m\n";
 				return;
+			}
 		}
         it++;
         if (it >= input.end()) {
             _rep.E412(cUser.getFd(), cUser.getNick());
             return;
         }
-        for (itClient; itClient < _clients.end(); itClient++) {
+        for (; itClient < _clients.end(); itClient++) {
             if (itClient->getFd() != -1) {
                 if (*itClient == cUser)
                     continue;

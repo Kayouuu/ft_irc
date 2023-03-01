@@ -19,6 +19,9 @@
 # include "User.hpp"
 # include "NumericReplies.hpp"
 
+# define PURPLE "\033[0;35m"
+# define NO_COLOR "\033[0m"
+
 class User;
 
 class Channel
@@ -43,7 +46,6 @@ class Channel
 		bool				getIsTopic() const;
 		char				getChanPrefix();
 		char			 	getUserPrefix(User &cUser);
-		void setName(const std::string &name);
 		void setSubject(const std::string &subject);
 		void setMode(char const &modeName, bool const &isMode);
 		void addUser(User &user);
