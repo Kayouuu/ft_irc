@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 16:03:13 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/23 10:03:07 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/01 15:03:01 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,10 @@ void	Server::bMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 			// TOCHECK if need to send error msg
 		}
 	}
+	else if (modeArg == "")
+		cChannel.listBannedUser(_rep, cUser);
 	else
-	{
-		// TODO user not found
-		// RPL_BANLIST
-		// RPL_ENDBANLIST
-	}
+		_rep.E401(cUser.getFd(), cUser.getNick(), modeArg);
 }
 
 void Server::iMode(Channel &cChannel, bool set)

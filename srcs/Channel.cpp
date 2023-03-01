@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:44:15 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/23 10:20:17 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/01 15:00:20 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,15 @@ void Channel::unbanUser(User &user)
 			break ;
 		}
 	}
+}
+
+void Channel::listBannedUser(Rep &rep, User const &cUser)
+{
+	for (std::vector<User>::iterator it = _bannedUsers.begin(); it != _bannedUsers.end(); it++)
+	{
+		rep.R367(cUser.getFd(), cUser.getNick(), this->getName(), it->getNick());
+	}
+	rep.R368(cUser.getFd(), cUser.getNick(), this->getName());
 }
 
 void Channel::setPw(std::string pw)
