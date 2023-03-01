@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:10:46 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/01 14:03:14 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/01 14:09:14 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 Bot::Bot(int const &port, std::string const &pass, std::string const &ip) : _port(port), _pass(pass), _ip(ip)
 {
-	_log_msg = "PASS " + pass + "\r\nNICK MysteryIc\r\nUSER MysteryIc 0 * :MysteryIc";
+	_log_msg = "PASS " + pass + "\r\nNICK TMM\r\nUSER TMM 0 * :TMM";
 	_announce_msg = "---Bot conversation incoming---";
 	_scoob_msg = "Ruh-roh--RAGGY!!!!";
 	_shaggy_msg = "Zoinks Scoob!";
@@ -82,7 +82,7 @@ void	Bot::run()
 		throw std::exception();
 	}
 	receive(output, _socketFd);
-	if (!output.find("001 MysteryIc") == 0)
+	if (!output.find("001 TMM") == 0)
 	{
 		std::cerr << "internal error: Couldn't connect to the irc server" << std::endl;
 		shutdown();
@@ -110,7 +110,7 @@ void	Bot::handle(std::string const &output)
 	std::vector<std::string>	parsed_output;
 	std::string					tmp;
 
-	if (output.find(":MysteryIc JOIN ") != std::string::npos)
+	if (output.find(":TMM JOIN ") != std::string::npos)
 	{
 		_currChannel = _possibleMsg;
 		emit("PRIVMSG " + _currChannel + " :Bot will send messages here!", _socketFd);
@@ -226,7 +226,7 @@ void	Bot::setMsg(std::vector<std::string> &input)
 	else if (who == ":CHANNEL" && input[4] != "")
 		setChannel(input[4]);
 	else if (who == ":HELP")
-		emit("PRIVMSG " + user + " Usage => /msg MysteryIc [SCOOBY, VELMA, SHAGGY, DAPHNE, FRED, CHANNEL] [message, #channelname] {...} {...}", _socketFd);
+		emit("PRIVMSG " + user + " Usage => /msg TMM [SCOOBY, VELMA, SHAGGY, DAPHNE, FRED, CHANNEL] [message, #channelname] {...} {...}", _socketFd);
 }
 
 void	Bot::check()
