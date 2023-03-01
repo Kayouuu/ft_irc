@@ -19,7 +19,7 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
     std::vector<User>::iterator itClient = _clients.begin();
     it++;
     msg = *it;
-    if (msg[0] == '#') {
+    if (msg[0] == '#') { /* msg to a channel */
         itClient++;
         msg.clear();
         std::vector<Channel>::iterator itChannel = _channels.begin();
@@ -35,12 +35,12 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
         else if (itChannel->isBanned(cUser) == 1) {
             return;
         }
-        if (itChannel->isMode('n')) {
+        if (itChannel->isMode('n')) { /* can't msg the channel if you're not in it */
 			if (!itChannel->isUser(cUser))
 				return;
 		}
 		if (itChannel->isMode('m')) {
-			if (!cUser.isVoicedChan(*itChannel))
+			if (!cUser.isVoicedChan(*itChannel) || !cUser.isChanOp(*itChannel))
 				return;
 		}
         it++;
