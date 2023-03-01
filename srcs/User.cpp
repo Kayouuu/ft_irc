@@ -218,6 +218,14 @@ bool User::isIrcOp() const
 	return _ircOp;
 }
 
+bool User::isChanOp(Channel &channel) const {
+	for (std::vector<Channel>::iterator it = _chanOp.begin(); it != _chanOp.end(); it++) {
+		if (*it == channel)
+			return true;
+	}
+	return false
+}
+
 User::User(const User &src)
 {
 	*this = src;
