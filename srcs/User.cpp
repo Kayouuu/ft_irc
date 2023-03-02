@@ -131,6 +131,9 @@ void User::incrChanConnected() {
 	_chanConnected++;
 }
 
+void User::decrChanConnected() {
+	_chanConnected--;
+}
 void User::resetUser() {
 	std::map<char, bool>::iterator it = _mode.find('o');
 	it->second = false;
@@ -217,12 +220,12 @@ bool User::isIrcOp() const
 	return _ircOp;
 }
 
-bool User::isChanOp(Channel &channel) const {
+bool User::isChanOp(Channel &channel) {
 	for (std::vector<Channel>::iterator it = _chanOp.begin(); it != _chanOp.end(); it++) {
 		if (*it == channel)
 			return true;
 	}
-	return false
+	return false;
 }
 
 User::User(const User &src)

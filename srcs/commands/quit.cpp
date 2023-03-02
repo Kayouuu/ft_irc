@@ -16,12 +16,16 @@ void	Server::quitCmd(std::vector<std::string> &input, User &cUser)
 {
 	std::vector<Channel>::iterator itChan = _channels.begin();
     for (; itChan != _channels.end(); itChan++) {
-        if (!itChan->isUser(cUser))
-            continue;
-        if (itChan->isOpUser(cUser))
-            itChan->removeOpUser(cUser);
-        itChan->removeUser(cUser);
-        itChan->decrUsrCon();
+		if(itChan->getUsrCon() - 1 == 0)
+			itChan->~Channel();
+		else {
+			if (!itChan->isUser(cUser))
+				continue;
+			if (itChan->isOpUser(cUser))
+				itChan->removeOpUser(cUser);
+			itChan->removeUser(cUser);
+			itChan->decrUsrCon();
+		}
     }
 	cUser.resetUser();
 	_connected_clients--;

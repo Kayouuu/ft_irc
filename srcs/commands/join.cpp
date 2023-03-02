@@ -16,6 +16,7 @@ void    Server::usrJoinChan(User &cUser, Channel &chan)
 {
     std::vector<std::string> input;
 
+	cUser.incrChanConnected();
 	chan.addUser(cUser);
 	chan.incrUsrCon();
     input.push_back("NOTICE");
@@ -103,6 +104,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 			if (itChannel == _channels.end()) { /*Channel not created*/
 				return;
 			}
+			cUser.incrChanConnected();
 			std::vector<User> users = itChannel->getUsers();
 			for (std::vector<User>::iterator itU = users.begin(); itU != users.end(); itU++) {
 				if (cUser.getFd() != -1) {
