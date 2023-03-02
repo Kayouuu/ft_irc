@@ -156,11 +156,13 @@ char Channel::getUserPrefix(User &cUser)
 		return 'u';
 	if (cUser.isIrcOp())
 		return '&';
-	if (isOpUser(*it))
+	if (isOpUser(*it)) {
 		return '@';
-	if (it->isMode('v'))
+	}
+	if (it->isMode('v')) {
 		if (it->isVoicedChan(*this))
 			return '+';
+	}
 	return 'u';
 }
 

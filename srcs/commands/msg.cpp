@@ -46,8 +46,14 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
 				return;
 		}
 		if (itChannel->isMode('m')) {
-			if (!cUser.isVoicedChan(*itChannel) && !cUser.isChanOp(*itChannel))
+			std::cout << "--chan mode +m--" << cUser.isVoicedChan(*itChannel) << " " << cUser.isChanOp(*itChannel) << "\n";
+			std::vector<Channel> opChanTEST = cUser.getOpChannels();
+			for (std::vector<Channel>::iterator itTEST = opChanTEST.begin(); itTEST != opChanTEST.end(); itTEST++)
+				std::cout << GREEN << itTEST->getName() << NO_COLOR << std::endl;
+			if (!cUser.isVoicedChan(*itChannel) && !cUser.isChanOp(*itChannel)){
+				std::cout << "je return apres le mode +m\n";
 				return;
+			}
 		}
         it++;
         if (it >= input.end()) {
@@ -63,7 +69,7 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
 				if (itChannel->getUserPrefix(cUser) != 'u')
 					prefix.append(1, itChannel->getUserPrefix(cUser));
                 msg.append(":" + prefix + cUser.getNick() + " PRIVMSG " + itChannel->getName() + " ");
-                for (; it < input.end(); it++) {
+                for (it; it < input.end(); it++) {
                     msg.append(*it);
                     if (it < --input.end())
                         msg.append(" ");
