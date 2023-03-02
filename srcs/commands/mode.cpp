@@ -31,7 +31,7 @@ void	Server::notAMode(std::string const &which, std::string const &input, User &
 	{
 		for (int i = 1; input[i]; i++)
 		{
-			if (input[i] != 'o' || input[i] != 's')
+			if (input[i] != 'o' || input[i] != 'v')
 				_rep.E501(cUser.getFd(), cUser.getNick());
 		}
 	}
@@ -53,38 +53,37 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 	}
 	if (input[1][0] == '#') // mode for a channel
 	{
-		std::cout << "MODE for channel -----\n";
 		//	If <modestring> is not given, the RPL_CHANNELMODEIS (324) numeric is returned.
-		std::vector<Channel>::iterator	it;
-		for (it = _channels.begin(); it != _channels.end(); it++)
-			if (it->getName() == input[1])
+		std::vector<Channel>::iterator	itChan;
+		for (itChan = _channels.begin(); itChan != _channels.end(); itChan++)
+			if (itChan->getName() == input[1])
 				break ;
-		std::cout << "AAA -----\n";
-		if (it == _channels.end())
+		std::cout << RED << itChan->getName() << NO_COLOR << std::endl;
+		if (itChan == _channels.end())
 		{
 			_rep.E403(cUser.getFd(), cUser.getNick(), input[1]); // TOCHECK if enough + if need to substr the '#' from input[1]
 			return ;
 		}
-		std::cout << "BBB -----\n";
-		if (!it->isUser(cUser))
+		if (!itChan->isUser(cUser))
 		{
+			std::cout << "I AM HERE\n";
+			std::vector<User> test = itChan->getUsers();
+			for (std::vector<User>::iterator TEST = test.begin(); TEST != test.end(); TEST++) {
+				std::cout << GREEN << TEST->getNick() << NO_COLOR << std::endl;
+			}
 			_rep.E442(cUser.getFd(), cUser.getNick(), input[1]);
 			return ;
 		}
-		std::cout << "CCC -----\n";
-		if (!it->isOpUser(cUser))
+		if (!itChan->isOpUser(cUser))
 		{
 			_rep.E482(cUser.getFd(), cUser.getNick(), input[1]);
 			return ;
 		}
-		std::cout << "DDD ----- " << input[2][0] << " " << input[2].length() << "\n";
 		if ((input[2][0] != '+' && input[2][0] != '-') || input[2].length() < 2) // TOCHECK
 		{
-			std::cout << "ERROR MODE -----\n";
 			_rep.R324(cUser.getFd(), cUser.getNick(), input[1], input[2], input[3]);
 			return ;
 		}
-		std::cout << "EEE -----\n";
 		notAMode("channel", input[2], cUser);
 		
 		bool	set = false;
@@ -92,8 +91,7 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 			set = true;
 		for (int i = 1; input[2][i]; i++)
 		{
-			std::cout << "in MODE HANDLER -----\n";
-			modeHandler(cUser, *it, input[2][i], input, set);
+			modeHandler(cUser, *itChan, input[2][i], input, set);
 		}
 		//	If the user has permission to change modes on the target,
 		//	the supplied modes will be applied based on the type of the mode (see below).
@@ -107,7 +105,6 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 	}
 	else // mode for a user
 	{
-		std::cout << "MODE for user -----\n";
 		//	If <target> is a nickname that does not exist on the network,
 		//	the ERR_NOSUCHNICK (401) numeric is returned.
 		std::vector<User>::iterator user = _clients.begin();
@@ -154,43 +151,33 @@ void	Server::modeHandler(User &cUser, Channel &cChannel, char &mode, std::vector
 	switch(mode)
 	{
 		case 'b':
-			std::cout << "MODE b -----\n";
 			bMode(cUser, cChannel, input[3], set);
 			break ;
 		case 'i':
-			std::cout << "MODE i -----\n";
 			iMode(cChannel, set);
 			break ;
 		case 'k':
-			std::cout << "MODE k -----\n";
 			kMode(cUser, cChannel, input[3], set);
 			break ;
 		case 'l':
-			std::cout << "MODE l -----\n";
 			lMode(cUser, cChannel, input[3], set);
 			break ;
 		case 'm':
-			std::cout << "MODE m -----\n";
-			mMode(cUser, cChannel, input[3], set);
+			mMode(cUser, cChannel, set);
 			break ;
 		case 'n':
-			std::cout << "MODE n -----\n";
 			nMode(cUser, cChannel, input[3], set);
 			break ;
 		case 'o':
-			std::cout << "MODE o -----\n";
 			oMode(cUser, cChannel, input[3], set);
 			break ;
 		case 't':
-			std::cout << "MODE t -----\n";
 			tMode(cChannel, set);
 			break ;
 		case 'v':
-			std::cout << "MODE v -----\n";
 			vMode(cUser, cChannel, input[3], set);
 			break ;
 		default:
-			std::cout << "MODE default -----\n";
 			return ;
 	}
 	_rep.R324(cUser.getFd(), cUser.getNick(), input[1], input[2], input[3]);
@@ -206,7 +193,6 @@ void	Server::modeHandlerUser(int fd, std::string &input, User &cUser, char &mode
 			oMode(fd, input, cUser);
 			break ;
 		default:
-			std::cout << "MODE default -----\n";
 			return ;
 	}
 }

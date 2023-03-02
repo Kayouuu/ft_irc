@@ -1,10 +1,19 @@
-//
-// Created by lbattest on 2/28/23.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   op.cpp                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dbouron <dbouron@student.42lyon.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/01 10:41:26 by dbouron           #+#    #+#             */
+/*   Updated: 2023/03/01 10:41:26 by dbouron          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
+
 /**
- *
+ * Set chan operator status to a user/users
  * @param input[1] #channel
  * @param input[2] user1,user2,...
  * @param cUser

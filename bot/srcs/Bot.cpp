@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:10:46 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/01 14:09:14 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/01 17:03:05 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	Bot::start()
 void	Bot::shutdown()
 {
 	emit("QUIT IRCBot", _socketFd);
+	close(_socketFd);
 	std::exit(1);
 }
 
@@ -151,7 +152,6 @@ int	Bot::receive(std::string &output, int const &fd)
 	char	buffer[1024 + 1];
 	int		rvalue;
 	int		loop_exit; 
-
 	while (1)
 	{
 		std::memset(&buffer, 1, 1024);
@@ -243,7 +243,7 @@ void	Bot::sendMsg()
 	if (_currChannel == "")
 		return ;
 	std::cout << "Message sent!" << std::endl;
-	emit("NOTICE " + _currChannel + " :" + _announce_msg, _socketFd);
+	emit("PRIVMSG " + _currChannel + " THEMYSTERYMACHINE: " + _announce_msg, _socketFd);
 	emit("PRIVMSG " + _currChannel + " SCOOBY-DOO: " + _scoob_msg, _socketFd);
 	emit("PRIVMSG " + _currChannel + " VELMA: " + _velma_msg, _socketFd);
 	emit("PRIVMSG " + _currChannel + " SHAGGY: " + _shaggy_msg, _socketFd);

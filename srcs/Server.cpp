@@ -184,6 +184,7 @@ void	Server::acceptClient()
 			_clients[i].setFd(new_connection);
 			_clients[i].setRegister(false);
 			_clients[i].setRPassword(false);
+			std::cout << "CONNECTED CLIENTS: " << RED << _connected_clients << NO_COLOR << std::endl;
 			if (_connected_clients == 0)
 				_clients[i].setIrcOp(true);
 			break ;
@@ -267,10 +268,10 @@ void		Server::commandHandler(std::string const &output, int const &current)
 
 	/****************************************************************************************************/
 	// TOREMOVE used only for tests
-	std::cout << "Executed command: " << std::endl;
+	std::cout << CYAN << "Executed command: " << NO_COLOR << std::endl;
 	for (std::vector<std::string>::iterator it = parsed_output.begin(); it != parsed_output.end(); it++)
 	{
-		std::cout << "[" << *it << "]" << std::endl;
+		std::cout << CYAN << "[" << *it << "]" << NO_COLOR << std::endl;
 	}
 	/*****************************************************************************************************/
 

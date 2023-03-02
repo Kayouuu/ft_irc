@@ -37,6 +37,10 @@
 
 //# define MAX_CONNECTIONS 1024
 # define MAX_INCONNECTIONS 50
+# define CYAN "\033[0;36m"
+# define NO_COLOR "\033[0m"
+# define RED "\033[0;31m"
+# define GREEN "\033[0;32m"
 
 class	SocketIO;
 class	Rep;
@@ -53,11 +57,9 @@ class Server
 		SocketIO							_io;
 		std::vector<User>					_clients;
 		std::vector<Channel>				_channels;
-		//char								_buffer[1024];
 		int									_server_fd;
 		int									_connected_clients;
 		struct sockaddr_in					_address;
-		//socklen_t							_addrlen;
 		const int							_port;
 		const std::string					_password;
 		std::map<std::string, cmdHandler>	_commands;
@@ -102,7 +104,7 @@ class Server
 		void	iMode(Channel &cChannel, bool set);
 		void	kMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	lMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
-		void	mMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
+		void	mMode(User &cUser, Channel &cChannel, bool set);
 		void	nMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	oMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	tMode(Channel &cChannel, bool set);

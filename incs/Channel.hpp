@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:43:58 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/23 10:19:30 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/01 14:59:08 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 # include <vector>
 # include "User.hpp"
 # include "NumericReplies.hpp"
+
+# define PURPLE "\033[0;35m"
+# define NO_COLOR "\033[0m"
 
 class User;
 
@@ -42,8 +45,7 @@ class Channel
 		unsigned short		getUsrNbMax() const;
 		bool				getIsTopic() const;
 		char				getChanPrefix();
-		char			 	getUserPrefix(User &cUser, Channel chan);
-		void setName(const std::string &name);
+		char			 	getUserPrefix(User &cUser);
 		void setSubject(const std::string &subject);
 		void setMode(char const &modeName, bool const &isMode);
 		void addUser(User &user);
@@ -52,6 +54,7 @@ class Channel
 		void addOpUser(User &opUser);
 		void banUser(User &user);
 		void unbanUser(User &user);
+		void listBannedUser(Rep &rep, User const &cUser);
 		void setPw(std::string pw);
 		void incrUsrCon();
 		void decrUsrCon();

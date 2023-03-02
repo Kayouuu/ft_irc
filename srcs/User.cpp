@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 11:00:21 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/27 15:04:26 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/03/01 16:30:40 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void	User::setUnusedNick(bool const &input)
 {
 	_unused_nick = input;
 }
-
 
 void User::addOpChannel(Channel &channel)
 {
@@ -222,7 +221,7 @@ bool User::isIrcOp() const
 
 bool User::isChanOp(Channel &channel) {
 	for (std::vector<Channel>::iterator it = _chanOp.begin(); it != _chanOp.end(); it++) {
-		if (*it == channel)
+		if (it->getName() == channel.getName())
 			return true;
 	}
 	return false;
@@ -290,7 +289,7 @@ bool User::isVoicedChan(Channel &channel)
 {
 	for (std::vector<Channel>::iterator it = _voicedChan.begin(); it != _voicedChan.end(); it++)
 	{
-		if (*it == channel)
+		if (it->getName() == channel.getName())
 			return true;
 	}
 	return false;
@@ -300,7 +299,7 @@ bool User::isInviteChan(Channel &inviteChan)
 {
 	for (std::vector<Channel>::iterator it = _inviteChan.begin(); it != _inviteChan.end(); it++)
 	{
-		if (*it == inviteChan)
+		if (it->getName() == inviteChan.getName())
 			return true;
 	}
 	return false;

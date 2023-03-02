@@ -28,4 +28,6 @@ void	Server::userCmd(std::vector<std::string> &input, User &cUser)
 		_rep.R004(cUser.getFd(), cUser.getNick());
 	}
 	cUser.setRegister(true);
+	if (_connected_clients == 1)
+		_rep.R381(cUser.getFd(), cUser.getNick());
 }

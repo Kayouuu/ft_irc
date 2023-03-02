@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 16:03:13 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/23 10:03:07 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/01 15:03:01 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,35 +15,32 @@
 void	Server::bMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
 {
 	// TODO send banlist ??
-	char mode = 'b';
-	std::vector<User>::iterator it;
-	for (it = _clients.begin(); it != _clients.end(); it++)
+	std::vector<User>::iterator itUser;
+	for (itUser = _clients.begin(); itUser != _clients.end(); itUser++)
 	{
-		if (it->getNick() == modeArg)
+		if (itUser->getNick() == modeArg)
 			break ;
 	}
-	if (it != _clients.end())
+	if (itUser != _clients.end())
 	{
-		it->setMode(mode, set);
+		itUser->setMode('b', set);
 		if (set == true)
 		{
-			cChannel.banUser(*it);
-			it->setMode(mode, set);
-			_rep.E474(it->getFd(), it->getNick(), cChannel.getName());
+			cChannel.banUser(*itUser);
+			itUser->setMode('b', set);
+			_rep.E474(cUser.getFd(), itUser->getNick(), cChannel.getName());
 		}
 		else
 		{
-			cChannel.unbanUser(*it);
-			it->setMode(mode, set);
+			cChannel.unbanUser(*itUser);
+			itUser->setMode('b', set);
 			// TOCHECK if need to send error msg
 		}
 	}
+	else if (modeArg == "")
+		cChannel.listBannedUser(_rep, cUser);
 	else
-	{
-		// TODO user not found
-		// RPL_BANLIST
-		// RPL_ENDBANLIST
-	}
+		_rep.E401(cUser.getFd(), cUser.getNick(), modeArg);
 }
 
 void Server::iMode(Channel &cChannel, bool set)
@@ -88,7 +85,7 @@ void Server::lMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 	}
 }
 
-void Server::mMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
+void Server::mMode(User &cUser, Channel &cChannel, bool set)
 {
 	char mode = 'm';
 

@@ -25,6 +25,11 @@ void    Server::usrJoinChan(User &cUser, Channel &chan)
     noticeCmd(input, cUser);
 }
 
+/**
+ * Create a channel or join the channel
+ * @param input
+ * @param cUser
+ */
 void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 {
 	std::vector<std::string>::iterator it = input.begin();
@@ -104,11 +109,13 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 			if (itChannel == _channels.end()) { /*Channel not created*/
 				return;
 			}
+			cUser.addOpChannel(*itChannel); //FAIT TOUT BUGGER mais pourquoiiiiiiiiiiiiiiiiii ?
+			std::cout << RED << cUser.getNick() << " " << newChan.getName() << " " << cUser.isChanOp(newChan) << NO_COLOR << std::endl;
 			cUser.incrChanConnected();
 			std::vector<User> users = itChannel->getUsers();
 			for (std::vector<User>::iterator itU = users.begin(); itU != users.end(); itU++) {
 				if (cUser.getFd() != -1) {
-					_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix(*itU, *itChannel));
+					_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix(*itU));
 				}
 			}
 			_rep.R366(cUser.getFd(), cUser.getNick(), itChannel->getName());
@@ -163,7 +170,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 			usrJoinChan(cUser, *itChannel);
 			std::vector<User> users = itChannel->getUsers();
 			for (std::vector<User>::iterator itU = users.begin(); itU < users.end(); itU++) {
-				_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix(*itU, *itChannel));
+				_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix(*itU));
 			}
 			_rep.R366(cUser.getFd(), cUser.getNick(), itChannel->getName());
 			_io.emit(":" + cUser.getNick() + " JOIN " + itChannel->getName(),cUser.getFd());

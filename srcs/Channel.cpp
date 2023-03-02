@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:44:15 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/23 10:20:17 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/01 15:00:20 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ bool Channel::isUser(User &user)
 {
 	for (std::vector<User>::iterator it = _users.begin(); it < _users.end(); it++)
 	{
-		if (user == *it)
+		if (user.getNick() == it->getNick())
 			return true;
 	}
 	return false;
@@ -100,7 +100,7 @@ bool Channel::isOpUser(User &user)
 {
 	for (std::vector<User>::iterator it = _opUsers.begin(); it < _opUsers.end(); it++)
 	{
-		if (user == *it)
+		if (user.getNick() == it->getNick())
 			return true;
 	}
 	return false;
@@ -110,7 +110,7 @@ bool Channel::isBanned(User &user)
 {
 	for (std::vector<User>::iterator it = _bannedUsers.begin(); it < _bannedUsers.end(); it++)
 	{
-		if (user == *it)
+		if (user.getNick() == it->getNick())
 			return true;
 	}
 	return false;
@@ -145,7 +145,7 @@ char Channel::getChanPrefix()
 	return '=';
 }
 
-char Channel::getUserPrefix(User &cUser, Channel chan)
+char Channel::getUserPrefix(User &cUser)
 {
 	std::vector<User>::iterator it;
 	for (it = _users.begin(); it != _users.end(); it++) {
@@ -154,18 +154,16 @@ char Channel::getUserPrefix(User &cUser, Channel chan)
 	}
 	if (it == _users.end())
 		return 'u';
-	if (isOpUser(*it))
+	if (cUser.isIrcOp())
+		return '&';
+	if (isOpUser(*it)) {
 		return '@';
-	if (it->isMode('v') == true) {
-		if (it->isVoicedChan(chan))
+	}
+	if (it->isMode('v')) {
+		if (it->isVoicedChan(*this))
 			return '+';
 	}
 	return 'u';
-}
-
-void Channel::setName(const std::string &name)
-{
-	_name = name;
 }
 
 void Channel::setSubject(const std::string &subject)
@@ -210,6 +208,7 @@ void Channel::removeOpUser(User &user)
 void Channel::addOpUser(User &opUser)
 {
 	_opUsers.push_back(opUser);
+	//opUser.setMode('v', true);
 }
 
 void Channel::banUser(User &user)
@@ -227,6 +226,15 @@ void Channel::unbanUser(User &user)
 			break ;
 		}
 	}
+}
+
+void Channel::listBannedUser(Rep &rep, User const &cUser)
+{
+	for (std::vector<User>::iterator it = _bannedUsers.begin(); it != _bannedUsers.end(); it++)
+	{
+		rep.R367(cUser.getFd(), cUser.getNick(), this->getName(), it->getNick());
+	}
+	rep.R368(cUser.getFd(), cUser.getNick(), this->getName());
 }
 
 void Channel::setPw(std::string pw)
