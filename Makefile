@@ -19,11 +19,11 @@ NAME_BONUS = theMysteryMachine
 
 SRCS =	$(shell find srcs -name "*.cpp")
 HEADFILE = $(shell find incs -name "*.hpp")
-DIR_OBJ = .objs
+DIR_OBJ = srcs/.objs
 
 SRCS_BONUS =	$(shell find bonus/srcs -name "*.cpp")
 HEADFILE_BONUS = $(shell find bonus/incs -name "*.hpp")
-DIR_OBJ_BONUS = .objs_bonus
+DIR_OBJ_BONUS = bonus/srcs/.objs_bonus
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS = -std=c++98
@@ -59,18 +59,20 @@ NO_COLOR		=	\033[0m
 
 .DEFAULT_GOAL = all
 
-OBJS = $(SRCS:.cpp=.o)
-OBJS_BONUS = $(SRCS_BONUS:.cpp=.o)
+OBJS = $(patsubst srcs/%.cpp, $(DIR_OBJ)/%.o, $(SRCS))
+OBJS_BONUS = $(patsubst bonus/srcs/%.cpp, $(DIR_OBJ_BONUS)/%.o, $(SRCS_BONUS))
 
 all: $(NAME)
 
 bonus: $(NAME_BONUS)
 
-srcs/%.o: srcs/%.cpp $(HEADFILE) Makefile
+$(DIR_OBJ)/%.o: srcs/%.cpp $(HEADFILE) $(DIR_OBJ) Makefile
+	mkdir -p $(shell dirname $@)
 	c++ $(CFLAGS) -o $@ -c $<
 	@printf "\r$(LIGHT_GRAY)Loading...$(NO_COLOR)"
 
-bonus/srcs/%.o: bonus/srcs/%.cpp $(HEADFILE_BONUS) Makefile
+$(DIR_OBJ_BONUS)/%.o: bonus/srcs/%.cpp $(HEADFILE_BONUS) $(DIR_OBJ_BONUS) Makefile
+	mkdir -p $(shell dirname $@)
 	c++ $(CFLAGS) -o $@ -c $<
 	@printf "\r$(LIGHT_GRAY)Loading bonus...$(NO_COLOR)"
 
@@ -81,9 +83,6 @@ $(NAME): $(OBJS) $(HEADFILE)
 $(NAME_BONUS): $(OBJS_BONUS) $(HEADFILE_BONUS)
 	c++ $(CFLAGS) -o $(NAME_BONUS) $(SRCS_BONUS)
 	@printf "\r$(LIGHT_GREEN)➞$(NO_COLOR) Compiled with bonus $(LIGHT_GREEN)✔$(NO_COLOR)\n"
-
-$(DIR_OBJ)/%.o: $(SRCS) $(HEADFILE) Makefile | $(DIR_OBJ)
-	c++ $(CFLAGS) -I $(DIR_OBJ)
 
 $(DIR_OBJ):
 	mkdir -p $(DIR_OBJ)
