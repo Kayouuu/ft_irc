@@ -108,8 +108,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 			if (itChannel == _channels.end()) { /*Channel not created*/
 				return;
 			}
-			cUser.addOpChannel(*itChannel); //FAIT TOUT BUGGER mais pourquoiiiiiiiiiiiiiiiiii ?
-			std::cout << RED << cUser.getNick() << " " << newChan.getName() << " " << cUser.isChanOp(newChan) << NO_COLOR << std::endl;
+			cUser.addOpChannel(*itChannel);
 			std::vector<User> users = itChannel->getUsers();
 			for (std::vector<User>::iterator itU = users.begin(); itU != users.end(); itU++) {
 				if (cUser.getFd() != -1) {

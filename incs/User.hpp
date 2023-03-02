@@ -44,7 +44,7 @@ class User
 
 	public:
 		User();
-		User(const std::string &_nick, const std::string& _user);
+		User(const std::string &nick, const std::string &user);
 		User(const User &src);
 		virtual ~User();
 

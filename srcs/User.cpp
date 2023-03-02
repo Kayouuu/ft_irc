@@ -14,15 +14,16 @@
 
 User::User() : _nick(""), _user(""), _prefix("") { _fd = -1; _right_password = false; _is_registered = false; _chanConnected = 0; _unused_nick = false; _initConv = false; }
 
-User::User(const std::string &_nick, const std::string &_user)
+User::User(const std::string &nick, const std::string &user)
 {
-	this->_nick = _nick;
-	this->_user = _user;
-	this->_right_password = false;
-	this->_is_registered = false;
-	this->_unused_nick = false;
-	this->_chanConnected = 0;
-	this->_initConv = false;
+	_nick = nick;
+	_user = user;
+	_right_password = false;
+	_is_registered = false;
+	_unused_nick = false;
+	_chanConnected = 0;
+	_initConv = false;
+	_ircOp = false;
 	_mode.insert(std::pair<char, bool>('o', false));
 	_mode.insert(std::pair<char, bool>('v', false));
 }
