@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 16:03:13 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/01 15:03:01 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/02 15:07:21 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	Server::bMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
 {
-	// TODO send banlist ??
 	std::vector<User>::iterator itUser;
 	for (itUser = _clients.begin(); itUser != _clients.end(); itUser++)
 	{

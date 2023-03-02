@@ -6,12 +6,12 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 14:06:27 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/23 08:49:03 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/02 15:05:30 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
-//TODO check for channel
+
 void Server::noticeCmd(std::vector<std::string> &input, User &cUser) {
     std::string msg;
     std::vector<std::string>::iterator it = input.begin();

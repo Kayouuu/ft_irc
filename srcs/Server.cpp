@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/02 12:04:51 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/02 15:03:22 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,7 +270,7 @@ void		Server::commandHandler(std::string const &output, int const &current)
 		parsed_output.push_back(tmp);
 
 	/****************************************************************************************************/
-	// TOREMOVE used only for tests
+	// TODO remove, used only for tests
 	std::cout << CYAN << "Executed command: " << NO_COLOR << std::endl;
 	for (std::vector<std::string>::iterator it = parsed_output.begin(); it != parsed_output.end(); it++)
 	{
