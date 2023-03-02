@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 11:00:21 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/01 16:30:40 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/02 11:44:06 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,9 @@ void User::incrChanConnected() {
 	_chanConnected++;
 }
 
+void User::decrChanConnected() {
+	_chanConnected--;
+}
 void User::resetUser() {
 	std::map<char, bool>::iterator it = _mode.find('o');
 	it->second = false;

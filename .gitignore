@@ -5,6 +5,7 @@
 # VS Code
 .vscode/settings.json
 .vscode/
+.idea/
 
 # specific files
 test.cpp
@@ -44,3 +45,4 @@ TODO.txt
 *.out
 *.app
 ircserv
+theMysteryMachine

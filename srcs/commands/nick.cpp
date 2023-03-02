@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:10:55 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/01 16:32:15 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/02 14:46:01 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 void	Server::nickCmd(std::vector<std::string> &input, User &cUser)
 {
+	bool	set = true;
 	if (input[1] == "")
 	{
 		_rep.E431(cUser.getFd(), cUser.getNick());
@@ -30,14 +31,15 @@ void	Server::nickCmd(std::vector<std::string> &input, User &cUser)
 		if (it->getNick() == input[1])
 		{
 			_rep.E433(cUser.getFd(), cUser.getNick(), input[1]);
-			return;
+			set = false;
+			break ;
 		}
 	}
-	if (cUser.getRegister())
+	if (cUser.getRegister() && set == true)
 	{
 		_io.emit(":" + cUser.getNick() + " NICK " + input[1], cUser.getFd());
 		cUser.setNick(input[1]);
-		cUser.setUnusedNick(true);
+		cUser.setUnusedNick(set);
 		_rep.R001(cUser.getFd(), cUser.getNick());
 		_rep.R002(cUser.getFd(), cUser.getNick(), "ScoobyIRC", "1.0");
 		_rep.R003(cUser.getFd(), cUser.getNick(), _date);
@@ -45,7 +47,7 @@ void	Server::nickCmd(std::vector<std::string> &input, User &cUser)
 		return ;
 	}
 	cUser.setNick(input[1]);
-	cUser.setUnusedNick(true);
+	cUser.setUnusedNick(set);
 	for (std::vector<User>::iterator itUser = _clients.begin(); itUser != _clients.end(); itUser++)
 		if (itUser->getNick() == cUser.getNick())
 			itUser->setNick(input[1]);
