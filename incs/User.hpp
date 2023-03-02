@@ -68,6 +68,7 @@ class User
 		void	setRPassword(bool const &input);
 		void	setUnusedNick(bool const &input);
 		void 	incrChanConnected();
+		void	decrChanConnected();
 		void	resetUser();
 		void	setInitConv(bool value);
 

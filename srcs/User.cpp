@@ -130,6 +130,9 @@ void User::incrChanConnected() {
 	_chanConnected++;
 }
 
+void User::decrChanConnected() {
+	_chanConnected--;
+}
 void User::resetUser() {
 	std::map<char, bool>::iterator it = _mode.find('o');
 	it->second = false;

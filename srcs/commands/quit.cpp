@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:40:03 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/02 11:47:09 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/02 13:55:53 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,16 @@ void	Server::quitCmd(std::vector<std::string> &input, User &cUser)
 {
 	std::vector<Channel>::iterator itChan = _channels.begin();
     for (; itChan != _channels.end(); itChan++) {
-        if (!itChan->isUser(cUser))
-            continue;
-        if (itChan->isOpUser(cUser))
-            itChan->removeOpUser(cUser);
-        itChan->removeUser(cUser);
-        itChan->decrUsrCon();
+		if(itChan->getUsrCon() - 1 == 0)
+			itChan->~Channel();
+		else {
+			if (!itChan->isUser(cUser))
+				continue;
+			if (itChan->isOpUser(cUser))
+				itChan->removeOpUser(cUser);
+			itChan->removeUser(cUser);
+			itChan->decrUsrCon();
+		}
     }
     std::vector<User>::iterator itUser = _clients.begin();
     for (; itUser != _clients.end(); itUser++)
