@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/01 14:07:37 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/02 12:04:51 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ void	Server::acceptClient()
 			_clients[i].setFd(new_connection);
 			_clients[i].setRegister(false);
 			_clients[i].setRPassword(false);
-			std::cout << "CONNECTED CLIENTS: " << RED << _connected_clients << NO_COLOR << std::endl;
+			// std::cout << "CONNECTED CLIENTS: " << RED << _connected_clients << NO_COLOR << std::endl;
 			if (_connected_clients == 0)
 				_clients[i].setIrcOp(true);
 			break ;
@@ -202,14 +202,17 @@ void	Server::manageClient(int &index)
 	rvalue = _io.receive(output, _clients[index].getFd());
 	if (rvalue == 0)
 	{
-		close(_clients[index].getFd());
-		_clients[index].setFd(-1);
-		_clients[index].setNick("");
-		_clients[index].setPrefix("");
-		_clients[index].setUser("");
-		_clients[index].setRegister(false);
-		_clients[index].setRPassword(false);
-		_connected_clients--;
+		std::cout << "QUIT" << std::endl;
+		std::vector<std::string>	tmp;
+		quitCmd(tmp, _clients[index]);
+		// close(_clients[index].getFd());
+		// _clients[index].setFd(-1);
+		// _clients[index].setNick("");
+		// _clients[index].setPrefix("");
+		// _clients[index].setUser("");
+		// _clients[index].setRegister(false);
+		// _clients[index].setRPassword(false);
+		// _connected_clients--;
 	}
 	else if (rvalue > 0)
 	{
@@ -276,6 +279,8 @@ void		Server::commandHandler(std::string const &output, int const &current)
 	/*****************************************************************************************************/
 
 	// Find the command by his name, needs to be registered to use them excepts the necessary commands to log in
+	if (parsed_output.size() == 0)
+		return ;
 	if (parsed_output[0] == "PING")
 		_io.emit("PONG " + parsed_output[1], current);
 	if (_commands.find(parsed_output[0]) != _commands.end())
@@ -300,5 +305,4 @@ void	Server::shutdown()
 	_channels.clear();
 	_clients.clear();
 	_commands.clear();
-	std::exit(1);
 }

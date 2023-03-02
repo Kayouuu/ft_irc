@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:11:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/01 16:42:05 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/02 12:11:23 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@
 #include <vector>
 #include <ctime>
 #include <cstring>
+#include <cstdlib>
 #include <iostream>
+#include <cerrno>
+#include <cstdio>
 
 #include <sys/socket.h>
 #include <sys/select.h>

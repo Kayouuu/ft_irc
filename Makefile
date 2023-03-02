@@ -6,12 +6,12 @@
 #    By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/18 14:38:40 by psaulnie          #+#    #+#              #
-#    Updated: 2023/02/22 15:32:45 by psaulnie         ###   ########.fr        #
+#    Updated: 2023/03/02 12:12:45 by psaulnie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ircserv
-NAME_BONUS = ircserv_bonus
+NAME_BONUS = theMysteryMachine
 
 # **************************************************************************** #
 #                               FILES and PATHS                                #
@@ -21,9 +21,9 @@ SRCS =	$(shell find srcs -name "*.cpp")
 HEADFILE = $(shell find incs -name "*.hpp")
 DIR_OBJ = .objs
 
-#SRCS_BONUS =	$(shell find bonus/srcs -name "*.cpp")
-#HEADFILE_BONUS = $(shell find bonus/incs -name "*.hpp")
-#DIR_OBJ_BONUS = .objs_bonus
+SRCS_BONUS =	$(shell find bonus/srcs -name "*.cpp")
+HEADFILE_BONUS = $(shell find bonus/incs -name "*.hpp")
+DIR_OBJ_BONUS = .objs_bonus
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS = -std=c++98

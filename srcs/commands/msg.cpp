@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/03/01 16:31:32 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/02 11:12:19 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
 				return;
 		}
 		if (itChannel->isMode('m')) {
-			std::cout << "--chan mode +m--" << cUser.isVoicedChan(*itChannel) << " " << cUser.isChanOp(*itChannel) << "\n";
-			std::vector<Channel> opChanTEST = cUser.getOpChannels();
-			for (std::vector<Channel>::iterator itTEST = opChanTEST.begin(); itTEST != opChanTEST.end(); itTEST++)
-				std::cout << GREEN << itTEST->getName() << NO_COLOR << std::endl;
+			// std::cout << "--chan mode +m--" << cUser.isVoicedChan(*itChannel) << " " << cUser.isChanOp(*itChannel) << "\n";
+			// std::vector<Channel> opChanTEST = cUser.getOpChannels();
+			// for (std::vector<Channel>::iterator itTEST = opChanTEST.begin(); itTEST != opChanTEST.end(); itTEST++)
+			// 	std::cout << GREEN << itTEST->getName() << NO_COLOR << std::endl;
 			if (!cUser.isVoicedChan(*itChannel) && !cUser.isChanOp(*itChannel)){
 				std::cout << "je return apres le mode +m\n";
 				return;
