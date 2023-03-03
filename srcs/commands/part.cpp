@@ -54,6 +54,12 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
 				_rep.E442(cUser.getFd(), cUser.getNick(), *itListChannel); // ERR_NOTONCHANNEL
 				continue ; // TOCHECK maybe return ? Either we continue browsing the list of channels or we stop when a channel don't exist
 			}
+			std::vector<User> chanUsers = itChannel->getUsers();
+			for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
+			{
+				if (itChanUser->getNick() != cUser.getNick())
+					_io.emit(":" + cUser.getNick() + " PART " + itChannel->getName(),itChanUser->getFd());
+			}
 			// if(itChannel->getUsrCon() - 1 == 0)
 			// 	itChannel->~Channel();
 			// else {

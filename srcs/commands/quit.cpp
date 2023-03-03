@@ -16,6 +16,12 @@ void	Server::quitCmd(std::vector<std::string> &input, User &cUser)
 {
 	std::vector<Channel>::iterator itChan = _channels.begin();
     for (; itChan != _channels.end(); itChan++) {
+		std::vector<User> chanUsers = itChan->getUsers();
+		for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
+		{
+			if (itChanUser->getNick() != cUser.getNick())
+				_io.emit(":" + cUser.getNick() + " PART " + itChan->getName(),itChanUser->getFd());
+		}
 		if(itChan->getUsrCon() - 1 == 0)
 			itChan->~Channel();
 		else {

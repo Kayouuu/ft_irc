@@ -71,7 +71,7 @@ class Server
 		void	manageClient(int &index);
 		void	commandHandler(std::string const &output, int const &current);
 		void	modeHandler(User &cUser, Channel &cChannel, char &mode, std::vector<std::string> &input, bool set);
-		void	modeHandlerUser(int fd, std::string &input, User &cUser, char &mode);
+		void	modeHandlerUser(std::string &input, User &cUser, char &mode);
 		void	notAMode(std::string const &which, std::string const &input, User &cUser);
 
 	public:
@@ -112,7 +112,7 @@ class Server
 		void	vMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 
 		//user mode
-		void 	oMode(int fd, std::string &input, User &cUser);
+		void 	oMode(std::string &input, User &cUser);
 
 		void    usrJoinChan(User &cUser, Channel &chan);
 

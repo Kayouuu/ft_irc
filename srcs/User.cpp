@@ -241,13 +241,16 @@ User &User::operator=(const User &rhs)
 	_prefix = rhs._prefix;
 	_mode = rhs._mode;
 	_voicedChan = rhs._voicedChan;
+	_inviteChan = rhs._inviteChan;
 	_chanOp = rhs._chanOp;
 	_ircOp = rhs._ircOp;
 	_is_registered = rhs._is_registered;
 	_right_password = rhs._right_password;
 	_unused_nick = rhs._unused_nick;
 	_address = rhs._address;
+	_addrlen = rhs._addrlen;
 	_chanConnected = rhs._chanConnected;
+	_initConv = rhs._initConv;
 	return *this;
 }
 

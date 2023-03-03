@@ -93,6 +93,7 @@ $(DIR_OBJ_BONUS):
 clean:
 	rm -rf $(OBJS)
 	rm -rf $(OBJS_BONUS)
+	rm -rf $(DIR_OBJ) $(DIR_OBJ_BONUS)
 	@printf "\r$(LIGHT_BLUE)➞$(NO_COLOR) Cleaned $(LIGHT_BLUE)✔$(NO_COLOR)\n"
 
 fclean: clean

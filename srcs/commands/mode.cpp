@@ -21,9 +21,9 @@ void	Server::notAMode(std::string const &which, std::string const &input, User &
 	{
 		for (int i = 1; input[i]; i++)
 		{
-			if (input[i] != 'k' || input[i] != 'l' || input[i] != 'm'
-					|| input[i] != 'n' || input[i] != 'o' || input[i] != 'p'
-					|| input[i] != 't' || input[i] != 'v')
+			if (input[i] != 'i' || input[i] != 'k' || input[i] != 'l'
+					|| input[i] != 'm' || input[i] != 'n' || input[i] != 'o'
+					|| input[i] != 'p' || input[i] != 't' || input[i] != 'v')
 				_rep.E501(cUser.getFd(), cUser.getNick());
 		}
 	}
@@ -74,7 +74,7 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 			_rep.E442(cUser.getFd(), cUser.getNick(), input[1]);
 			return ;
 		}
-		if (!itChan->isOpUser(cUser))
+		if (!itChan->isOpUser(cUser) || !cUser.isIrcOp())
 		{
 			_rep.E482(cUser.getFd(), cUser.getNick(), input[1]);
 			return ;
@@ -86,7 +86,7 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 		}
 		notAMode("channel", input[2], cUser);
 		
-		bool	set = false;
+		bool set = false;
 		if (input[2][0] == '+')
 			set = true;
 		for (int i = 1; input[2][i]; i++)
@@ -107,8 +107,7 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 	{
 		//	If <target> is a nickname that does not exist on the network,
 		//	the ERR_NOSUCHNICK (401) numeric is returned.
-		std::vector<User>::iterator user = _clients.begin();
-		for (user; user < _clients.end(); user++)
+		for (std::vector<User>::iterator user = _clients.begin(); user < _clients.end(); user++)
 		{
 			if (user->getNick() == input[1])
 			{
@@ -129,10 +128,9 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 
 				notAMode("user", input[2], cUser);
 
-				if (input[2][0] == '+')
 				for (int i = 1; input[2][i]; i++)
 				{
-					modeHandlerUser(cUser.getFd(), input[2], cUser, input[2][i]);
+					modeHandlerUser(input[2], cUser, input[2][i]);
 					return;
 				}
 			}
@@ -185,19 +183,21 @@ void	Server::modeHandler(User &cUser, Channel &cChannel, char &mode, std::vector
 		input[i].clear();
 }
 
-void	Server::modeHandlerUser(int fd, std::string &input, User &cUser, char &mode)
+void	Server::modeHandlerUser(std::string &input, User &cUser, char &mode)
 {
-	switch(mode)
-	{
-		case 'o':
-			oMode(fd, input, cUser);
-			break ;
-		default:
-			return ;
-	}
+	if (mode == 'o')
+		oMode( input, cUser);
 }
 
-void Server::oMode(int fd, std::string &input, User &cUser)
+/**
+ * Operator flag.
+ * If a user attempts to make themselves an operator using the "+o"
+ * flag, the attempt should be ignored.  There is no restriction,
+ * however, on anyone `deopping' themselves (using "-o").
+ * @param input
+ * @param cUser
+ */
+void Server::oMode(std::string &input, User &cUser)
 {
 	int i = 0;
 	if (input[i] == '-')

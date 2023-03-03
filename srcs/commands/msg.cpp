@@ -13,7 +13,8 @@
 #include "../../incs/Server.hpp"
 
 /**
- *
+ * Send a message to a #channel or a user
+ * Paramètres: <destinataire>{,<destinataire>} <texte à envoyer>
  * @param input[1] #channel,... OR user,...
  * @param input[2,...] msg
  * @param cUser
