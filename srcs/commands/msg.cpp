@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/03/02 11:12:19 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:28:29 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
 				return;
 		}
 		if (itChannel->isMode('m')) {
+            // TODO remove
 			// std::cout << "--chan mode +m--" << cUser.isVoicedChan(*itChannel) << " " << cUser.isChanOp(*itChannel) << "\n";
 			// std::vector<Channel> opChanTEST = cUser.getOpChannels();
 			// for (std::vector<Channel>::iterator itTEST = opChanTEST.begin(); itTEST != opChanTEST.end(); itTEST++)

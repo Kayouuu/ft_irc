@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:02:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/02 14:39:27 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:26:00 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
     }
     str.clear();
     std::vector<std::string>::iterator itKey = listKey.begin();
-    // std::cout << "fin parsing\n";
     for (std::vector<std::string>::iterator itLst = listChan.begin(); itLst < listChan.end(); itLst++) {
         str = *itLst;
         if(str[0] != '#'){
@@ -109,7 +108,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 			if (itChannel == _channels.end()) { /*Channel not created*/
 				return;
 			}
-			cUser.addOpChannel(*itChannel); //FAIT TOUT BUGGER mais pourquoiiiiiiiiiiiiiiiiii ?
+			cUser.addOpChannel(*itChannel); // TODO FAIT TOUT BUGGER mais pourquoiiiiiiiiiiiiiiiiii ?
 			std::cout << RED << cUser.getNick() << " " << newChan.getName() << " " << cUser.isChanOp(newChan) << NO_COLOR << std::endl;
 			cUser.incrChanConnected();
 			std::vector<User> users = itChannel->getUsers();
@@ -164,7 +163,6 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 					break;
 			}
 			if (itChannel == _channels.end()){
-				// std::cout << "probleme de type pas cree";
 				return;
 			}
 			usrJoinChan(cUser, *itChannel);

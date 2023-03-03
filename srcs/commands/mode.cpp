@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 13:47:31 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/23 08:48:39 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:27:55 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 		_rep.E461(cUser.getFd(), cUser.getNick(), input[0]); // ERR_NEEDMOREPARAMS
 		return;
 	}
-	if (input[1][0] == '#') // mode for a channel
+	if (input[1][0] == '#') // Mode for a channel
 	{
 		//	If <modestring> is not given, the RPL_CHANNELMODEIS (324) numeric is returned.
 		std::vector<Channel>::iterator	itChan;
@@ -66,11 +66,11 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 		}
 		if (!itChan->isUser(cUser))
 		{
-			std::cout << "I AM HERE\n";
-			std::vector<User> test = itChan->getUsers();
-			for (std::vector<User>::iterator TEST = test.begin(); TEST != test.end(); TEST++) {
-				std::cout << GREEN << TEST->getNick() << NO_COLOR << std::endl;
-			}
+			// TODO remove
+			// std::vector<User> test = itChan->getUsers();
+			// for (std::vector<User>::iterator TEST = test.begin(); TEST != test.end(); TEST++) {
+			// 	std::cout << GREEN << TEST->getNick() << NO_COLOR << std::endl;
+			// }
 			_rep.E442(cUser.getFd(), cUser.getNick(), input[1]);
 			return ;
 		}
@@ -93,17 +93,8 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 		{
 			modeHandler(cUser, *itChan, input[2][i], input, set);
 		}
-		//	If the user has permission to change modes on the target,
-		//	the supplied modes will be applied based on the type of the mode (see below).
-		//	For type A, B, and C modes, arguments will be sequentially obtained from <mode arguments>.
-		//	If a type B or C mode does not have a parameter when being set, the server MUST ignore that mode.
-		//	If a type A mode has been sent without an argument, the contents of the list MUST be sent to the user,
-		//	unless it contains sensitive information the user is not allowed to access.
-		//	When the server is done processing the modes,
-		//	a MODE command is sent to all members of the channel containing the mode changes.
-		//	Servers MAY choose to hide sensitive information when sending the mode changes.
 	}
-	else // mode for a user
+	else // Mode for an user
 	{
 		//	If <target> is a nickname that does not exist on the network,
 		//	the ERR_NOSUCHNICK (401) numeric is returned.

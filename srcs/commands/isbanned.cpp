@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   isbanned.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 11:50:06 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/27 14:13:40 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:25:29 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void Server::isbannedCmd(std::vector<std::string> &input, User &cUser)
                 return ;
             }
             if (itChan->isBanned(*itUsers))
-                _rep.R367(cUser.getFd(), cUser.getNick(), input[1], input[2]);//msg is ban;
+                _rep.R367(cUser.getFd(), cUser.getNick(), input[1], input[2]);
             else
                 ;//TODO? msg is NOT ban
         }

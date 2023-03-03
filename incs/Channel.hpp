@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:43:58 by dbouron           #+#    #+#             */
-/*   Updated: 2023/03/01 14:59:08 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:21:44 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,4 @@ class Channel
 		Channel();
 };
 
-#endif //CHANNEL_HPP
+#endif // CHANNEL_HPP

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   NumericReplies.cpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 15:41:10 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/27 14:17:06 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:22:25 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ void	Rep::R322(int const &fd, const std::string &cNick, int nuser, const std::st
 	output << "322 " << cNick << " " << chanName << " " << nuser << " :" << topic;
 	std::string str = output.str();
 	io.emit(str, fd);
-	clearBuffer();// 
+	clearBuffer();
 }
 
 void	Rep::R323(int const &fd, const std::string &cNick)

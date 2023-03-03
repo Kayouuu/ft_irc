@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   NumericReplies.hpp                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:31:44 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/27 15:21:30 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:21:22 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 
 class	SocketIO;
 
-# define USERMODE_CHARLIST "iswo"
-# define CHANNELMODE_CHARLIST "opsitnmlbvk"
+# define USERMODE_CHARLIST "o"
+# define CHANNELMODE_CHARLIST "ositnmlbvk"
 # define NR_ARG int const &fd, const std::string& cNick
 
 # include <ctime>

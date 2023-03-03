@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 16:03:13 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/02 15:07:21 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:20:14 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	Server::bMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 		{
 			cChannel.unbanUser(*itUser);
 			itUser->setMode('b', set);
-			// TOCHECK if need to send error msg
+			// TODO check if need to send error msg
 		}
 	}
 	else if (modeArg == "")
@@ -63,7 +63,7 @@ void Server::lMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 {
 	std::cout << "----------------HOHO----------------\n";
 	cChannel.setMode('l', set);
-	for (int i = 0; modeArg[i]; i++) //if mode argument is not valid, displays an error
+	for (int i = 0; modeArg[i]; i++) // If the mode argument is not valid, displays an error
 	{
 		std::cout << "I'm in l mode, in for\n";
 		if (!isdigit(modeArg[i]))
