@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:02:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/03 10:26:00 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:31:16 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 			if (itChannel == _channels.end()) { /*Channel not created*/
 				return;
 			}
-			cUser.addOpChannel(*itChannel); // TODO FAIT TOUT BUGGER mais pourquoiiiiiiiiiiiiiiiiii ?
-			std::cout << RED << cUser.getNick() << " " << newChan.getName() << " " << cUser.isChanOp(newChan) << NO_COLOR << std::endl;
+			cUser.addOpChannel(*itChannel);
 			cUser.incrChanConnected();
 			std::vector<User> users = itChannel->getUsers();
 			for (std::vector<User>::iterator itU = users.begin(); itU != users.end(); itU++) {
