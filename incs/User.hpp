@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbattest <lbattest@student.42.fr>          +#+  +:+       +#+        */
+/*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:58:58 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/27 14:52:39 by lbattest         ###   ########.fr       */
+/*   Updated: 2023/03/03 11:53:51 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 # include <iostream>
 # include <vector>
-# include "Channel.hpp"
 # include <netinet/in.h>
-// #include "Server.hpp"
+# include <unistd.h> 
+# include "Channel.hpp"
 # define MAX_CHAN 50
 
 class Channel;
@@ -32,8 +32,8 @@ class User
 		std::map<char, bool>	_mode;
 		std::vector<Channel>	_voicedChan;
 		std::vector<Channel>	_inviteChan;
-		std::vector<Channel>	_chanOp;//array of channels in which the user is operator
-		bool					_ircOp;//true: user is irc operator, false: user is not irc operator
+		std::vector<Channel>	_chanOp; // Array of channels in which the user is operator
+		bool					_ircOp; // true: user is irc operator, false: user is not irc operator
 		bool					_is_registered;
 		bool					_right_password;
 		bool					_unused_nick;

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:02:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/02 14:39:27 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 14:08:32 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,20 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
         _rep.E461(cUser.getFd(), cUser.getNick(), "JOIN");
         return;
     }
+    if (input[1][0] != '#')
+    {
+        std::vector<User>::iterator it = _clients.begin();
+        for (; it != _clients.end(); it++)
+        {
+            if (it->getNick() == input[1])
+                break ;
+        }
+        if (it == _clients.end())
+        {
+            _rep.E401(cUser.getFd(), cUser.getNick(), input[1]);
+            return ;
+        }
+    }
     std::vector<Channel>::iterator itChannel = _channels.begin();
     std::string str = *it;
     std::string tmp;
@@ -81,7 +95,6 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
     }
     str.clear();
     std::vector<std::string>::iterator itKey = listKey.begin();
-    // std::cout << "fin parsing\n";
     for (std::vector<std::string>::iterator itLst = listChan.begin(); itLst < listChan.end(); itLst++) {
         str = *itLst;
         if(str[0] != '#'){
@@ -161,7 +174,6 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 				if (itChannel->getName() == *itLst)
 					break;
 			if (itChannel == _channels.end()){
-				// std::cout << "probleme de type pas cree";
 				return;
 			}
 			usrJoinChan(cUser, *itChannel);

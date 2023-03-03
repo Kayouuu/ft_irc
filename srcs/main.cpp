@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:12:10 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/02 12:04:17 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/02 15:03:08 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 			return (1);
 		}
 	}
-	port = std::atoi(argv[1]); // TOREPLACE with std::strtol ((int)strtol(s, &stopped, 10); if (*stopped) { /* handle error */ })
+	port = std::atoi(argv[1]);
 	if (port < 0 || port > 65535)
 	{
 		std::cout << "Port range must be between 0 and 65535" << std::endl;

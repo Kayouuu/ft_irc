@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/02 11:22:25 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 11:47:54 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # include "Channel.hpp"
 # include "NumericReplies.hpp"
 
-//# define MAX_CONNECTIONS 1024
+# define MAX_CONNECTIONS 1024
 # define MAX_INCONNECTIONS 50
 # define CYAN "\033[0;36m"
 # define NO_COLOR "\033[0m"
@@ -49,8 +49,6 @@ class	User;
 
 class Server
 {
-	// function getUserByNickname()
-
 	private:
 		typedef	void (Server::*cmdHandler)(std::vector<std::string> &, User &); // Array of function pointer for function belonging to the Server class returning void and taking a string (input) and an int (fd)
 
@@ -96,11 +94,10 @@ class Server
 		void	quitCmd(std::vector<std::string> &input, User &cUser);
 		void	topicCmd(std::vector<std::string> &input, User &cUser);
 		void	userCmd(std::vector<std::string> &input, User &cUser);
-		void 	isbannedCmd(std::vector<std::string> &input, User &cUser);
 		void 	killCmd(std::vector<std::string> &input, User &cUser);
 		void 	opCmd(std::vector<std::string> &input, User &cUser);
 
-		//channel modes
+		// Channel modes
 		void	bMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 		void	iMode(Channel &cChannel, bool set);
 		void	kMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
@@ -111,7 +108,7 @@ class Server
 		void	tMode(Channel &cChannel, bool set);
 		void	vMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
 
-		//user mode
+		// User mode
 		void 	oMode(std::string &input, User &cUser);
 
 		void    usrJoinChan(User &cUser, Channel &chan);

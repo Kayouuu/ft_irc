@@ -6,7 +6,7 @@
 #    By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/18 14:38:40 by psaulnie          #+#    #+#              #
-#    Updated: 2023/03/02 13:48:35 by psaulnie         ###   ########.fr        #
+#    Updated: 2023/03/03 11:48:36 by psaulnie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ DIR_OBJ_BONUS = bonus/srcs/.objs_bonus
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS = -std=c++98
-CFLAGS += -fsanitize=address -g3
+# CFLAGS += -fsanitize=address -g3
 
 # **************************************************************************** #
 #                                    COLORS                                    #

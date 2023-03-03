@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:48:09 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/23 08:47:21 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:29:26 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,26 @@ void Server::inviteCmd(std::vector<std::string> &input, User &cUser)
 		if (chan->getName() == input[2])
 		{
 			std::cout << "IN IF channel exists-----\n";
-			//user is on channel ?
+			// Is user on channel ?
 			if (!chan->isUser(cUser))
 			{
 				_rep.E442(cUser.getFd(), cUser.getNick(), chan->getName()); // ERR_NOTONCHANNEL
 				return ;
 			}
 
-			//user is op ?
+			// Is user op ?
 			if (!chan->isOpUser(cUser))
 			{
 				_rep.E482(cUser.getFd(), cUser.getNick(), chan->getName()); // ERR_CHANOPRIVSNEEDED
 				return;
 			}
 
-			//nickname is registered in server ?
+			// Is nickname registered in server ?
 			for (std::vector<User>::iterator user = _clients.begin(); user < _clients.end(); user++)
 			{
 				if (user->getNick() == input[1])
 				{
-					//is nickname already on channel ?
+					// Is nickname already on channel ?
 					if (chan->isUser(*user))
 					{
 						_rep.E443(cUser.getFd(), cUser.getNick(), chan->getName(), user->getNick()); // ERR_USERONCHANNEL

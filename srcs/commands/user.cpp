@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 13:35:18 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/23 08:47:21 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 13:40:24 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,15 @@
 void	Server::userCmd(std::vector<std::string> &input, User &cUser)
 {
 	if (input.size() < 5)
+	{
 		_rep.E461(cUser.getFd(), cUser.getNick(), input[0]);
+		return ;
+	}
 	else if (cUser.getRegister() == true)
+	{
 		_rep.E462(cUser.getFd(), cUser.getNick());
+		return ;
+	}
 	else if (cUser.getRPassword() == true && cUser.getUnusedNick() == true)
 	{
 		cUser.setUser(input[1]);
@@ -27,7 +33,10 @@ void	Server::userCmd(std::vector<std::string> &input, User &cUser)
 		_rep.R003(cUser.getFd(), cUser.getNick(), _date);
 		_rep.R004(cUser.getFd(), cUser.getNick());
 	}
-	cUser.setRegister(true);
-	if (_connected_clients == 1)
-		_rep.R381(cUser.getFd(), cUser.getNick());
+	if (cUser.getRPassword() == true)
+	{
+		cUser.setRegister(true);
+		if (_connected_clients == 1)
+			_rep.R381(cUser.getFd(), cUser.getNick());
+	}
 }

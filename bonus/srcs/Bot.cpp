@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:10:46 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/01 17:03:05 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/02 15:33:15 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	Bot::shutdown()
 {
 	emit("QUIT IRCBot", _socketFd);
 	close(_socketFd);
-	std::exit(1);
+	throw	std::exception();
 }
 
 void	Bot::run()
@@ -80,7 +80,7 @@ void	Bot::run()
 	if (rvalue < 0)
 	{
 		std::perror("select");
-		throw std::exception();
+		shutdown();
 	}
 	receive(output, _socketFd);
 	if (!output.find("001 TMM") == 0)
@@ -134,7 +134,7 @@ void	Bot::handle(std::string const &output)
 		setMsg(parsed_output);
 }
 		
-void	Bot::emit(std::string const &input, int const &fd) const
+void	Bot::emit(std::string const &input, int const &fd)
 {
 	std::string	msg = input + "\r\n";
 	int 		error;
@@ -143,7 +143,7 @@ void	Bot::emit(std::string const &input, int const &fd) const
 	if (error < 0)
 	{
 		std::perror("send");
-		throw std::exception();
+		shutdown();
 	}
 }
 
@@ -161,7 +161,7 @@ int	Bot::receive(std::string &output, int const &fd)
 			if (errno == EAGAIN)
 				return (1);
 			std::perror("recv");
-			throw std::exception();
+			shutdown();
 		}
 		if (buffer[rvalue] == 0 || rvalue == 0)
 			break ;
@@ -184,13 +184,15 @@ void	Bot::setMsg(std::vector<std::string> &input)
 	std::vector<std::string>::iterator it = input.begin();
 	it++; it++; it++; it++;
 
+	if (who == ":DIE")
+		shutdown();
 	while (it != input.end())
 	{
 		new_msg.append(*it);
 		if (++it != input.end() && *it != "")
 			new_msg.append(" ");
 	}
-	if (new_msg == "")
+	if (new_msg == "" && who != ":DIE")
 		who = ":HELP";
     for (msg_it = new_msg.begin(); msg_it != new_msg.end(); ++msg_it)
         if (!std::isspace(*msg_it))
@@ -225,6 +227,8 @@ void	Bot::setMsg(std::vector<std::string> &input)
 	}
 	else if (who == ":CHANNEL" && input[4] != "")
 		setChannel(input[4]);
+	else if (who == ":DIE")
+		shutdown();
 	else if (who == ":HELP")
 		emit("PRIVMSG " + user + " Usage => /msg TMM [SCOOBY, VELMA, SHAGGY, DAPHNE, FRED, CHANNEL] [message, #channelname] {...} {...}", _socketFd);
 }

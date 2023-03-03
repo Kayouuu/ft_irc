@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:11:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/02 12:11:23 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/02 15:26:12 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ class Bot
 		void	setChannel(std::string const &chanName);
 		void	run();
 		int		receive(std::string &output, int const &fd);
-		void	emit(std::string const &input, int const &fd) const;
+		void	emit(std::string const &input, int const &fd);
 		void	handle(std::string const &output);
 	public:
 		Bot(int const &port, std::string const &pass, std::string const &ip);

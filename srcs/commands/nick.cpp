@@ -6,12 +6,11 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:10:55 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/02 14:46:01 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/02 15:05:22 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
-//TODO if user change his nickname in channel, change new username in database Channel ET Server
 
 void	Server::nickCmd(std::vector<std::string> &input, User &cUser)
 {
@@ -21,7 +20,7 @@ void	Server::nickCmd(std::vector<std::string> &input, User &cUser)
 		_rep.E431(cUser.getFd(), cUser.getNick());
 		return ;
 	}
-	if (input[1].size() > 9 || input[1][0] == '#') // TODO check unwanted character
+	if (input[1].size() > 9 || input[1][0] == '#')
 	{
 		_rep.E432(cUser.getFd(), cUser.getNick(), input[1]);
 		return ;
