@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/03 10:59:14 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 11:48:03 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ void	Server::initCommands()
 	_commands.insert(std::make_pair(std::string("QUIT"), &Server::quitCmd));
 	_commands.insert(std::make_pair(std::string("TOPIC"), &Server::topicCmd));
 	_commands.insert(std::make_pair(std::string("USER"), &Server::userCmd));
-	_commands.insert(std::make_pair(std::string("ISBANNED"), &Server::isbannedCmd));
 	_commands.insert(std::make_pair(std::string("KILL"), &Server::killCmd));
 	_commands.insert(std::make_pair(std::string("OP"), &Server::opCmd));
 }
