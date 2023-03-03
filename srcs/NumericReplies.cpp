@@ -260,7 +260,7 @@ void Rep::R352(int const &fd, const std::string &cNick, const std::string& messa
 
 void Rep::R353(int const &fd, const std::string &cNick, const std::string& chanName, const std::string& nick, char chanPrefix, char userPrefix)
 {
-	std::cout << chanPrefix << std::endl;
+	//std::cout << chanPrefix << std::endl;
 	if (userPrefix == 'u')
 		output << "353 " << cNick << " " << chanPrefix << " " << chanName << " :" << nick;
 	else

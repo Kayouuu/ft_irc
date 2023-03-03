@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../incs/Server.hpp"
+#include <stdexcept>
 
 int main(int argc, char *argv[])
 {
@@ -45,6 +46,7 @@ int main(int argc, char *argv[])
 	}
 	catch(const std::exception& e)
 	{
+		std::cout << RED << e.what() << __func__ << "\n" << NO_COLOR;
 		server.shutdown();
 		return (1);
 	}

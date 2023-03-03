@@ -26,7 +26,7 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
 		it++;
         std::string                 str = *it;
 		it++;
-		
+
         for (size_t i = 0; i < str.length(); i++) {
             char c = str[i];
             if (c == ',') {
@@ -37,11 +37,11 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
                 tmp.push_back(c);
         }
         listChannel.push_back(tmp);
-		
+
 		for (std::vector<std::string>::iterator itListChannel = listChannel.begin(); itListChannel != listChannel.end(); itListChannel++)
 		{
 			std::vector<Channel>::iterator itChannel;
-			for (itChannel = _channels.begin(); itChannel != _channels.end(); it++)
+			for (itChannel = _channels.begin(); itChannel != _channels.end(); itChannel++)
 				if (itChannel->getName() == *itListChannel)
 					break ;
 			if (itChannel == _channels.end())

@@ -14,15 +14,9 @@
 
 void    Server::usrJoinChan(User &cUser, Channel &chan)
 {
-//    std::vector<std::string> input;
-
 	cUser.incrChanConnected();
 	chan.addUser(cUser);
 	chan.incrUsrCon();
-//    input.push_back("PRIVMSG");
-//    input.push_back(chan.getName());
-//    input.push_back("has joined " + chan.getName());
-//    noticeCmd(input, cUser);
 	std::vector<User> chanUsers = chan.getUsers();
 	for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
 	{
@@ -123,6 +117,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 					break;
 			if (itChannel == _channels.end()) /*Channel not created*/
 				return;
+			itChannel->addOpUser(cUser);
 			cUser.addOpChannel(*itChannel);
 			cUser.incrChanConnected();
 			std::vector<User> users = itChannel->getUsers();

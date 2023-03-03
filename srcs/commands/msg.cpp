@@ -45,7 +45,7 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
 			if (!itChannel->isUser(cUser))
 				return;
 		if (itChannel->isMode('m'))
-			if (!cUser.isVoicedChan(*itChannel) && !cUser.isChanOp(*itChannel))
+			if (!cUser.isVoicedChan(*itChannel) && !cUser.isChanOp(*itChannel) && cUser.isIrcOp())
 				return;
         it++;
         if (it >= input.end()) {

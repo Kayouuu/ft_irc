@@ -21,9 +21,9 @@ void	Server::notAMode(std::string const &which, std::string const &input, User &
 	{
 		for (int i = 1; input[i]; i++)
 		{
-			if (input[i] != 'i' || input[i] != 'k' || input[i] != 'l'
-					|| input[i] != 'm' || input[i] != 'n' || input[i] != 'o'
-					|| input[i] != 'p' || input[i] != 't' || input[i] != 'v')
+			if (input[i] != 'i' && input[i] != 'k' && input[i] != 'l'
+					&& input[i] != 'm' && input[i] != 'n' && input[i] != 'o'
+					&& input[i] != 'p' && input[i] != 't' && input[i] != 'v')
 				_rep.E501(cUser.getFd(), cUser.getNick());
 		}
 	}
@@ -31,7 +31,7 @@ void	Server::notAMode(std::string const &which, std::string const &input, User &
 	{
 		for (int i = 1; input[i]; i++)
 		{
-			if (input[i] != 'o' || input[i] != 'v')
+			if (input[i] != 'o' && input[i] != 'v')
 				_rep.E501(cUser.getFd(), cUser.getNick());
 		}
 	}
@@ -58,7 +58,6 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 		for (itChan = _channels.begin(); itChan != _channels.end(); itChan++)
 			if (itChan->getName() == input[1])
 				break ;
-		std::cout << RED << itChan->getName() << NO_COLOR << std::endl;
 		if (itChan == _channels.end())
 		{
 			_rep.E403(cUser.getFd(), cUser.getNick(), input[1]); // TOCHECK if enough + if need to substr the '#' from input[1]
@@ -74,7 +73,7 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 			_rep.E442(cUser.getFd(), cUser.getNick(), input[1]);
 			return ;
 		}
-		if (!itChan->isOpUser(cUser) || !cUser.isIrcOp())
+		if (!itChan->isOpUser(cUser) && !cUser.isIrcOp())
 		{
 			_rep.E482(cUser.getFd(), cUser.getNick(), input[1]);
 			return ;
