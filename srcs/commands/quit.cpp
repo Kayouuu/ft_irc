@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:40:03 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/02 15:28:01 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 11:54:41 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	Server::quitCmd(std::vector<std::string> &input, User &cUser)
     {
         if (itUser->getNick() == cUser.getNick())
         {
+			close(cUser.getFd());
             _clients.erase(itUser);
             User	tmp_user = User();
 		    _clients.push_back(tmp_user);

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:35:47 by lbattest          #+#    #+#             */
-/*   Updated: 2023/03/03 11:38:18 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 12:03:38 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void 	Server::killCmd(std::vector<std::string> &input, User &cUser)
     std::vector<User>::iterator itClients = _clients.begin();
     for (; itClients != _clients.end(); itClients++) {
         if (itClients->getNick() == input[1])
-            break;
+            break ;
     }
     if (itClients == _clients.end()){
         _rep.E401(cUser.getFd(), cUser.getNick(), input[1]);
@@ -46,6 +46,15 @@ void 	Server::killCmd(std::vector<std::string> &input, User &cUser)
         itChan->removeUser(*itClients);
         itChan->decrUsrCon();
     }
+    it++;
+    std::string str;
+    for (;it != input.end(); it++)
+    {
+        str.append(*it);
+        if (it != --input.end())
+            str.append(" ");
+    }
+    _io.emit(":" + cUser.getNick() + " NOTICE " + itClients->getNick() + " :You've been kicked of the server for the following reasons" + str, itClients->getFd());
     itClients->resetUser();
 	_connected_clients--;
 }

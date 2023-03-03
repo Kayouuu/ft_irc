@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 11:00:21 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/02 15:46:11 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 11:53:36 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ void User::resetUser() {
 	_voicedChan.clear();
 	_inviteChan.clear();
 	_chanOp.clear();
+	close(_fd);
 	_fd = -1;
 	_nick = "";
 	_prefix = "";

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 10:58:58 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/03 10:19:28 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 11:53:51 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 # include <iostream>
 # include <vector>
-# include "Channel.hpp"
 # include <netinet/in.h>
-
+# include <unistd.h> 
+# include "Channel.hpp"
 # define MAX_CHAN 50
 
 class Channel;
