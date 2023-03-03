@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:02:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/03 10:31:16 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 14:08:32 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,20 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
     {
         _rep.E461(cUser.getFd(), cUser.getNick(), "JOIN");
         return;
+    }
+    if (input[1][0] != '#')
+    {
+        std::vector<User>::iterator it = _clients.begin();
+        for (; it != _clients.end(); it++)
+        {
+            if (it->getNick() == input[1])
+                break ;
+        }
+        if (it == _clients.end())
+        {
+            _rep.E401(cUser.getFd(), cUser.getNick(), input[1]);
+            return ;
+        }
     }
     std::vector<Channel>::iterator itChannel = _channels.begin();
     std::string str = *it;

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/03 13:50:45 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 14:10:27 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,7 +267,7 @@ void		Server::commandHandler(std::string const &output, int const &current)
 			(this->*_commands[parsed_output[0]])(parsed_output, _clients[user_index]); // Execute command corresponding to the input
 		}
 	}
-	else if (parsed_output[0] != "PING" || parsed_output[0] != "CAP")
+	else if (parsed_output[0] != "PING" && parsed_output[0] != "CAP")
 		_rep.E421(_clients[user_index].getFd(), _clients[user_index].getNick(), parsed_output[0]);
 }
 
