@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 14:06:27 by lbattest          #+#    #+#             */
-/*   Updated: 2023/03/02 15:05:30 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 13:30:28 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,3 +97,4 @@ void Server::noticeCmd(std::vector<std::string> &input, User &cUser) {
         }
     }
 }
+
