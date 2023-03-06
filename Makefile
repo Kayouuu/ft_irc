@@ -27,7 +27,7 @@ DIR_OBJ_BONUS = bonus/srcs/.objs_bonus
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS = -std=c++98
- CFLAGS += -fsanitize=address -g3
+CFLAGS += -fsanitize=address -g3
 
 # **************************************************************************** #
 #                                    COLORS                                    #
@@ -66,12 +66,12 @@ all: $(NAME)
 
 bonus: $(NAME_BONUS)
 
-$(DIR_OBJ)/%.o: srcs/%.cpp $(HEADFILE) $(DIR_OBJ) Makefile
+$(DIR_OBJ)/%.o: srcs/%.cpp
 	mkdir -p $(shell dirname $@)
 	c++ $(CFLAGS) -o $@ -c $<
 	@printf "\r$(LIGHT_GRAY)Loading...$(NO_COLOR)"
 
-$(DIR_OBJ_BONUS)/%.o: bonus/srcs/%.cpp $(HEADFILE_BONUS) $(DIR_OBJ_BONUS) Makefile
+$(DIR_OBJ_BONUS)/%.o: bonus/srcs/%.cpp
 	mkdir -p $(shell dirname $@)
 	c++ $(CFLAGS) -o $@ -c $<
 	@printf "\r$(LIGHT_GRAY)Loading bonus...$(NO_COLOR)"
