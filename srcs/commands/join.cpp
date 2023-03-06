@@ -17,15 +17,16 @@ void    Server::usrJoinChan(User &cUser, Channel &chan)
 	cUser.incrChanConnected();
 	chan.addUser(cUser);
 	chan.incrUsrCon();
-//	std::string userNick;
-//	if (cUser.isIrcOp())
-//		userNick = "&";
-//	else if (cUser.isChanOp(chan))
+	std::string userNick;
+//	if (cUser.isChanOp(chan))
 //		userNick = "@";
-//	userNick.append(cUser.getNick());
+//	else if (cUser.isIrcOp()) {
+//		userNick = "&";
+//	}
+	userNick.append(cUser.getNick());
 	std::vector<User> chanUsers = chan.getUsers();
 	for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
-			_io.emit(":" + cUser.getNick() + " JOIN " + chan.getName(),itChanUser->getFd());
+			_io.emit(":" + userNick + " JOIN " + chan.getName(),itChanUser->getFd());
 }
 
 /**
@@ -113,7 +114,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
             if (cUser.getChanConnected() > MAX_CHAN)
             {
                 _rep.E405(cUser.getFd(), cUser.getNick(),*itLst);
-                return;
+				continue;
             }
             Channel newChan = Channel(*itLst, cUser);
             if (isPw && itKey != listKey.end()) {
@@ -126,7 +127,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 				if (itChannel->getName() == *itLst)
 					break;
 			if (itChannel == _channels.end()) /*Channel not created*/
-				return;
+				continue;
 			itChannel->addOpUser(cUser);
 			cUser.addOpChannel(*itChannel);
 			cUser.incrChanConnected();
@@ -136,7 +137,10 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 				if (cUser.getFd() != -1)
 					_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix(*itU));
 			_rep.R366(cUser.getFd(), cUser.getNick(), itChannel->getName());
-			_io.emit(":" + cUser.getNick() + " JOIN " + itChannel->getName(),cUser.getFd());
+			std::string userNick;
+//			userNick = "@";
+			userNick.append(cUser.getNick());
+			_io.emit(":" + userNick + " JOIN " + itChannel->getName(),cUser.getFd());
             users.clear();
 		}
         else if (!itChannel->isUser(cUser)) { /* Channel does exist */
@@ -144,35 +148,35 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
             if (itChannel->isMode('i')) { /* Channel in Invite mode */
                 if (!cUser.isInviteChan(*itChannel)) {
                     _rep.E473(cUser.getFd(), cUser.getNick(), *itLst);
-                    return;
+					continue;
                 }
 				cUser.removeInviteChan(*itChannel);
             }
             if (itChannel->isMode('l')) { /* Channel with a limit of users */
 				if (itChannel->getUsrCon() + 1 > itChannel->getUsrNbMax()) {
 					_rep.E471(cUser.getFd(), cUser.getNick(), *itLst);
-					return;
+					continue;
 				}
 			}
             else if (itChannel->isBanned(cUser)) {
                 _rep.E474(cUser.getFd(), cUser.getNick(), *itLst);
-                return;
+				continue;
             }
             if (cUser.getChanConnected() > MAX_CHAN)
             {
                 _rep.E405(cUser.getFd(), cUser.getNick(),*itLst);
-                   return;
+				continue;
             }
             else if (itChannel->isMode('k')) { /* Channel with a key */
                 if (isPw && itKey != listKey.end()) {
                     if (*itKey != itChannel->getPw()) {
                         _rep.E475(cUser.getFd(), cUser.getNick(), itChannel->getName());
-                        return;
+						continue;
                     }
                 }
                 else {
                     _rep.E475(cUser.getFd(), cUser.getNick(), itChannel->getName());
-                    return;
+					continue;
                 }
             }
             if (itChannel->getIsTopic())
@@ -181,7 +185,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 				if (itChannel->getName() == *itLst)
 					break;
 			if (itChannel == _channels.end()){
-				return;
+				continue;
 			}
 			usrJoinChan(cUser, *itChannel);
 			std::vector<User> users = itChannel->getUsers();

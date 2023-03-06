@@ -81,11 +81,13 @@ std::string Channel::getModes()
 	for (std::map<char, bool>::iterator mode = _mode.begin(); mode != _mode.end(); mode++)
 	{
 		if (mode->second)
-			modes.append(&"+" [mode->first]);
+		{
+			std::string letter;
+			letter.append(1, mode->first);
+			modes.append("+" + letter);
+		}
 	}
-	std::cout << modes << std::endl;//TODO: to remove later, it's for debugging
-	if (modes.empty())
-		return "no modes yet";
+	std::cout << GREEN << "MODES sent: " << modes << NO_COLOR << std::endl;//TODO: to remove later, it's for debugging
 	return modes;
 }
 
@@ -167,8 +169,6 @@ char Channel::getUserPrefix(User &cUser)
 	}
 	if (it == _users.end())
 		return 'u';
-	if (cUser.isIrcOp())
-		return '&';
 	if (isOpUser(*it)) {
 		return '@';
 	}

@@ -20,6 +20,7 @@
 # include "NumericReplies.hpp"
 
 # define PURPLE "\033[0;35m"
+# define GREEN "\033[0;32m"
 # define NO_COLOR "\033[0m"
 
 class User;

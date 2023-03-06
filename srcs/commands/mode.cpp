@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 13:47:31 by dbouron           #+#    #+#             */
-/*   Updated: 2023/03/03 10:27:55 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/06 13:11:44 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 		for (itChannel = _channels.begin(); itChannel != _channels.end(); itChannel++)
 			if (itChannel->getName() == input[1])
 				break ;
-		itChannel->getModes();
+		std::string modes = itChannel->getModes();
+			_rep.R324(cUser.getFd(), cUser.getNick(), itChannel->getName(), modes, " ");
 		return;
 	}
 	if (input[1].empty())
