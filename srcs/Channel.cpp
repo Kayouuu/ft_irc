@@ -75,6 +75,20 @@ bool Channel::isMode(char mode)
 	return it->second;
 }
 
+std::string Channel::getModes()
+{
+	std::string modes;
+	for (std::map<char, bool>::iterator mode = _mode.begin(); mode != _mode.end(); mode++)
+	{
+		if (mode->second)
+			modes.append(&"+" [mode->first]);
+	}
+	std::cout << modes << std::endl;//TODO: to remove later, it's for debugging
+	if (modes.empty())
+		return "no modes yet";
+	return modes;
+}
+
 std::vector<User> &Channel::getUsers()
 {
 	return _users;

@@ -46,7 +46,22 @@ void	Server::notAMode(std::string const &which, std::string const &input, User &
  */
 void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 {
-	if (input[1].empty() || input[2].empty())
+	if (input[2].empty())
+	{
+		//send all modes of channel
+		if (input[1][0] != '#')
+		{
+			std::cout << "MODE: wrong argument\n";
+			return;
+		}
+		std::vector<Channel>::iterator	itChannel;
+		for (itChannel = _channels.begin(); itChannel != _channels.end(); itChannel++)
+			if (itChannel->getName() == input[1])
+				break ;
+		itChannel->getModes();
+		return;
+	}
+	if (input[1].empty())
 	{
 		_rep.E461(cUser.getFd(), cUser.getNick(), input[0]); // ERR_NEEDMOREPARAMS
 		return;

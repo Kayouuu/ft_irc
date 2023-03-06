@@ -35,6 +35,7 @@ class Channel
 		const std::string	&getName() const;
 		const std::string	&getSubject() const;
 		bool				isMode(char mode);
+		std::string			getModes();
 		std::vector<User>	&getUsers();
 		std::vector<User>	&getOpUsers();
 		bool				isUser(User &user);
