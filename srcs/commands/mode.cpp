@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 13:47:31 by dbouron           #+#    #+#             */
-/*   Updated: 2023/03/06 14:51:46 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/06 17:37:35 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,34 +153,44 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 void	Server::modeHandler(User &cUser, Channel &cChannel, char &mode, std::vector<std::string> &input, bool set)
 {
 	std::cout << "mode handler" << std::endl;
+	std::string	modeArg;
+
+	std::vector<std::string>::iterator it = input.begin();
+	it++;it++;it++;it++;
+	std::cout << input.size() << std::endl;
+	// if (input.size() < 3 || input[3].empty() || input[3].size() == 0)
+	if (input.size() < 4)
+		modeArg = "";
+	else
+		modeArg = input[3];
 	switch(mode)
 	{
 		case 'b':
-			bMode(cUser, cChannel, input[3], set);
+			bMode(cUser, cChannel, modeArg, set);
 			break ;
 		case 'i':
 			iMode(cChannel, set);
 			break ;
 		case 'k':
-			kMode(cUser, cChannel, input[3], set);
+			kMode(cUser, cChannel, modeArg, set);
 			break ;
 		case 'l':
-			lMode(cUser, cChannel, input[3], set);
+			lMode(cUser, cChannel, modeArg, set);
 			break ;
 		case 'm':
 			mMode(cUser, cChannel, set);
 			break ;
 		case 'n':
-			nMode(cUser, cChannel, input[3], set);
+			nMode(cUser, cChannel, modeArg, set);
 			break ;
 		case 'o':
-			oMode(cUser, cChannel, input[3], set);
+			oMode(cUser, cChannel, modeArg, set);
 			break ;
 		case 't':
 			tMode(cChannel, set);
 			break ;
 		case 'v':
-			vMode(cUser, cChannel, input[3], set);
+			vMode(cUser, cChannel, modeArg, set);
 			break ;
 		default:
 			return ;

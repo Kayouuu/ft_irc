@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 16:03:13 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/06 14:43:50 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/06 17:42:08 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,19 @@
 
 void	Server::bMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
 {
+	std::cout << modeArg << " " << modeArg.empty() << std::endl;
 	std::vector<User>::iterator itUser;
 	for (itUser = _clients.begin(); itUser != _clients.end(); itUser++)
 	{
 		if (itUser->getNick() == modeArg)
 			break ;
 	}
-	if (itUser != _clients.end())
+	if (modeArg.empty() == true)
+	{
+		std::cout << "salut" << std::endl;
+		cChannel.listBannedUser(_rep, cUser);
+	}
+	else if (itUser != _clients.end())
 	{
 		itUser->setMode('b', set);
 		if (set == true)
@@ -36,8 +42,6 @@ void	Server::bMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 			// TODO check if need to send error msg
 		}
 	}
-	else if (modeArg == "")
-		cChannel.listBannedUser(_rep, cUser);
 	else
 		_rep.E401(cUser.getFd(), cUser.getNick(), modeArg);
 }
