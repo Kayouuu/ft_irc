@@ -98,6 +98,7 @@ class Server
 		void 	isbannedCmd(std::vector<std::string> &input, User &cUser);
 		void 	killCmd(std::vector<std::string> &input, User &cUser);
 		void 	opCmd(std::vector<std::string> &input, User &cUser);
+		void 	listCmd(std::vector<std::string> &input, User &cUser);
 
 		//channel modes
 		void	bMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);
