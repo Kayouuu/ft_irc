@@ -17,15 +17,15 @@ void    Server::usrJoinChan(User &cUser, Channel &chan)
 	cUser.incrChanConnected();
 	chan.addUser(cUser);
 	chan.incrUsrCon();
-//	std::string userNick;
+	std::string userNick;
 //	if (cUser.isIrcOp())
 //		userNick = "&";
 //	else if (cUser.isChanOp(chan))
 //		userNick = "@";
-//	userNick.append(cUser.getNick());
+	userNick.append(cUser.getNick());
 	std::vector<User> chanUsers = chan.getUsers();
 	for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
-			_io.emit(":" + cUser.getNick() + " JOIN " + chan.getName(),itChanUser->getFd());
+			_io.emit(":" + userNick + " JOIN " + chan.getName(),itChanUser->getFd());
 }
 
 /**

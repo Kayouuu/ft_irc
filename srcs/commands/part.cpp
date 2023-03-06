@@ -56,10 +56,10 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
 			}
 			std::vector<User> chanUsers = itChannel->getUsers();
 			std::string userNick;
-			if (cUser.isIrcOp())
-				userNick = "&";
-			else if (cUser.isChanOp(*itChannel))
+			if (cUser.isChanOp(*itChannel))
 				userNick = "@";
+			else if (cUser.isIrcOp())
+				userNick = "&";
 			userNick.append(cUser.getNick());
 			for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
 			{
