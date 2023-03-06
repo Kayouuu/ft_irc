@@ -6,12 +6,21 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 14:06:27 by lbattest          #+#    #+#             */
-/*   Updated: 2023/02/23 08:49:03 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 13:30:28 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
 //TODO check for channel
+
+/**
+ * Send a message to a #channel or a user like PRIVMSG but the difference is
+ * that any automatic response should be sent in response to a NOTICE message
+ * Paramètres: <pseudonyme> <texte>
+ * @param input[1] #channel,... OR user,...
+ * @param input[2,...] msg
+ * @param cUser
+ */
 void Server::noticeCmd(std::vector<std::string> &input, User &cUser) {
     std::string msg;
     std::vector<std::string>::iterator it = input.begin();
@@ -28,25 +37,22 @@ void Server::noticeCmd(std::vector<std::string> &input, User &cUser) {
                 break;
             itChannel++;
         }
-        if (itChannel == _channels.end()) {
+        if (itChannel == _channels.end())
             return;
-        }
-        else if (itChannel->isBanned(cUser) == 1) {
+        else if (itChannel->isBanned(cUser) == 1)
             return;
-        }
         if (itChannel->isMode('n') == true)
             return;
         it++;
-        if (it >= input.end()) {
+        if (it >= input.end())
             return;
-        }
-        for (itClient; itClient < _clients.end(); itClient++) {
+        for (; itClient < _clients.end(); itClient++) {
             if (itClient->getFd() != -1) {
                 if (*itClient == cUser)
                     continue;
                 itTmp = it;
                 msg.append(":" + cUser.getNick() + " NOTICE " + itChannel->getName() + " ");
-                for (it; it < input.end(); it++) {
+                for (; it < input.end(); it++) {
                     msg.append(*it);
                     if (it < --input.end())
                         msg.append(" ");
@@ -79,13 +85,12 @@ void Server::noticeCmd(std::vector<std::string> &input, User &cUser) {
                     break;
                 itClient++;
             }
-            if (itClient != _clients.end()){
-                if (it >= input.end()) {
+            if (itClient != _clients.end()) {
+                if (it >= input.end())
                     return;
-                }
                 itTmp = it;
                 msg.append(":" + cUser.getNick() + " NOTICE " + itClient->getNick() + " ");
-                for (it; it < input.end(); it++) {
+                for (; it < input.end(); it++) {
                     msg.append(*it);
                     if (it < --input.end())
                         msg.append(" ");

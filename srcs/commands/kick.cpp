@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:33:55 by dbouron           #+#    #+#             */
-/*   Updated: 2023/02/23 10:03:46 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:26:25 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,21 +29,21 @@ void Server::kickCmd(std::vector<std::string> &input, User &cUser)
 	{
 		if (chan->getName() == input[1])
 		{
-			//user is on channel ?
+			// Is user on channel ?
 			if (!chan->isUser(cUser))
 			{
 				_rep.E442(cUser.getFd(), cUser.getNick(), chan->getName()); // ERR_NOTONCHANNEL
 				return ;
 			}
 
-			//user is op ?
+			// Is user op ?
 			if (!chan->isOpUser(cUser))
 			{
 				_rep.E482(cUser.getFd(), cUser.getNick(), chan->getName()); // ERR_CHANOPRIVSNEEDED
 				return;
 			}
 
-			//nickname is on channel ?
+			// Is nickname on channel ?
 			std::vector<User> users = chan->getUsers();
 			for (std::vector<User>::iterator user = users.begin(); user < users.end(); user++)
 			{

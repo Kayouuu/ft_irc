@@ -6,14 +6,15 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/03/01 16:31:32 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:31:24 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
 
 /**
- *
+ * Send a message to a #channel or a user
+ * Paramètres: <destinataire>{,<destinataire>} <texte à envoyer>
  * @param input[1] #channel,... OR user,...
  * @param input[2,...] msg
  * @param cUser
@@ -38,23 +39,14 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
             _rep.E404(cUser.getFd(), cUser.getNick(), itChannel->getName());
             return;
         }
-        if (itChannel->isBanned(cUser) == 1) {
+        if (itChannel->isBanned(cUser) == 1)
             return;
-        }
-        if (itChannel->isMode('n')) { /* can't msg the channel if you're not in it */
+        if (itChannel->isMode('n')) /* can't msg the channel if you're not in it */
 			if (!itChannel->isUser(cUser))
 				return;
-		}
-		if (itChannel->isMode('m')) {
-			std::cout << "--chan mode +m--" << cUser.isVoicedChan(*itChannel) << " " << cUser.isChanOp(*itChannel) << "\n";
-			std::vector<Channel> opChanTEST = cUser.getOpChannels();
-			for (std::vector<Channel>::iterator itTEST = opChanTEST.begin(); itTEST != opChanTEST.end(); itTEST++)
-				std::cout << GREEN << itTEST->getName() << NO_COLOR << std::endl;
-			if (!cUser.isVoicedChan(*itChannel) && !cUser.isChanOp(*itChannel)){
-				std::cout << "je return apres le mode +m\n";
+		if (itChannel->isMode('m'))
+			if (!cUser.isVoicedChan(*itChannel) && !cUser.isChanOp(*itChannel) && cUser.isIrcOp())
 				return;
-			}
-		}
         it++;
         if (it >= input.end()) {
             _rep.E412(cUser.getFd(), cUser.getNick());
@@ -69,7 +61,7 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
 				if (itChannel->getUserPrefix(cUser) != 'u')
 					prefix.append(1, itChannel->getUserPrefix(cUser));
                 msg.append(":" + prefix + cUser.getNick() + " PRIVMSG " + itChannel->getName() + " ");
-                for (it; it < input.end(); it++) {
+                for (; it < input.end(); it++) {
                     msg.append(*it);
                     if (it < --input.end())
                         msg.append(" ");
@@ -80,7 +72,7 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
             }
         }
     }
-    else {
+    else { /* msg to a user */
         msg.clear();
         std::vector<std::string>    listUsers;
         std::string                 tmp;

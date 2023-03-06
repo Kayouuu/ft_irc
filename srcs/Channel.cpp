@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:44:15 by dbouron           #+#    #+#             */
-/*   Updated: 2023/03/01 15:00:20 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:22:05 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ const std::string &Channel::getSubject() const
 
 bool Channel::isMode(char mode)
 {
-	std::cout << "IS MODE CHANNEL --------------------------------------\n";
 	std::map<char, bool>::iterator it = _mode.find(mode);
 	if (it == _mode.end())
 		std::cout << "No mode " << mode << std::endl; //TODO error msg
@@ -208,7 +207,7 @@ void Channel::removeOpUser(User &user)
 void Channel::addOpUser(User &opUser)
 {
 	_opUsers.push_back(opUser);
-	//opUser.setMode('v', true);
+	// opUser.setMode('v', true); TODO check if needed
 }
 
 void Channel::banUser(User &user)

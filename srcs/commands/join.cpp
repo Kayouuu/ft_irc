@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:02:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/24 10:19:50 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 14:08:32 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 void    Server::usrJoinChan(User &cUser, Channel &chan)
 {
-    std::vector<std::string> input;
-
 	cUser.incrChanConnected();
 	chan.addUser(cUser);
 	chan.incrUsrCon();
-    input.push_back("NOTICE");
-    input.push_back(chan.getName());
-    input.push_back("has joined " + chan.getName());
-    noticeCmd(input, cUser);
+	std::vector<User> chanUsers = chan.getUsers();
+	for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
+	{
+		if (itChanUser->getNick() != cUser.getNick())
+			_io.emit(":" + cUser.getNick() + " JOIN " + chan.getName(),itChanUser->getFd());
+	}
 }
 
 /**
@@ -38,6 +38,20 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
     {
         _rep.E461(cUser.getFd(), cUser.getNick(), "JOIN");
         return;
+    }
+    if (input[1][0] != '#')
+    {
+        std::vector<User>::iterator it = _clients.begin();
+        for (; it != _clients.end(); it++)
+        {
+            if (it->getNick() == input[1])
+                break ;
+        }
+        if (it == _clients.end())
+        {
+            _rep.E401(cUser.getFd(), cUser.getNick(), input[1]);
+            return ;
+        }
     }
     std::vector<Channel>::iterator itChannel = _channels.begin();
     std::string str = *it;
@@ -75,7 +89,6 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
     }
     str.clear();
     std::vector<std::string>::iterator itKey = listKey.begin();
-    // std::cout << "fin parsing\n";
     for (std::vector<std::string>::iterator itLst = listChan.begin(); itLst < listChan.end(); itLst++) {
         str = *itLst;
         if(str[0] != '#'){
@@ -83,11 +96,9 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 			continue;
 		}
         str.clear();
-        for(; itChannel < _channels.end(); itChannel++) {
-			if (itChannel->getName() == *itLst) {
+        for (; itChannel < _channels.end(); itChannel++)
+			if (itChannel->getName() == *itLst)
 				break;
-			}
-        }
         if (itChannel == _channels.end()) { /*Channel does not exist*/
             if (cUser.getChanConnected() > MAX_CHAN)
             {
@@ -101,23 +112,18 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
                itKey++;
            }
 			_channels.push_back(newChan);
-			for(itChannel = _channels.begin(); itChannel < _channels.end(); itChannel++) {
-				if (itChannel->getName() == *itLst) {
+			for(itChannel = _channels.begin(); itChannel < _channels.end(); itChannel++)
+				if (itChannel->getName() == *itLst)
 					break;
-				}
-			}
-			if (itChannel == _channels.end()) { /*Channel not created*/
+			if (itChannel == _channels.end()) /*Channel not created*/
 				return;
-			}
-			cUser.addOpChannel(*itChannel); //FAIT TOUT BUGGER mais pourquoiiiiiiiiiiiiiiiiii ?
-			std::cout << RED << cUser.getNick() << " " << newChan.getName() << " " << cUser.isChanOp(newChan) << NO_COLOR << std::endl;
+			itChannel->addOpUser(cUser);
+			cUser.addOpChannel(*itChannel);
 			cUser.incrChanConnected();
 			std::vector<User> users = itChannel->getUsers();
-			for (std::vector<User>::iterator itU = users.begin(); itU != users.end(); itU++) {
-				if (cUser.getFd() != -1) {
+			for (std::vector<User>::iterator itU = users.begin(); itU != users.end(); itU++)
+				if (cUser.getFd() != -1)
 					_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix(*itU));
-				}
-			}
 			_rep.R366(cUser.getFd(), cUser.getNick(), itChannel->getName());
 			_io.emit(":" + cUser.getNick() + " JOIN " + itChannel->getName(),cUser.getFd());
             users.clear();
@@ -159,19 +165,17 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
             }
             if (itChannel->getIsTopic())
                 _rep.R332(cUser.getFd(), cUser.getNick(), itChannel->getName(), itChannel->getSubject());
-			for(itChannel = _channels.begin(); itChannel < _channels.end(); itChannel++) {
+			for (itChannel = _channels.begin(); itChannel < _channels.end(); itChannel++)
 				if (itChannel->getName() == *itLst)
 					break;
-			}
 			if (itChannel == _channels.end()){
-				// std::cout << "probleme de type pas cree";
 				return;
 			}
 			usrJoinChan(cUser, *itChannel);
 			std::vector<User> users = itChannel->getUsers();
-			for (std::vector<User>::iterator itU = users.begin(); itU < users.end(); itU++) {
-				_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix(*itU));
-			}
+			for (std::vector<User>::iterator itU = users.begin(); itU < users.end(); itU++)
+				if (cUser.getFd() != -1)
+					_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix(*itU));
 			_rep.R366(cUser.getFd(), cUser.getNick(), itChannel->getName());
 			_io.emit(":" + cUser.getNick() + " JOIN " + itChannel->getName(),cUser.getFd());
             users.clear();

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 08:14:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/23 10:20:27 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:28:58 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
 		it++;
         std::string                 str = *it;
 		it++;
-		
+
         for (size_t i = 0; i < str.length(); i++) {
             char c = str[i];
             if (c == ',') {
@@ -37,30 +37,37 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
                 tmp.push_back(c);
         }
         listChannel.push_back(tmp);
-		
+
 		for (std::vector<std::string>::iterator itListChannel = listChannel.begin(); itListChannel != listChannel.end(); itListChannel++)
 		{
 			std::vector<Channel>::iterator itChannel;
-			for (itChannel = _channels.begin(); itChannel != _channels.end(); it++)
+			for (itChannel = _channels.begin(); itChannel != _channels.end(); itChannel++)
 				if (itChannel->getName() == *itListChannel)
 					break ;
 			if (itChannel == _channels.end())
 			{
 				_rep.E403(cUser.getFd(), cUser.getNick(), *itListChannel); // ERR_NOSUCHCHANNEL
-				continue ; // TOCHECK maybe return ? Either we continue browsing the list of channels or we stop when a channel don't exist
+				continue ; // TODO CHECK maybe return ? Either we continue browsing the list of channels or we stop when a channel don't exist
 			}
 			if (!itChannel->isUser(cUser))
 			{
 				_rep.E442(cUser.getFd(), cUser.getNick(), *itListChannel); // ERR_NOTONCHANNEL
-				continue ; // TOCHECK maybe return ? Either we continue browsing the list of channels or we stop when a channel don't exist
+				continue ; // TODO CHECK maybe return ? Either we continue browsing the list of channels or we stop when a channel don't exist
 			}
-			if(itChannel->getUsrCon() - 1 == 0)
-				itChannel->~Channel();
-			else {
+			std::vector<User> chanUsers = itChannel->getUsers();
+			for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
+			{
+				if (itChanUser->getNick() != cUser.getNick())
+					_io.emit(":" + cUser.getNick() + " PART " + itChannel->getName(),itChanUser->getFd());
+			}
+			// TODO check
+			// if(itChannel->getUsrCon() - 1 == 0)
+			// 	itChannel->~Channel();
+			// else {
 				itChannel->removeOpUser(cUser);
 				itChannel->removeUser(cUser);
 				itChannel->decrUsrCon();
-			}
+			// }
 			cUser.decrChanConnected();
 		}
 }

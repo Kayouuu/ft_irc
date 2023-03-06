@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/01 14:07:37 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 14:10:27 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ void	Server::initCommands()
 	_commands.insert(std::make_pair(std::string("QUIT"), &Server::quitCmd));
 	_commands.insert(std::make_pair(std::string("TOPIC"), &Server::topicCmd));
 	_commands.insert(std::make_pair(std::string("USER"), &Server::userCmd));
-	_commands.insert(std::make_pair(std::string("ISBANNED"), &Server::isbannedCmd));
 	_commands.insert(std::make_pair(std::string("KILL"), &Server::killCmd));
 	_commands.insert(std::make_pair(std::string("OP"), &Server::opCmd));
 }
@@ -202,14 +201,9 @@ void	Server::manageClient(int &index)
 	rvalue = _io.receive(output, _clients[index].getFd());
 	if (rvalue == 0)
 	{
-		close(_clients[index].getFd());
-		_clients[index].setFd(-1);
-		_clients[index].setNick("");
-		_clients[index].setPrefix("");
-		_clients[index].setUser("");
-		_clients[index].setRegister(false);
-		_clients[index].setRPassword(false);
-		_connected_clients--;
+		std::cout << "QUIT" << std::endl;
+		std::vector<std::string>	tmp;
+		quitCmd(tmp, _clients[index]);
 	}
 	else if (rvalue > 0)
 	{
@@ -252,32 +246,20 @@ void		Server::commandHandler(std::string const &output, int const &current)
 			parsed_output.push_back(tmp);
 			tmp.clear();
 		}
-		// else if (c == '\"')
-		// {
-		// 	tmp.push_back(c);
-		// 	i++;
-		// 	while (i < output.length() && output[i] != '\"') { tmp.push_back(c); i++; }
-		// 	if (i < output.length())
-		// 		tmp.push_back(c);
-		// }
 		else
 			tmp.push_back(c);
 	}
 	if (tmp != "")
 		parsed_output.push_back(tmp);
 
-	/****************************************************************************************************/
-	// TOREMOVE used only for tests
-	std::cout << CYAN << "Executed command: " << NO_COLOR << std::endl;
-	for (std::vector<std::string>::iterator it = parsed_output.begin(); it != parsed_output.end(); it++)
-	{
-		std::cout << CYAN << "[" << *it << "]" << NO_COLOR << std::endl;
-	}
-	/*****************************************************************************************************/
+	// TODO remove, used only for tests
+	std::cout << CYAN << "Received command: " << output << NO_COLOR << std::endl;
 
-	// Find the command by his name, needs to be registered to use them excepts the necessary commands to log in
-	if (parsed_output[0] == "PING")
+	if (parsed_output.size() == 0)
+		return ;
+	if (parsed_output[0] == "PING") // Needed for weechat lag
 		_io.emit("PONG " + parsed_output[1], current);
+	// Find the command by his name, needs to be registered to use them excepts the necessary commands to log in
 	if (_commands.find(parsed_output[0]) != _commands.end())
 	{
 		if ((_clients[user_index].getRegister() && _clients[user_index].getRPassword()) || parsed_output[0] == "PASS" || parsed_output[0] == "NICK" || parsed_output[0] == "USER")
@@ -285,7 +267,8 @@ void		Server::commandHandler(std::string const &output, int const &current)
 			(this->*_commands[parsed_output[0]])(parsed_output, _clients[user_index]); // Execute command corresponding to the input
 		}
 	}
-
+	else if (parsed_output[0] != "PING" && parsed_output[0] != "CAP")
+		_rep.E421(_clients[user_index].getFd(), _clients[user_index].getNick(), parsed_output[0]);
 }
 
 void	Server::shutdown()
@@ -300,5 +283,4 @@ void	Server::shutdown()
 	_channels.clear();
 	_clients.clear();
 	_commands.clear();
-	std::exit(1);
 }

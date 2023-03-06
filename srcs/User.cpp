@@ -6,23 +6,34 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 11:00:21 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/01 16:30:40 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/03 11:53:36 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/User.hpp"
 
-User::User() : _nick(""), _user(""), _prefix("") { _fd = -1; _right_password = false; _is_registered = false; _chanConnected = 0; _unused_nick = false; _initConv = false; }
+User::User() : _nick(""), _user(""), _prefix("")
+{ 
+	_fd = -1; _right_password = false; _is_registered = false; _chanConnected = 0; _unused_nick = false; _initConv = false;
+	_ircOp = false;
+	_addrlen = socklen_t();
+	_address = sockaddr_in();
+	_mode.insert(std::pair<char, bool>('o', false));
+	_mode.insert(std::pair<char, bool>('v', false));
+}
 
-User::User(const std::string &_nick, const std::string &_user)
+User::User(const std::string &nick, const std::string &user)
 {
-	this->_nick = _nick;
-	this->_user = _user;
-	this->_right_password = false;
-	this->_is_registered = false;
-	this->_unused_nick = false;
-	this->_chanConnected = 0;
-	this->_initConv = false;
+	_nick = nick;
+	_user = user;
+	_right_password = false;
+	_is_registered = false;
+	_unused_nick = false;
+	_chanConnected = 0;
+	_initConv = false;
+	_ircOp = false;
+	_addrlen = socklen_t();
+	_address = sockaddr_in();
 	_mode.insert(std::pair<char, bool>('o', false));
 	_mode.insert(std::pair<char, bool>('v', false));
 }
@@ -143,6 +154,7 @@ void User::resetUser() {
 	_voicedChan.clear();
 	_inviteChan.clear();
 	_chanOp.clear();
+	close(_fd);
 	_fd = -1;
 	_nick = "";
 	_prefix = "";
@@ -240,13 +252,16 @@ User &User::operator=(const User &rhs)
 	_prefix = rhs._prefix;
 	_mode = rhs._mode;
 	_voicedChan = rhs._voicedChan;
+	_inviteChan = rhs._inviteChan;
 	_chanOp = rhs._chanOp;
 	_ircOp = rhs._ircOp;
 	_is_registered = rhs._is_registered;
 	_right_password = rhs._right_password;
 	_unused_nick = rhs._unused_nick;
 	_address = rhs._address;
+	_addrlen = rhs._addrlen;
 	_chanConnected = rhs._chanConnected;
+	_initConv = rhs._initConv;
 	return *this;
 }
 
