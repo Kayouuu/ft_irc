@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 13:47:31 by dbouron           #+#    #+#             */
-/*   Updated: 2023/03/06 13:11:44 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/06 14:51:46 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 
 void	Server::modeHandler(User &cUser, Channel &cChannel, char &mode, std::vector<std::string> &input, bool set)
 {
+	std::cout << "mode handler" << std::endl;
 	switch(mode)
 	{
 		case 'b':
@@ -175,9 +176,10 @@ void	Server::modeHandler(User &cUser, Channel &cChannel, char &mode, std::vector
 		default:
 			return ;
 	}
-	_rep.R324(cUser.getFd(), cUser.getNick(), input[1], input[2], input[3]);
-	for (int i = 0; i < 4; i++)
-		input[i].clear();
+	if (input.size() < 4)
+		_rep.R324(cUser.getFd(), cUser.getNick(), input[1], input[2], "");
+	else
+		_rep.R324(cUser.getFd(), cUser.getNick(), input[1], input[2], input[3]);
 }
 
 void	Server::modeHandlerUser(std::string &input, User &cUser, char &mode)
