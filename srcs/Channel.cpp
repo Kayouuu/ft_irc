@@ -153,8 +153,6 @@ char Channel::getUserPrefix(User &cUser)
 	}
 	if (it == _users.end())
 		return 'u';
-	if (cUser.isIrcOp())
-		return '&';
 	if (isOpUser(*it)) {
 		return '@';
 	}

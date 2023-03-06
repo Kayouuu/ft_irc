@@ -56,9 +56,7 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
 			}
 			std::vector<User> chanUsers = itChannel->getUsers();
 			std::string userNick;
-			if (cUser.isIrcOp())
-				userNick = "&";
-			else if (cUser.isChanOp(*itChannel))
+			if (cUser.isChanOp(*itChannel))
 				userNick = "@";
 			userNick.append(cUser.getNick());
 			for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
@@ -70,6 +68,7 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
 			else {
 				itChannel->removeOpUser(cUser);
 				itChannel->removeUser(cUser);
+				cUser.removeOpChannel(*itChannel);
 				itChannel->decrUsrCon();
 			}
 			cUser.decrChanConnected();
