@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 08:14:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/03 10:28:58 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/06 14:28:44 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,14 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
 			{
 					_io.emit(":" + userNick + " PART " + itChannel->getName(),itChanUser->getFd());
 			}
-			// TODO check
-			// if(itChannel->getUsrCon() - 1 == 0)
-			// 	itChannel->~Channel();
-			// else {
+			if(itChannel->getUsrCon() - 1 == 0)
+				_channels.erase(itChannel);
+			else {
 				itChannel->removeOpUser(cUser);
 				itChannel->removeUser(cUser);
 				cUser.removeOpChannel(*itChannel);
 				itChannel->decrUsrCon();
-			// }
+			}
 			cUser.decrChanConnected();
 		}
 }
