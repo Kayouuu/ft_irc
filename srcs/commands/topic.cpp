@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 14:21:31 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/02/23 10:03:57 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/06 15:41:41 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	Server::topicCmd(std::vector<std::string> &input, User &cUser)
 	}
 	else
 	{
-		if (itChannel->isOpUser(cUser))
+		if (itChannel->isMode('t') == false || itChannel->isOpUser(cUser))
 		{
 			std::string							subject;
 			std::vector<std::string>::iterator	itSubject = input.begin();
