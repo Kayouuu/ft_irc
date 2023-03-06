@@ -46,6 +46,22 @@ void	Server::notAMode(std::string const &which, std::string const &input, User &
  */
 void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 {
+	if (input[2].empty())
+	{
+		//send all modes of channel
+		if (input[1][0] != '#')
+		{
+			std::cout << "MODE: wrong argument\n";
+			return;
+		}
+		std::vector<Channel>::iterator	itChannel;
+		for (itChannel = _channels.begin(); itChannel != _channels.end(); itChannel++)
+			if (itChannel->getName() == input[1])
+				break ;
+		std::string modes = itChannel->getModes();
+			_rep.R324(cUser.getFd(), cUser.getNick(), itChannel->getName(), modes, " ");
+		return;
+	}
 	if (input[1].empty())
 	{
 		_rep.E461(cUser.getFd(), cUser.getNick(), input[0]); // ERR_NEEDMOREPARAMS
@@ -60,11 +76,9 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 				break ;
 		if (itChan == _channels.end())
 		{
-			_rep.E403(cUser.getFd(), cUser.getNick(), input[1]); // TOCHECK if enough
+			_rep.E403(cUser.getFd(), cUser.getNick(), input[1]); // TOCHECK if enough + if need to substr the '#' from input[1]
 			return ;
 		}
-		if (input[2].empty() == true)
-			return ;
 		if (!itChan->isUser(cUser))
 		{
 			// TODO remove
@@ -97,11 +111,6 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 	}
 	else // Mode for an user
 	{
-		if (input[2].empty() == true) // TODO check if need to do the same as for channel
-		{
-			_rep.E461(cUser.getFd(), cUser.getNick(), input[0]); // ERR_NEEDMOREPARAMS
-			return;
-		}
 		//	If <target> is a nickname that does not exist on the network,
 		//	the ERR_NOSUCHNICK (401) numeric is returned.
 		for (std::vector<User>::iterator user = _clients.begin(); user < _clients.end(); user++)

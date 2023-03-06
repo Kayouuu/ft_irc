@@ -20,6 +20,7 @@
 # include "NumericReplies.hpp"
 
 # define PURPLE "\033[0;35m"
+# define GREEN "\033[0;32m"
 # define NO_COLOR "\033[0m"
 
 class User;
@@ -35,6 +36,7 @@ class Channel
 		const std::string	&getName() const;
 		const std::string	&getSubject() const;
 		bool				isMode(char mode);
+		std::string			getModes();
 		std::vector<User>	&getUsers();
 		std::vector<User>	&getOpUsers();
 		bool				isUser(User &user);

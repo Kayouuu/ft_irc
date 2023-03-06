@@ -57,10 +57,10 @@ void Server::inviteCmd(std::vector<std::string> &input, User &cUser)
 					}
 					user->addInviteChan(*chan);
 					std::vector<std::string> output;
-					output.push_back("NOTICE");
+					output.push_back("PRIVMSG");
 					output.push_back(user->getNick());
 					output.push_back("has invited you to " + chan->getName());
-					noticeCmd(output, cUser);
+					msgCmd(output, cUser);
 					_rep.R341(cUser.getFd(), cUser.getNick(), user->getNick(), chan->getName()); // RPL_INVITING
 					return ;
 				}
