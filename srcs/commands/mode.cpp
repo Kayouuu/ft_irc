@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 13:47:31 by dbouron           #+#    #+#             */
-/*   Updated: 2023/03/03 10:27:55 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/06 13:11:44 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	Server::notAMode(std::string const &which, std::string const &input, User &
  */
 void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 {
-	if (input[1].empty() || input[2].empty())
+	if (input[1].empty())
 	{
 		_rep.E461(cUser.getFd(), cUser.getNick(), input[0]); // ERR_NEEDMOREPARAMS
 		return;
@@ -60,9 +60,11 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 				break ;
 		if (itChan == _channels.end())
 		{
-			_rep.E403(cUser.getFd(), cUser.getNick(), input[1]); // TOCHECK if enough + if need to substr the '#' from input[1]
+			_rep.E403(cUser.getFd(), cUser.getNick(), input[1]); // TOCHECK if enough
 			return ;
 		}
+		if (input[2].empty() == true)
+			return ;
 		if (!itChan->isUser(cUser))
 		{
 			// TODO remove
@@ -95,6 +97,11 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 	}
 	else // Mode for an user
 	{
+		if (input[2].empty() == true) // TODO check if need to do the same as for channel
+		{
+			_rep.E461(cUser.getFd(), cUser.getNick(), input[0]); // ERR_NEEDMOREPARAMS
+			return;
+		}
 		//	If <target> is a nickname that does not exist on the network,
 		//	the ERR_NOSUCHNICK (401) numeric is returned.
 		for (std::vector<User>::iterator user = _clients.begin(); user < _clients.end(); user++)
