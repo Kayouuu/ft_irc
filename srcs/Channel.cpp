@@ -189,7 +189,7 @@ void Channel::removeUser(User &user)
 	std::vector<User>::iterator it = _users.begin();
 	for (it; it < _users.end(); it++)
 	{
-		if (*it == user)
+		if (it->getNick() == user.getNick())
 			_users.erase(it);
 	}
 }
@@ -199,7 +199,7 @@ void Channel::removeOpUser(User &user)
 	std::vector<User>::iterator it = _opUsers.begin();
 	for (it; it < _opUsers.end(); it++)
 	{
-		if (*it == user)
+		if (it->getNick() == user.getNick())
 			_opUsers.erase(it);
 	}
 }

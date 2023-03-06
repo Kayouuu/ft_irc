@@ -55,10 +55,15 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
 				continue ; // TODO CHECK maybe return ? Either we continue browsing the list of channels or we stop when a channel don't exist
 			}
 			std::vector<User> chanUsers = itChannel->getUsers();
+			std::string userNick;
+			if (cUser.isIrcOp())
+				userNick = "&";
+			else if (cUser.isChanOp(*itChannel))
+				userNick = "@";
+			userNick.append(cUser.getNick());
 			for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
 			{
-				if (itChanUser->getNick() != cUser.getNick())
-					_io.emit(":" + cUser.getNick() + " PART " + itChannel->getName(),itChanUser->getFd());
+					_io.emit(":" + userNick + " PART " + itChannel->getName(),itChanUser->getFd());
 			}
 			// TODO check
 			// if(itChannel->getUsrCon() - 1 == 0)

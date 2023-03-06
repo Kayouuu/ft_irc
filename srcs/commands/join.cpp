@@ -17,12 +17,15 @@ void    Server::usrJoinChan(User &cUser, Channel &chan)
 	cUser.incrChanConnected();
 	chan.addUser(cUser);
 	chan.incrUsrCon();
+//	std::string userNick;
+//	if (cUser.isIrcOp())
+//		userNick = "&";
+//	else if (cUser.isChanOp(chan))
+//		userNick = "@";
+//	userNick.append(cUser.getNick());
 	std::vector<User> chanUsers = chan.getUsers();
 	for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
-	{
-		if (itChanUser->getNick() != cUser.getNick())
 			_io.emit(":" + cUser.getNick() + " JOIN " + chan.getName(),itChanUser->getFd());
-	}
 }
 
 /**
@@ -32,6 +35,7 @@ void    Server::usrJoinChan(User &cUser, Channel &chan)
  */
 void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 {
+	std::cout << "in joincmd\n";
 	std::vector<std::string>::iterator it = input.begin();
     it++;
     if (it >= input.end())
@@ -91,15 +95,21 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
     std::vector<std::string>::iterator itKey = listKey.begin();
     for (std::vector<std::string>::iterator itLst = listChan.begin(); itLst < listChan.end(); itLst++) {
         str = *itLst;
+		std::cout << "-----------" << str << "----" << std::endl;
         if(str[0] != '#'){
 			str.clear();
 			continue;
 		}
         str.clear();
-        for (; itChannel < _channels.end(); itChannel++)
+        for (; itChannel < _channels.end(); itChannel++){
+			std::cout << itChannel->getName() << " + " << *itLst << std::endl;
 			if (itChannel->getName() == *itLst)
 				break;
+		}
+		if (itChannel != _channels.end())
+			std::cout << "ca: " << itChannel->isUser(cUser) << std::endl;
         if (itChannel == _channels.end()) { /*Channel does not exist*/
+			std::cout << "pas chan ici\n";
             if (cUser.getChanConnected() > MAX_CHAN)
             {
                 _rep.E405(cUser.getFd(), cUser.getNick(),*itLst);
@@ -120,6 +130,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 			itChannel->addOpUser(cUser);
 			cUser.addOpChannel(*itChannel);
 			cUser.incrChanConnected();
+			//essayer de l'envoyer au channel !
 			std::vector<User> users = itChannel->getUsers();
 			for (std::vector<User>::iterator itU = users.begin(); itU != users.end(); itU++)
 				if (cUser.getFd() != -1)
@@ -129,6 +140,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
             users.clear();
 		}
         else if (!itChannel->isUser(cUser)) { /* Channel does exist */
+			std::cout << "chan ici trouver\n";
             if (itChannel->isMode('i')) { /* Channel in Invite mode */
                 if (!cUser.isInviteChan(*itChannel)) {
                     _rep.E473(cUser.getFd(), cUser.getNick(), *itLst);
@@ -177,7 +189,6 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 				if (cUser.getFd() != -1)
 					_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix(*itU));
 			_rep.R366(cUser.getFd(), cUser.getNick(), itChannel->getName());
-			_io.emit(":" + cUser.getNick() + " JOIN " + itChannel->getName(),cUser.getFd());
             users.clear();
 		}
     }
