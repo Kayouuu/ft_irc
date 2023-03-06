@@ -49,11 +49,24 @@ void Server::kickCmd(std::vector<std::string> &input, User &cUser)
 			{
 				if (user->getNick() == input[2])
 				{
+					std::vector<User> chanUsers = chan->getUsers();
+					std::string userNick;
+					std::string msg;
+					if (cUser.isChanOp(*chan)) {
+						userNick = "@";
+					}
+					userNick.append(cUser.getNick());
+					for (int i = 3; i < input.size(); i++)
+					{
+						msg.append(input[i]);
+						if (i != input.size() - 1)
+							msg.append(" ");
+					}
+					for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
+					{
+						_io.emit(":" + userNick + " " + input[0] + " " + chan->getName() + " " + input[2] + " " + msg,itChanUser->getFd());
+					}
 					chan->removeUser(*user);
-					if (!input[3].empty())
-						_io.emit(": " + cUser.getNick() + " " + input[0] + " " + user->getNick() + " " + input[3], cUser.getFd()); // send message if it exists
-					else
-						_io.emit(": " + cUser.getNick() + " " + input[0] + " " + user->getNick(), cUser.getFd()); // TODO not sure if I have to send this
 					return ;
 				}
 			}

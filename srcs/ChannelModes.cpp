@@ -40,6 +40,11 @@ void	Server::bMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 		cChannel.listBannedUser(_rep, cUser);
 	else
 		_rep.E401(cUser.getFd(), cUser.getNick(), modeArg);
+	std::vector<std::string> output;
+	output.push_back("KICK");
+	output.push_back(cChannel.getName());
+	output.push_back(modeArg);
+	kickCmd(output, cUser);
 }
 
 void Server::iMode(Channel &cChannel, bool set)
