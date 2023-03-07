@@ -45,7 +45,7 @@ void	Server::quitCmd(std::vector<std::string> &input, User &cUser)
     std::vector<User>::iterator itUser = _clients.begin();
     for (; itUser != _clients.end(); itUser++)
     {
-        if (itUser->getNick() == cUser.getNick())
+        if (itUser->getFd() == cUser.getFd())
         {
 			close(cUser.getFd());
             _clients.erase(itUser);

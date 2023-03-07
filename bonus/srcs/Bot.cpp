@@ -192,8 +192,7 @@ void	Bot::setMsg(std::vector<std::string> &input)
 		if (++it != input.end() && *it != "")
 			new_msg.append(" ");
 	}
-	if (new_msg == "" && who != ":DIE")
-		who = ":HELP";
+
     for (msg_it = new_msg.begin(); msg_it != new_msg.end(); ++msg_it)
         if (!std::isspace(*msg_it))
 			break ;
@@ -229,8 +228,6 @@ void	Bot::setMsg(std::vector<std::string> &input)
 		setChannel(input[4]);
 	else if (who == ":DIE")
 		shutdown();
-	else if (who == ":HELP")
-		emit("PRIVMSG " + user + " Usage => /msg TMM [SCOOBY, VELMA, SHAGGY, DAPHNE, FRED, CHANNEL] [message, #channelname] {...} {...}", _socketFd);
 }
 
 void	Bot::check()
