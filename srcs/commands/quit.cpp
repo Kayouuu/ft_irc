@@ -14,7 +14,7 @@
 
 void	Server::quitCmd(std::vector<std::string> &input, User &cUser)
 {
-	if (_channels.empty() == false)
+	if (!_channels.empty())
 	{
 		std::vector<Channel>::iterator itChan = _channels.begin();
 		for (; itChan != _channels.end(); itChan++) {
@@ -39,7 +39,7 @@ void	Server::quitCmd(std::vector<std::string> &input, User &cUser)
 					itChan->removeOpUser(cUser);
 				itChan->removeUser(cUser);
 				itChan->decrUsrCon();
-			} 
+			}
 		}
 	}
     std::vector<User>::iterator itUser = _clients.begin();

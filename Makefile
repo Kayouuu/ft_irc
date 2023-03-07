@@ -27,7 +27,7 @@ DIR_OBJ_BONUS = bonus/srcs/.objs_bonus
 
 CFLAGS = -Wall -Wextra -Werror
 CFLAGS = -std=c++98
-CFLAGS += -fsanitize=address -g3
+#CFLAGS += -fsanitize=address -g3
 
 # **************************************************************************** #
 #                                    COLORS                                    #
