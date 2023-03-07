@@ -262,6 +262,8 @@ void		Server::commandHandler(std::string const &output, int const &current)
 		{
 			(this->*_commands[parsed_output[0]])(parsed_output, _clients[user_index]); // Execute command corresponding to the input
 		}
+		else
+			_rep.E451(_clients[user_index].getFd(), _clients[user_index].getNick());
 	}
 	else if (parsed_output[0] != "PING" && parsed_output[0] != "CAP")
 		_rep.E421(_clients[user_index].getFd(), _clients[user_index].getNick(), parsed_output[0]);

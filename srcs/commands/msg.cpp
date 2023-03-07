@@ -26,17 +26,17 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
     std::vector<User>::iterator itClient = _clients.begin();
     it++;
     msg = *it;
-    if (msg[0] == '#') { /* msg to a channel */
-        itClient++;
-        msg.clear();
-        std::vector<Channel>::iterator itChannel = _channels.begin();
-        while (itChannel != _channels.end()) {
-            if (itChannel->getName() == *it)
-                break;
-            itChannel++;
-        }
+	if (msg[0] == '#') { /* msg to a channel */
+		itClient++;
+		msg.clear();
+		std::vector<Channel>::iterator itChannel = _channels.begin();
+		for (;itChannel != _channels.end(); itChannel++) {
+			if (itChannel->getName() == *it) {
+				break;
+			}
+		}
         if (itChannel == _channels.end()) {
-            _rep.E404(cUser.getFd(), cUser.getNick(), itChannel->getName());
+            _rep.E404(cUser.getFd(), cUser.getNick(), *it);
             return;
         }
         if (itChannel->isBanned(cUser) == 1)
