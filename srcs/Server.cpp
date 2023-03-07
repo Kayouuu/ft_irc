@@ -253,7 +253,7 @@ void		Server::commandHandler(std::string const &output, int const &current)
 	std::cout << CYAN << "Received command: " << output << NO_COLOR << std::endl;
 	if (parsed_output.size() == 0)
 		return ;
-	if (parsed_output[0] == "PING") // Needed for weechat lag
+	if (parsed_output[0] == "PING" && parsed_output.size() < 2) // Needed for weechat lag
 		_io.emit("PONG " + parsed_output[1], current);
 	// Find the command by his name, needs to be registered to use them excepts the necessary commands to log in
 	if (_commands.find(parsed_output[0]) != _commands.end())
