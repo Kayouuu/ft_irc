@@ -221,7 +221,6 @@ void Channel::removeOpUser(User &user)
 void Channel::addOpUser(User &opUser)
 {
 	_opUsers.push_back(opUser);
-	// opUser.setMode('v', true); TODO check if needed
 }
 
 void Channel::banUser(User &user)

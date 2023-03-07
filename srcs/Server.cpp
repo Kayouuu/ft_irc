@@ -183,14 +183,14 @@ void	Server::acceptClient()
 			_clients[i].setFd(new_connection);
 			_clients[i].setRegister(false);
 			_clients[i].setRPassword(false);
-			std::cout << "CONNECTED CLIENTS: " << RED << _connected_clients << NO_COLOR << std::endl;
-			if (_connected_clients == 0)
+			if (_connected_clients == 0) {
 				_clients[i].setIrcOp(true);
+			}
 			break ;
 		}
 	}
-	std::cout << "New connection: " << new_connection << std::endl;
 	_connected_clients++;
+	std::cout << "Connected clients: " << RED << _connected_clients << NO_COLOR << std::endl;
 }
 
 void	Server::manageClient(int &index)

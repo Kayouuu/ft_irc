@@ -73,9 +73,7 @@ void Server::lMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 	for (int i = 0; modeArg[i]; i++) // If the mode argument is not valid, displays an error
 	{
 		if (!isdigit(modeArg[i]))
-		{
-			return; // TODO no response
-		}
+			return;
 	}
 	if (!modeArg.empty() && set)
 	{
