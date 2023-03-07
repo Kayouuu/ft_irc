@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 16:03:13 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/06 17:42:08 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/07 13:45:44 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	Server::bMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
 {
-	std::cout << modeArg << " " << modeArg.empty() << std::endl;
 	std::vector<User>::iterator itUser;
 	for (itUser = _clients.begin(); itUser != _clients.end(); itUser++)
 	{
@@ -23,7 +22,6 @@ void	Server::bMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 	}
 	if (modeArg.empty() == true)
 	{
-		std::cout << "salut" << std::endl;
 		cChannel.listBannedUser(_rep, cUser);
 	}
 	else if (itUser != _clients.end())
@@ -39,7 +37,6 @@ void	Server::bMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 		{
 			cChannel.unbanUser(*itUser);
 			itUser->setMode('b', set);
-			// TODO check if need to send error msg
 		}
 	}
 	else
@@ -70,25 +67,20 @@ void	Server::kMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 
 void Server::lMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
 {
-	std::cout << "----------------HOHO----------------\n";
 	cChannel.setMode('l', set);
 	for (int i = 0; modeArg[i]; i++) // If the mode argument is not valid, displays an error
 	{
-		std::cout << "I'm in l mode, in for\n";
 		if (!isdigit(modeArg[i]))
 		{
-			std::cout << cUser.getNick() << " " << modeArg << "is not valid\n";
-			return;
+			return; // TODO no response
 		}
 	}
 	if (!modeArg.empty() && set)
 	{
-		std::cout << "SET limited user connection\n";
 		cChannel.setUsrNbMax(static_cast<unsigned short>(std::strtoul(modeArg.c_str(), NULL, 0)));
 	}
 	else
 	{
-		std::cout << "MAX CONNECTION -\n";
 		cChannel.setUsrNbMax(MAX_CONNECTIONS);
 	}
 }

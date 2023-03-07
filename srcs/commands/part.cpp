@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 08:14:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/06 14:28:44 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/07 13:34:51 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
 			if (itChannel == _channels.end())
 			{
 				_rep.E403(cUser.getFd(), cUser.getNick(), *itListChannel); // ERR_NOSUCHCHANNEL
-				continue ; // TODO CHECK maybe return ? Either we continue browsing the list of channels or we stop when a channel don't exist
+				continue ;
 			}
 			if (!itChannel->isUser(cUser))
 			{
 				_rep.E442(cUser.getFd(), cUser.getNick(), *itListChannel); // ERR_NOTONCHANNEL
-				continue ; // TODO CHECK maybe return ? Either we continue browsing the list of channels or we stop when a channel don't exist
+				continue ;
 			}
 			std::vector<User> chanUsers = itChannel->getUsers();
 			std::string userNick;

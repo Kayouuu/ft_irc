@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 11:00:21 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/03 11:53:36 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/07 13:38:22 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void User::setMode(char const &modeName, bool const &isMode)
 {
 	std::map<char, bool>::iterator it = _mode.find(modeName);
 	if (it == _mode.end())
-		std::cout << "No mode " << modeName << std::endl; //TODO error msg
+		return ;
 	it->second = isMode;
 }
 
@@ -199,7 +199,7 @@ bool User::isMode(char mode)
 {
 	std::map<char, bool>::iterator it = _mode.find(mode);
 	if (it == _mode.end())
-		std::cout << "No mode " << mode << std::endl; //TODO error msg
+		return (false);
 	return it->second;
 }
 
@@ -211,7 +211,6 @@ std::string User::getModes()
 		if (mode->second)
 			modes.append(&"+" [mode->first]);
 	}
-	std::cout << modes << std::endl;//TODO: to remove later, it's for debugging
 	if (modes.empty())
 		return "no modes yet";
 	return modes;

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 13:12:10 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/02 15:03:08 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/07 13:46:02 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int main(int argc, char *argv[])
 	}
 	catch(const std::exception& e)
 	{
-		std::cout << RED << e.what() << __func__ << "\n" << NO_COLOR;
 		server.shutdown();
 		return (1);
 	}

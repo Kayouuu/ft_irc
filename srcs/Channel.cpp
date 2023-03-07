@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 11:44:15 by dbouron           #+#    #+#             */
-/*   Updated: 2023/03/03 10:22:05 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/07 13:38:56 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ bool Channel::isMode(char mode)
 {
 	std::map<char, bool>::iterator it = _mode.find(mode);
 	if (it == _mode.end())
-		std::cout << "No mode " << mode << std::endl; //TODO error msg
+		return false;
 	return it->second;
 }
 
@@ -87,7 +87,6 @@ std::string Channel::getModes()
 			modes.append("+" + letter);
 		}
 	}
-	std::cout << GREEN << "MODES sent: " << modes << NO_COLOR << std::endl;//TODO: to remove later, it's for debugging
 	return modes;
 }
 
@@ -189,7 +188,7 @@ void Channel::setMode(char const &modeName, bool const &isMode)
 {
 	std::map<char, bool>::iterator it = _mode.find(modeName);
 	if (it == _mode.end())
-		std::cout << "No mode " << modeName << std::endl; //TODO error msg
+		return ;
 	it->second = isMode;
 }
 

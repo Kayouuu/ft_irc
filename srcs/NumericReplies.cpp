@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 15:41:10 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/03 10:22:25 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/07 13:43:44 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,7 +260,6 @@ void Rep::R352(int const &fd, const std::string &cNick, const std::string& messa
 
 void Rep::R353(int const &fd, const std::string &cNick, const std::string& chanName, const std::string& nick, char chanPrefix, char userPrefix)
 {
-	//std::cout << chanPrefix << std::endl;
 	if (userPrefix == 'u')
 		output << "353 " << cNick << " " << chanPrefix << " " << chanName << " :" << nick;
 	else

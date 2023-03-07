@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/03/03 10:31:24 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/07 13:47:31 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
 				return;
 		if (itChannel->isMode('m'))
 		{
-			std::cout << "Mode m: " << cUser.isVoicedChan(*itChannel) << " " << cUser.isChanOp(*itChannel) << " " << cUser.isIrcOp() << std::endl;
 			if (!cUser.isVoicedChan(*itChannel) && !cUser.isChanOp(*itChannel) && !cUser.isIrcOp())
 				return;
 		}

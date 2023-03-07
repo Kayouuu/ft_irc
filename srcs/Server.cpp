@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/03 14:10:27 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/07 13:46:22 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,6 @@ void	Server::manageClient(int &index)
 	rvalue = _io.receive(output, _clients[index].getFd());
 	if (rvalue == 0)
 	{
-		std::cout << "QUIT" << std::endl;
 		std::vector<std::string>	tmp;
 		quitCmd(tmp, _clients[index]);
 	}
@@ -251,10 +250,7 @@ void		Server::commandHandler(std::string const &output, int const &current)
 	}
 	if (tmp != "")
 		parsed_output.push_back(tmp);
-
-	// TODO remove, used only for tests
 	std::cout << CYAN << "Received command: " << output << NO_COLOR << std::endl;
-
 	if (parsed_output.size() == 0)
 		return ;
 	if (parsed_output[0] == "PING") // Needed for weechat lag

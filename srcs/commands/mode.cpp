@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 13:47:31 by dbouron           #+#    #+#             */
-/*   Updated: 2023/03/06 17:37:35 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/07 13:47:27 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,9 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 {
 	if (input[2].empty())
 	{
-		//send all modes of channel
+		// Send all modes of channel
 		if (input[1][0] != '#')
 		{
-			std::cout << "MODE: wrong argument\n";
 			return;
 		}
 		std::vector<Channel>::iterator	itChannel;
@@ -81,11 +80,6 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 		}
 		if (!itChan->isUser(cUser))
 		{
-			// TODO remove
-			// std::vector<User> test = itChan->getUsers();
-			// for (std::vector<User>::iterator TEST = test.begin(); TEST != test.end(); TEST++) {
-			// 	std::cout << GREEN << TEST->getNick() << NO_COLOR << std::endl;
-			// }
 			_rep.E442(cUser.getFd(), cUser.getNick(), input[1]);
 			return ;
 		}
@@ -152,13 +146,10 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 
 void	Server::modeHandler(User &cUser, Channel &cChannel, char &mode, std::vector<std::string> &input, bool set)
 {
-	std::cout << "mode handler" << std::endl;
 	std::string	modeArg;
 
 	std::vector<std::string>::iterator it = input.begin();
 	it++;it++;it++;it++;
-	std::cout << input.size() << std::endl;
-	// if (input.size() < 3 || input[3].empty() || input[3].size() == 0)
 	if (input.size() < 4)
 		modeArg = "";
 	else

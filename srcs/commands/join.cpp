@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:02:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/03 14:08:32 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/07 13:47:43 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,6 @@ void    Server::usrJoinChan(User &cUser, Channel &chan)
 	chan.addUser(cUser);
 	chan.incrUsrCon();
 	std::string userNick;
-//	if (cUser.isChanOp(chan))
-//		userNick = "@";
-//	else if (cUser.isIrcOp()) {
-//		userNick = "&";
-//	}
 	userNick.append(cUser.getNick());
 	std::vector<User> chanUsers = chan.getUsers();
 	for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
@@ -36,7 +31,6 @@ void    Server::usrJoinChan(User &cUser, Channel &chan)
  */
 void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 {
-	std::cout << "in joincmd\n";
 	std::vector<std::string>::iterator it = input.begin();
     it++;
     if (it >= input.end())
@@ -96,21 +90,16 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
     std::vector<std::string>::iterator itKey = listKey.begin();
     for (std::vector<std::string>::iterator itLst = listChan.begin(); itLst < listChan.end(); itLst++) {
         str = *itLst;
-		std::cout << "-----------" << str << "----" << std::endl;
         if(str[0] != '#'){
 			str.clear();
 			continue;
 		}
         str.clear();
         for (; itChannel < _channels.end(); itChannel++){
-			std::cout << itChannel->getName() << " + " << *itLst << std::endl;
 			if (itChannel->getName() == *itLst)
 				break;
 		}
-		if (itChannel != _channels.end())
-			std::cout << "ca: " << itChannel->isUser(cUser) << std::endl;
         if (itChannel == _channels.end()) { /*Channel does not exist*/
-			std::cout << "pas chan ici\n";
             if (cUser.getChanConnected() > MAX_CHAN)
             {
                 _rep.E405(cUser.getFd(), cUser.getNick(),*itLst);
@@ -131,20 +120,17 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 			itChannel->addOpUser(cUser);
 			cUser.addOpChannel(*itChannel);
 			cUser.incrChanConnected();
-			//essayer de l'envoyer au channel !
 			std::vector<User> users = itChannel->getUsers();
 			for (std::vector<User>::iterator itU = users.begin(); itU != users.end(); itU++)
 				if (cUser.getFd() != -1)
 					_rep.R353(cUser.getFd(), cUser.getNick(), itChannel->getName(), itU->getNick(),itChannel->getChanPrefix(), itChannel->getUserPrefix(*itU));
 			_rep.R366(cUser.getFd(), cUser.getNick(), itChannel->getName());
 			std::string userNick;
-//			userNick = "@";
 			userNick.append(cUser.getNick());
 			_io.emit(":" + userNick + " JOIN " + itChannel->getName(),cUser.getFd());
             users.clear();
 		}
         else if (!itChannel->isUser(cUser)) { /* Channel does exist */
-			std::cout << "chan ici trouver\n";
             if (itChannel->isMode('i')) { /* Channel in Invite mode */
                 if (!cUser.isInviteChan(*itChannel)) {
                     _rep.E473(cUser.getFd(), cUser.getNick(), *itLst);

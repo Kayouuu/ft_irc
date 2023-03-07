@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 16:48:09 by dbouron           #+#    #+#             */
-/*   Updated: 2023/03/03 10:29:26 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/07 13:44:18 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,8 @@ void Server::inviteCmd(std::vector<std::string> &input, User &cUser)
 	}
 	for (std::vector<Channel>::iterator chan = _channels.begin(); chan != _channels.end(); chan++)
 	{
-		std::cout << "CHANNEL NAME TO CHECK --- " << chan->getName() << " " << input[0] << " " << input[1] << std::endl;
 		if (chan->getName() == input[2])
 		{
-			std::cout << "IN IF channel exists-----\n";
 			// Is user on channel ?
 			if (!chan->isUser(cUser))
 			{
@@ -65,13 +63,10 @@ void Server::inviteCmd(std::vector<std::string> &input, User &cUser)
 					return ;
 				}
 			}
-			std::cout << "ICI1 -----\n";
 			_rep.E401(cUser.getFd(), cUser.getNick(), input[1]); // ERR_NOSUCHNICK
-			std::cout << "ICI2 -----\n";
 			return ;
 		}
 	}
-	std::cout << "LALALALALA -----\n";
 	_rep.E403(cUser.getFd(), cUser.getNick(), input[2]); // ERR_NOSUCHCHANNEL
 }
 

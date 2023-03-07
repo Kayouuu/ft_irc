@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:10:46 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/02 15:33:15 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/07 13:49:06 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	Bot::run()
 		rvalue = receive(output, _socketFd);
 		if (output == "" && rvalue < 1)
 		{
-			std::cout << "error: connection lost" << std::endl;
+			std::cerr << "error: connection lost" << std::endl;
 			shutdown();
 		}
 		if (rvalue != 1)

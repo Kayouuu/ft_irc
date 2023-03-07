@@ -6,12 +6,11 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 14:06:27 by lbattest          #+#    #+#             */
-/*   Updated: 2023/03/03 13:30:28 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/07 13:38:33 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/Server.hpp"
-//TODO check for channel
 
 /**
  * Send a message to a #channel or a user like PRIVMSG but the difference is
