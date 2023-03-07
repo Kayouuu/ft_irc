@@ -68,7 +68,8 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
                     if (it < --input.end())
                         msg.append(" ");
                 }
-                _io.emit(msg, itClient->getFd());
+				if (!itChannel->isBanned(*itClient))
+                	_io.emit(msg, itClient->getFd());
                 msg.clear();
                 it = itTmp;
             }

@@ -78,13 +78,14 @@ bool Channel::isMode(char mode)
 std::string Channel::getModes()
 {
 	std::string modes;
+	modes.append("+");
 	for (std::map<char, bool>::iterator mode = _mode.begin(); mode != _mode.end(); mode++)
 	{
 		if (mode->second)
 		{
 			std::string letter;
 			letter.append(1, mode->first);
-			modes.append("+" + letter);
+			modes.append(letter);
 		}
 	}
 	return modes;

@@ -57,12 +57,14 @@ void	Server::kMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 {
 	char mode = 'k';
 
+	if (modeArg == "")
+		return;
 	cChannel.setMode(mode, set);
 	if (set == true)
 		cChannel.setPw(modeArg);
 	else
 		cChannel.setPw("");
-	
+
 }
 
 void Server::lMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)

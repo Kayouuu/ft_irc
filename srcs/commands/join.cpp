@@ -144,7 +144,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 					continue;
 				}
 			}
-            else if (itChannel->isBanned(cUser)) {
+            if (itChannel->isBanned(cUser)) {
                 _rep.E474(cUser.getFd(), cUser.getNick(), *itLst);
 				continue;
             }
