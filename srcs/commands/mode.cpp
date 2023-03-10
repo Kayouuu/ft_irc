@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 13:47:31 by dbouron           #+#    #+#             */
-/*   Updated: 2023/03/07 13:47:27 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/10 17:10:28 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,13 @@
 void	Server::notAMode(std::string const &which, std::string const &input, User &cUser)
 {
 	for (int j = 1; input[j]; j++)
+	{
 		if (!isalpha(input[j]))
+		{
 			_rep.E472(cUser.getFd(), cUser.getNick(), input[j]);
+			return ;
+		}
+	}
 	if (which == "channel")
 	{
 		for (int i = 1; input[i]; i++)
@@ -55,11 +60,20 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 	{
 		// Send all modes of channel
 		if (input[1][0] != '#')
-			return;
+		{
+			_rep.E403(cUser.getFd(), cUser.getNick(), input[1]);
+			return ;
+		}
 		std::vector<Channel>::iterator	itChannel;
-		for (itChannel = _channels.begin(); itChannel != _channels.end(); itChannel++)
+		itChannel = _channels.begin();
+		for (; itChannel != _channels.end(); itChannel++)
 			if (itChannel->getName() == input[1])
 				break ;
+		if (itChannel == _channels.end())
+		{
+			_rep.E401(cUser.getFd(), cUser.getNick(), input[1]);
+			return ;
+		}
 		std::string modes = itChannel->getModes();
 			_rep.R324(cUser.getFd(), cUser.getNick(), itChannel->getName(), modes, " ");
 		return;
@@ -73,7 +87,7 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 				break ;
 		if (itChan == _channels.end())
 		{
-			_rep.E403(cUser.getFd(), cUser.getNick(), input[1]); // TOCHECK if enough + if need to substr the '#' from input[1]
+			_rep.E403(cUser.getFd(), cUser.getNick(), input[1]);
 			return ;
 		}
 		if (!itChan->isUser(cUser))
@@ -86,9 +100,12 @@ void	Server::modeCmd(std::vector<std::string> &input, User &cUser)
 			_rep.E482(cUser.getFd(), cUser.getNick(), input[1]);
 			return ;
 		}
-		if ((input[2][0] != '+' && input[2][0] != '-') || input[2].length() < 2) // TOCHECK
+		if ((input[2][0] != '+' && input[2][0] != '-') || input[2].length() < 2)
 		{
-			_rep.R324(cUser.getFd(), cUser.getNick(), input[1], input[2], input[3]);
+			if (input.size() < 4)
+				_rep.R324(cUser.getFd(), cUser.getNick(), input[1], input[2], "");
+			else
+				_rep.R324(cUser.getFd(), cUser.getNick(), input[1], input[2], input[3]);
 			return ;
 		}
 		notAMode("channel", input[2], cUser);
