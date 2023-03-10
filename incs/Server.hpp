@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/03 11:47:54 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/10 16:25:56 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ class Server
 		void	topicCmd(std::vector<std::string> &input, User &cUser);
 		void	userCmd(std::vector<std::string> &input, User &cUser);
 		void 	killCmd(std::vector<std::string> &input, User &cUser);
-		void 	opCmd(std::vector<std::string> &input, User &cUser);
 		void 	listCmd(std::vector<std::string> &input, User &cUser);
 
 		// Channel modes

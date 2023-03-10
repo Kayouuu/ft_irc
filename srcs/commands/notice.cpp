@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 14:06:27 by lbattest          #+#    #+#             */
-/*   Updated: 2023/03/07 13:38:33 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/10 16:29:28 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ void Server::noticeCmd(std::vector<std::string> &input, User &cUser) {
     std::vector<User>::iterator itClient = _clients.begin();
     it++;
     msg = *it;
+    if (input.size() < 2)
+    {
+        _rep.E461(cUser.getFd(), cUser.getNick(), input[0]);
+        return ;
+    }
     if (msg[0] == '#') {
         itClient++;
         msg.clear();
