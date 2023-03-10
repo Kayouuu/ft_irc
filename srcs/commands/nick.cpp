@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:10:55 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/02 15:05:22 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/10 16:15:38 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 void	Server::nickCmd(std::vector<std::string> &input, User &cUser)
 {
 	bool	set = true;
+	if (input.size() < 2)
+	{
+		_rep.E461(cUser.getFd(), cUser.getNick(), "NICK");
+		return ;
+	}
 	if (input[1] == "")
 	{
 		_rep.E431(cUser.getFd(), cUser.getNick());

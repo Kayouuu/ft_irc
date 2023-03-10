@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/07 13:46:22 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/10 16:09:57 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -253,7 +253,7 @@ void		Server::commandHandler(std::string const &output, int const &current)
 	std::cout << CYAN << "Received command: " << output << NO_COLOR << std::endl;
 	if (parsed_output.size() == 0)
 		return ;
-	if (parsed_output[0] == "PING" && parsed_output.size() < 2) // Needed for weechat lag
+	if (parsed_output[0] == "PING" && parsed_output.size() > 1) // Needed for weechat lag
 		_io.emit("PONG " + parsed_output[1], current);
 	// Find the command by his name, needs to be registered to use them excepts the necessary commands to log in
 	if (_commands.find(parsed_output[0]) != _commands.end())
