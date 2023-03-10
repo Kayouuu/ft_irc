@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/03/10 16:28:41 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/10 16:34:42 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
     std::vector<std::string>::iterator it = input.begin();
     std::vector<std::string>::iterator itTmp;
     std::vector<User>::iterator itClient = _clients.begin();
-    it++;
-    msg = *it;
-    if (input.size() < 2)
+    if (input.size() < 3)
     {
         _rep.E461(cUser.getFd(), cUser.getNick(), input[0]);
         return ;
     }
+    it++;
+    msg = *it;
 	if (msg[0] == '#') { /* msg to a channel */
 		itClient++;
 		msg.clear();
