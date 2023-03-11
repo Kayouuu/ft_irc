@@ -41,8 +41,10 @@ void Server::noticeCmd(std::vector<std::string> &input, User &cUser) {
                 break;
             itChannel++;
         }
-        if (itChannel == _channels.end())
-            return;
+		if (itChannel == _channels.end()) {
+			_rep.E404(cUser.getFd(), cUser.getNick(), *it);
+			return;
+		}
         else if (itChannel->isBanned(cUser) == 1)
             return;
         if (itChannel->isMode('n') == true)
@@ -103,6 +105,9 @@ void Server::noticeCmd(std::vector<std::string> &input, User &cUser) {
                 msg.clear();
                 it = itTmp;
             }
+			else
+				_rep.E401(cUser.getFd(), cUser.getNick(), *itList);
+
         }
     }
 }
