@@ -18,7 +18,7 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
         std::vector<std::string>    listChannel;
         std::string                 tmp;
 
-		if (input.size() < 2)
+		if (input[0] == "PART" && input.size() < 2)
 		{
 			_rep.E461(cUser.getFd(), cUser.getNick(), input[0]); // ERRO_NEEDMOREPARAMS
 			return ;
@@ -44,12 +44,12 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
 			for (itChannel = _channels.begin(); itChannel != _channels.end(); itChannel++)
 				if (itChannel->getName() == *itListChannel)
 					break ;
-			if (itChannel == _channels.end())
+			if (input[0] == "PART" && itChannel == _channels.end())
 			{
 				_rep.E403(cUser.getFd(), cUser.getNick(), *itListChannel); // ERR_NOSUCHCHANNEL
 				continue ;
 			}
-			if (!itChannel->isUser(cUser))
+			if (input[0] == "PART" && !itChannel->isUser(cUser))
 			{
 				_rep.E442(cUser.getFd(), cUser.getNick(), *itListChannel); // ERR_NOTONCHANNEL
 				continue ;

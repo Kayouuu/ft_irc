@@ -117,7 +117,7 @@ void	Server::initCommands()
 	_commands.insert(std::make_pair(std::string("MODE"), &Server::modeCmd));
 	_commands.insert(std::make_pair(std::string("MSG"), &Server::msgCmd));
 	_commands.insert(std::make_pair(std::string("NICK"), &Server::nickCmd));
-	_commands.insert(std::make_pair(std::string("NOTICE"), &Server::noticeCmd));
+	_commands.insert(std::make_pair(std::string("NOTICE"), &Server::msgCmd));
 	_commands.insert(std::make_pair(std::string("PART"), &Server::partCmd));
 	_commands.insert(std::make_pair(std::string("PASS"), &Server::passCmd));
 	_commands.insert(std::make_pair(std::string("PRIVMSG"), &Server::msgCmd));

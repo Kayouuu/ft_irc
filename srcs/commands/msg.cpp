@@ -72,7 +72,7 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
 				std::string prefix;
 				if (itChannel->getUserPrefix(cUser) != 'u')
 					prefix.append(1, itChannel->getUserPrefix(cUser));
-                msg.append(":" + prefix + cUser.getNick() + " PRIVMSG " + itChannel->getName() + " ");
+                msg.append(":" + prefix + cUser.getNick() + " " + input[0] + " " + itChannel->getName() + " ");
                 for (; it < input.end(); it++) {
                     msg.append(*it);
                     if (it < --input.end())
@@ -108,20 +108,20 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
                     break;
                 itClient++;
             }
-            if (itClient != _clients.end()){
+            if (itClient != _clients.end()) {
                 if (it >= input.end()) {
                     _rep.E412(cUser.getFd(), cUser.getNick());
                     return;
                 }
                 itTmp = it;
-                msg.append(":" + cUser.getNick() + " PRIVMSG " + itClient->getNick() + " ");
-                for (it; it < input.end(); it++) {
+                msg.append(":" + cUser.getNick() + " " + input[0] + " " + itClient->getNick() + " ");
+                for (; it < input.end(); it++) {
                     msg.append(*it);
                     if (it < --input.end())
                         msg.append(" ");
                 }
 				_io.emit(msg, itClient->getFd());
-				if (!cUser.isInitConv())
+				if (!cUser.isInitConv() && input[0] != "NOTICE")
 				{
 					_io.emit(msg, cUser.getFd());
 					cUser.setInitConv(true);
