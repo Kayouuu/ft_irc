@@ -61,14 +61,20 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
 			userNick.append(cUser.getNick());
 			for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
 			{
+				if (cUser.getFd() != itChanUser->getFd())
 					_io.emit(":" + userNick + " PART " + itChannel->getName(),itChanUser->getFd());
 			}
-			if(itChannel->getUsrCon() - 1 == 0)
+			if (itChannel->getUsrCon() - 1 == 0 && input[0] != "QUIT") {
 				_channels.erase(itChannel);
-			else {
-				itChannel->removeOpUser(cUser);
+			}
+			else
+			{
+				if (itChannel->isOpUser(cUser))
+				{
+					itChannel->removeOpUser(cUser);
+					cUser.removeOpChannel(*itChannel);
+				}
 				itChannel->removeUser(cUser);
-				cUser.removeOpChannel(*itChannel);
 				itChannel->decrUsrCon();
 			}
 			cUser.decrChanConnected();

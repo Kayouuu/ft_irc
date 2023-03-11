@@ -14,33 +14,21 @@
 
 void	Server::quitCmd(std::vector<std::string> &input, User &cUser)
 {
-	if (!_channels.empty())
+	std::vector<Channel> chanDel;
+	if (cUser.getChanConnected() != 0)
 	{
 		std::vector<Channel>::iterator itChan = _channels.begin();
 		for (; itChan != _channels.end(); itChan++) {
-			if (_channels.size() == 0)
-				break ;
-			if (itChan->getUsrCon() != 0)
-			{
-				std::vector<User> chanUsers = itChan->getUsers();
-				for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
-				{
-					if (itChanUser->getFd() == cUser.getFd())
-						_io.emit(":" + cUser.getNick() + " PART " + itChan->getName(),itChanUser->getFd());
-				}
-			}
-			if(itChan->getUsrCon() - 1 == 0)
-				_channels.erase(itChan);
-			else {
-				if (!itChan->isUser(cUser))
-					continue;
-				if (itChan->isOpUser(cUser))
-					itChan->removeOpUser(cUser);
-				itChan->removeUser(cUser);
-				itChan->decrUsrCon();
-			}
+			std::vector<std::string> output;
+			output.push_back("QUIT");
+			output.push_back(itChan->getName());
+			output.push_back(cUser.getNick());
+			partCmd(output, cUser);
+			if (itChan->getUsrCon() - 1 == 0)
+				chanDel.push_back(*itChan);
 		}
 	}
+	chanDel.clear();
     std::vector<User>::iterator itUser = _clients.begin();
     for (; itUser != _clients.end(); itUser++)
     {
