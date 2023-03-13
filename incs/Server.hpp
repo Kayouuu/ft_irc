@@ -88,14 +88,12 @@ class Server
 		void	modeCmd(std::vector<std::string> &input, User &cUser);
 		void	msgCmd(std::vector<std::string> &input, User &cUser);
 		void	nickCmd(std::vector<std::string> &input, User &cUser);
-		void	noticeCmd(std::vector<std::string> &input, User &cUser);
 		void	partCmd(std::vector<std::string> &input, User &cUser);
 		void	passCmd(std::vector<std::string> &input, User &cUser);
 		void	quitCmd(std::vector<std::string> &input, User &cUser);
 		void	topicCmd(std::vector<std::string> &input, User &cUser);
 		void	userCmd(std::vector<std::string> &input, User &cUser);
 		void 	killCmd(std::vector<std::string> &input, User &cUser);
-		void 	listCmd(std::vector<std::string> &input, User &cUser);
 
 		// Channel modes
 		void	bMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set);

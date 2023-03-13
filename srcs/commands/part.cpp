@@ -18,7 +18,7 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
         std::vector<std::string>    listChannel;
         std::string                 tmp;
 
-		if (input.size() < 2)
+		if (input[0] == "PART" && input.size() < 2)
 		{
 			_rep.E461(cUser.getFd(), cUser.getNick(), input[0]); // ERRO_NEEDMOREPARAMS
 			return ;
@@ -44,12 +44,12 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
 			for (itChannel = _channels.begin(); itChannel != _channels.end(); itChannel++)
 				if (itChannel->getName() == *itListChannel)
 					break ;
-			if (itChannel == _channels.end())
+			if (input[0] == "PART" && itChannel == _channels.end())
 			{
 				_rep.E403(cUser.getFd(), cUser.getNick(), *itListChannel); // ERR_NOSUCHCHANNEL
 				continue ;
 			}
-			if (!itChannel->isUser(cUser))
+			if (input[0] == "PART" && !itChannel->isUser(cUser))
 			{
 				_rep.E442(cUser.getFd(), cUser.getNick(), *itListChannel); // ERR_NOTONCHANNEL
 				continue ;
@@ -61,14 +61,20 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
 			userNick.append(cUser.getNick());
 			for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
 			{
+				if (cUser.getFd() != itChanUser->getFd())
 					_io.emit(":" + userNick + " PART " + itChannel->getName(),itChanUser->getFd());
 			}
-			if(itChannel->getUsrCon() - 1 == 0)
+			if (itChannel->getUsrCon() - 1 == 0 && input[0] != "QUIT") {
 				_channels.erase(itChannel);
-			else {
-				itChannel->removeOpUser(cUser);
+			}
+			else
+			{
+				if (itChannel->isOpUser(cUser))
+				{
+					itChannel->removeOpUser(cUser);
+					cUser.removeOpChannel(*itChannel);
+				}
 				itChannel->removeUser(cUser);
-				cUser.removeOpChannel(*itChannel);
 				itChannel->decrUsrCon();
 			}
 			cUser.decrChanConnected();

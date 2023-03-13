@@ -20,7 +20,6 @@ void	SocketIO::emit(std::string const &input, int const &fd) const
 {
 	std::string	msg = input + "\r\n";
 	int 		error;
-
 	std::cout << "Message sent: " << input << std::endl;
 	error = send(fd, msg.c_str(), msg.size(), 0);
 	if (error < 0)

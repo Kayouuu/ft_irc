@@ -74,11 +74,8 @@ class User
 
 		int const					&getFd() const;
 		std::string const			&getNick() const;
-		std::string const			&getUser() const;
-		std::string const			&getPrefix() const;
 		bool						isMode(char mode);
 		std::string					getModes();
-		std::vector<Channel> const	&getOpChannels() const;
 		bool 						isIrcOp() const;
 		bool 						isChanOp(Channel &channel);
 		bool						isVoicedChan(Channel &channel);

@@ -26,7 +26,7 @@ HEADFILE_BONUS = $(shell find bonus/incs -name "*.hpp")
 DIR_OBJ_BONUS = bonus/srcs/.objs_bonus
 
 CFLAGS = -Wall -Wextra -Werror
-CFLAGS = -std=c++98 -g3
+CFLAGS = -std=c++98
 #CFLAGS += -fsanitize=address -g3
 
 # **************************************************************************** #

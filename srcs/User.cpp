@@ -180,16 +180,6 @@ std::string const &User::getNick() const
 	return (_nick);
 }
 
-std::string const &User::getUser() const
-{
-	return (_user);
-}
-
-std::string const &User::getPrefix() const
-{
-	return (_prefix);
-}
-
 bool const	&User::getUnusedNick() const
 {
 	return (_unused_nick);
@@ -214,11 +204,6 @@ std::string User::getModes()
 	if (modes.empty())
 		return "no modes yet";
 	return modes;
-}
-
-std::vector<Channel> const &User::getOpChannels() const
-{
-	return _chanOp;
 }
 
 int const &User::getChanConnected() const {
