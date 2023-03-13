@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/07 13:34:30 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/10 16:54:58 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/13 09:58:20 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,17 @@
 void	Server::passCmd(std::vector<std::string> &input, User &cUser)
 {
 	if (input.size() == 1)
+	{
 		_rep.E461(cUser.getFd(), cUser.getNick(), input[0]);
+		return ;
+	}
 	else if (input.size() > 1)
 		cUser.setRPassword(input[1] == _password);
 	else if (cUser.getRegister() == true)
+	{
 		_rep.E462(cUser.getFd(), cUser.getNick());
+		return ;
+	}
 	if (_password == input[1] && cUser.getRegister() == false && cUser.getUnusedNick() == true)
 	{
 		_rep.R001(cUser.getFd(), cUser.getNick());

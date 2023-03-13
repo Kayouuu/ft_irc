@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 14:40:03 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/07 14:28:13 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/11 10:56:40 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	Server::quitCmd(std::vector<std::string> &input, User &cUser)
 {
-	if (!_channels.empty())
+	if (_channels.size() != 0)
 	{
 		std::vector<Channel>::iterator itChan = _channels.begin();
 		for (; itChan != _channels.end(); itChan++) {

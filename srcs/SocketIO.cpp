@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:45:14 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/07 13:46:30 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/13 09:58:43 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ int	SocketIO::receive(std::string &output, int const &fd)
 	{
 		std::memset(&buffer, 1, 1024);
 		rvalue = recv(fd, &buffer, 1024, 0);
+		if (buffer[rvalue] == 0 || rvalue == 0)
+			break ;
 		if (rvalue < 0)
 		{
 			std::perror("recv");
 			throw std::exception();
 		}
-		if (buffer[rvalue] == 0 || rvalue == 0)
-			break ;
 		buffer[rvalue] = '\0';
 		output.append(buffer);
 		loop_exit = output.find(10);

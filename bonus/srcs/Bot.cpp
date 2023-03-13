@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 11:10:46 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/07 13:49:06 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/13 09:59:09 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ Bot::Bot(int const &port, std::string const &pass, std::string const &ip) : _por
 
 Bot::~Bot() { }
 
-
 void	Bot::start()
 {
 	int	rvalue;
@@ -38,7 +37,7 @@ void	Bot::start()
 	if (_socketFd < 0)
 	{
 		std::perror("socket");
-		shutdown();
+		throw	std::exception();
 	}
 	_saddr.sin_family = AF_INET;
 	_saddr.sin_port = htons(_port);
@@ -46,7 +45,8 @@ void	Bot::start()
 	if (_local_host == NULL)
 	{
 		perror("gethostbyname");
-		shutdown();
+		close(_socketFd);
+		throw	std::exception();
 	}
 	_saddr.sin_addr = *((struct in_addr *)_local_host->h_addr);
 
@@ -54,7 +54,8 @@ void	Bot::start()
 	if (rvalue < 0)
 	{
 		perror("connect");
-		shutdown();
+		close(_socketFd);
+		throw	std::exception();
 	}
 	fcntl(_socketFd, F_SETFL, O_NONBLOCK);
 	emit(_log_msg, _socketFd);
