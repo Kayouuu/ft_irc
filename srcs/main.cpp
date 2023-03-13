@@ -26,14 +26,14 @@ int main(int argc, char *argv[])
 	{
 		if (!std::isdigit(argv[1][i]))
 		{
-			std::cout << "First parameter must be a number between 0 and 65535" << std::endl;
+			std::cout << "First parameter must be a number between 1 and 65535" << std::endl;
 			return (1);
 		}
 	}
 	port = std::atoi(argv[1]);
-	if (port < 0 || port > 65535)
+	if (port < 1 || port > 65535)
 	{
-		std::cout << "Port range must be between 0 and 65535" << std::endl;
+		std::cout << "Port range must be between 1 and 65535" << std::endl;
 		return (-1);
 	}
 
