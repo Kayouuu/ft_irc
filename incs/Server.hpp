@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/10 16:25:56 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:28:45 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@
 # include <cstring>
 # include <cerrno>
 # include <cstdlib>
+# include <cstdio>
 
-# include "User.hpp"
-# include "SocketIO.hpp"
-# include "Channel.hpp"
 # include "NumericReplies.hpp"
+# include "User.hpp"
+# include "Channel.hpp"
 
 # define MAX_CONNECTIONS 1024
 # define MAX_INCONNECTIONS 50
@@ -43,9 +43,9 @@
 # define RED "\033[0;31m"
 # define GREEN "\033[0;32m"
 
-class	SocketIO;
 class	Rep;
 class	User;
+class	Channel;
 
 class Server
 {
@@ -53,7 +53,6 @@ class Server
 		typedef	void (Server::*cmdHandler)(std::vector<std::string> &, User &); // Array of function pointer for function belonging to the Server class returning void and taking a string (input) and an int (fd)
 
 		Rep									_rep;
-		SocketIO							_io;
 		std::vector<User>					_clients;
 		std::vector<Channel>				_channels;
 		int									_server_fd;
@@ -72,13 +71,18 @@ class Server
 		void	modeHandlerUser(std::string &input, User &cUser, char &mode);
 		void	notAMode(std::string const &which, std::string const &input, User &cUser);
 
+		int		receive(std::string &output, int const &fd);
+		void	sendToClient(int &index);
+
+
 	public:
 		Server(int port, std::string password);
 		~Server();
 
-		void		starting();
-		void		run();
-		void		shutdown();
+		void	starting();
+		void	run();
+		void	shutdown();
+		void	emit(std::string const &input, int const &fd) const;
 
 	private:
 		void	dieCmd(std::vector<std::string> &input, User &cUser);

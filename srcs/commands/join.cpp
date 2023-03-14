@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 12:02:22 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/07 13:47:43 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/13 11:34:21 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void    Server::usrJoinChan(User &cUser, Channel &chan)
 	userNick.append(cUser.getNick());
 	std::vector<User> chanUsers = chan.getUsers();
 	for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
-			_io.emit(":" + userNick + " JOIN " + chan.getName(),itChanUser->getFd());
+			emit(":" + userNick + " JOIN " + chan.getName(),itChanUser->getFd());
 }
 
 /**
@@ -127,7 +127,7 @@ void	Server::joinCmd(std::vector<std::string> &input, User &cUser)
 			_rep.R366(cUser.getFd(), cUser.getNick(), itChannel->getName());
 			std::string userNick;
 			userNick.append(cUser.getNick());
-			_io.emit(":" + userNick + " JOIN " + itChannel->getName(),cUser.getFd());
+			emit(":" + userNick + " JOIN " + itChannel->getName(),cUser.getFd());
             users.clear();
 		}
         else if (!itChannel->isUser(cUser)) { /* Channel does exist */

@@ -6,13 +6,13 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/13 15:41:10 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/11 10:34:34 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:17:43 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/NumericReplies.hpp"
 
-Rep::Rep(SocketIO &io) : io(io) { }
+Rep::Rep(Server &io) : io(io) { }
 
 void Rep::R001(int const &fd, const std::string &cNick)
 {

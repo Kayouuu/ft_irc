@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/08 13:56:08 by lbattest          #+#    #+#             */
-/*   Updated: 2023/03/10 16:34:42 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/13 11:34:21 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
                         msg.append(" ");
                 }
 				if (!itChannel->isBanned(*itClient))
-                	_io.emit(msg, itClient->getFd());
+                	emit(msg, itClient->getFd());
                 msg.clear();
                 it = itTmp;
             }
@@ -120,10 +120,10 @@ void Server::msgCmd(std::vector<std::string> &input, User &cUser) {
                     if (it < --input.end())
                         msg.append(" ");
                 }
-				_io.emit(msg, itClient->getFd());
+				emit(msg, itClient->getFd());
 				if (!cUser.isInitConv() && input[0] != "NOTICE")
 				{
-					_io.emit(msg, cUser.getFd());
+					emit(msg, cUser.getFd());
 					cUser.setInitConv(true);
 					itClient->setInitConv(true);
 				}

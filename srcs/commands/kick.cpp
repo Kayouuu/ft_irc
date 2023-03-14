@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/09 15:33:55 by dbouron           #+#    #+#             */
-/*   Updated: 2023/03/10 16:17:33 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/13 11:34:21 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void Server::kickCmd(std::vector<std::string> &input, User &cUser)
 					}
 					for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
 					{
-						_io.emit(":" + userNick + " " + input[0] + " " + chan->getName() + " " + input[2] + " " + msg,itChanUser->getFd());
+						emit(":" + userNick + " " + input[0] + " " + chan->getName() + " " + input[2] + " " + msg,itChanUser->getFd());
 					}
 					chan->removeUser(*user);
 					return ;

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:35:47 by lbattest          #+#    #+#             */
-/*   Updated: 2023/03/03 12:03:38 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/13 11:34:21 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void 	Server::killCmd(std::vector<std::string> &input, User &cUser)
         if (it != --input.end())
             str.append(" ");
     }
-    _io.emit(":" + cUser.getNick() + " NOTICE " + itClients->getNick() + " :You've been kicked of the server for the following reasons" + str, itClients->getFd());
+    emit(":" + cUser.getNick() + " NOTICE " + itClients->getNick() + " :You've been kicked of the server for the following reasons" + str, itClients->getFd());
     itClients->resetUser();
 	_connected_clients--;
 }

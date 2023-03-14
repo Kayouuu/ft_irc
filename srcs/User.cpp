@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 11:00:21 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/07 13:38:22 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:36:29 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 User::User() : _nick(""), _user(""), _prefix("")
 { 
-	_fd = -1; _right_password = false; _is_registered = false; _chanConnected = 0; _unused_nick = false; _initConv = false;
+	_fd = -1; _right_password = false; _is_registered = false; _chanConnected = 0; _unused_nick = false; _initConv = false; _emitMsg = false;
+	std::memset(&_buffer, 1, 1024);
 	_ircOp = false;
 	_addrlen = socklen_t();
 	_address = sockaddr_in();
@@ -307,4 +308,26 @@ bool User::isInviteChan(Channel &inviteChan)
 bool User::isInitConv()
 {
 	return (_initConv);
+}
+
+bool const	&User::getCanRecv() const
+{
+	return (_emitMsg);
+}
+
+void	User::setCanRecv(bool const &set)
+{
+	_emitMsg = set;
+	if (set == false)
+		_msg.clear();
+}
+
+void	User::appendToMsg(char *buffer)
+{
+	_msg.append(buffer);
+}
+
+std::string	&User::getMsg()
+{
+	return (_msg);
 }

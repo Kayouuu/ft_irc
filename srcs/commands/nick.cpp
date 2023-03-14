@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:10:55 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/10 16:15:38 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/13 11:34:21 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	Server::nickCmd(std::vector<std::string> &input, User &cUser)
 	}
 	if (cUser.getRegister() && set == true)
 	{
-		_io.emit(":" + cUser.getNick() + " NICK " + input[1], cUser.getFd());
+		emit(":" + cUser.getNick() + " NICK " + input[1], cUser.getFd());
 		cUser.setNick(input[1]);
 		cUser.setUnusedNick(set);
 		_rep.R001(cUser.getFd(), cUser.getNick());

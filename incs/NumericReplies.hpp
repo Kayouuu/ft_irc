@@ -6,18 +6,19 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 13:31:44 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/03 10:21:22 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:27:47 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+# include "Server.hpp"
 
 #ifndef NUMERICREPLIES_HPP
 # define NUMERICREPLIES_HPP
 
-# include "SocketIO.hpp"
 
 # define MAX_CONNECTIONS 1024
 
-class	SocketIO;
+class	Server;
 
 # define USERMODE_CHARLIST "o"
 # define CHANNELMODE_CHARLIST "ositnmlbvk"
@@ -30,9 +31,9 @@ class Rep
 {
 	private:
 		std::stringstream	output;
-		SocketIO	&io;
+		Server	&io;
 	public:
-		Rep(SocketIO &io);
+		Rep(Server &io);
 		/* Replies */
 		void R001(NR_ARG);
 		void R002(NR_ARG, const std::string& servName, const std::string &servVersion);

@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 08:14:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/07 13:34:51 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/13 11:34:21 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	Server::partCmd(std::vector<std::string> &input, User &cUser)
 			for (std::vector<User>::iterator itChanUser = chanUsers.begin(); itChanUser != chanUsers.end(); itChanUser++)
 			{
 				if (cUser.getFd() != itChanUser->getFd())
-					_io.emit(":" + userNick + " PART " + itChannel->getName(),itChanUser->getFd());
+					emit(":" + userNick + " PART " + itChannel->getName(),itChanUser->getFd());
 			}
 			if (itChannel->getUsrCon() - 1 == 0 && input[0] != "QUIT") {
 				_channels.erase(itChannel);

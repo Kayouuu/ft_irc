@@ -6,13 +6,13 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/10 16:25:49 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:40:12 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/Server.hpp"
 
-Server::Server(int port, std::string password) : _port(port), _password(password), _rep(_io), _connected_clients(0) { }
+Server::Server(int port, std::string password) : _port(port), _password(password), _rep(*this), _connected_clients(0) { }
 
 Server::~Server() { }
 
@@ -130,6 +130,7 @@ void	Server::initCommands()
 void	Server::run()
 {
 	fd_set	read_fd_set;
+	fd_set	write_fd_set;
 	int		rvalue;
 
 	std::cout << "The IRC server is running." << std::endl << "Waiting for connections..." << std::endl;
@@ -137,13 +138,20 @@ void	Server::run()
 	{
 		// An FD list is used by select to work, it contains all the connected fd and need to be refilled everytime it loops
 		FD_ZERO(&read_fd_set); //  Cleaning the FD list before filling it
+		FD_ZERO(&write_fd_set);
 		for (int i = 0; i < MAX_CONNECTIONS; i++)
+		{
 			if (_clients[i].getFd() >= 0)
+			{
 				FD_SET(_clients[i].getFd(), &read_fd_set); // Reading all the connected clients to the list
+				FD_SET(_clients[i].getFd(), &write_fd_set);
+			}
+		}
 		FD_SET(0, &read_fd_set);
+		FD_SET(0, &write_fd_set);
 
 		// select(): check a list of FD to see if one need an operation
-		rvalue = select(FD_SETSIZE, &read_fd_set, NULL, NULL, NULL);
+		rvalue = select(FD_SETSIZE, &read_fd_set, &write_fd_set, NULL, NULL);
 		if (rvalue < 0)
 		{
 			std::perror("select");
@@ -158,6 +166,8 @@ void	Server::run()
 		{
 			if (_clients[i].getFd() > 0 && FD_ISSET(_clients[i].getFd(), &read_fd_set)) // If one is triggered, handle it
 				manageClient(i);
+			if (_clients[i].getFd() > 0 && _clients[i].getCanRecv() && FD_ISSET(_clients[i].getFd(), &write_fd_set))
+				sendToClient(i);
 		}
 	}
 }
@@ -197,26 +207,14 @@ void	Server::manageClient(int &index)
 	int			rvalue;
 	std::string	output;
 
-	rvalue = _io.receive(output, _clients[index].getFd());
+	rvalue = receive(output, _clients[index].getFd());
 	if (rvalue == 0)
 	{
 		std::vector<std::string>	tmp;
 		quitCmd(tmp, _clients[index]);
 	}
-	else if (rvalue > 0)
-	{
-		// Split the output of receive() in case multiples commands are received
-		size_t pos = 0;
-		std::string token;
-		std::string	delimiter = "\n" ;
-		while ((pos = output.find(delimiter)) != std::string::npos)
-		{
-			token = output.substr(0, pos);
-			commandHandler(token, _clients[index].getFd());
-			output.erase(0, pos + delimiter.length());
-		}
-	}
 }
+
 
 void		Server::commandHandler(std::string const &output, int const &current)
 {
@@ -253,7 +251,7 @@ void		Server::commandHandler(std::string const &output, int const &current)
 	if (parsed_output.size() == 0)
 		return ;
 	if (parsed_output[0] == "PING" && parsed_output.size() > 1) // Needed for weechat lag
-		_io.emit("PONG " + parsed_output[1], current);
+		emit("PONG " + parsed_output[1], current);
 	// Find the command by his name, needs to be registered to use them excepts the necessary commands to log in
 	if (_commands.find(parsed_output[0]) != _commands.end())
 	{
@@ -280,4 +278,68 @@ void	Server::shutdown()
 	_channels.clear();
 	_clients.clear();
 	_commands.clear();
+}
+
+void	Server::emit(std::string const &input, int const &fd) const
+{
+	std::string	msg = input + "\r\n";
+	int 		error;
+
+	std::cout << "Message sent: " << input << std::endl;
+	error = send(fd, msg.c_str(), msg.size(), 0);
+	if (error < 0)
+	{
+		std::perror("send");
+		throw std::exception();
+	}
+}
+
+int		Server::receive(std::string &output, int const &fd)
+{
+	char	buffer[1024 + 1];
+	int		rvalue;
+	std::vector<User>::iterator itClient;
+
+	for (itClient = _clients.begin(); itClient != _clients.end(); itClient++)
+	{
+		if (itClient->getFd() == fd)
+			break ;
+	}
+	std::memset(&buffer, 1, 1024);
+	rvalue = recv(fd, &buffer, 1024, 0);
+	if (rvalue < 0)
+	{
+		std::perror("recv");
+		throw std::exception();
+	}
+	if (rvalue == 0)
+	{
+		return (0);
+	}
+	if (buffer[rvalue] == 0 || buffer[rvalue - 1] == 10)
+	{
+		buffer[rvalue] = 0;
+		itClient->appendToMsg(buffer);
+		itClient->setCanRecv(true);
+		return (1);
+	}
+	buffer[rvalue] = '\0';
+	itClient->appendToMsg(buffer);
+	return (1);
+}
+
+void	Server::sendToClient(int &index)
+{
+	std::string	&output = _clients[index].getMsg();
+	// Split the output of receive() in case multiples commands are received
+	size_t pos = 0;
+	std::string token;
+	std::string	delimiter = "\n" ;
+	while ((pos = output.find(delimiter)) != std::string::npos)
+	{
+		token = output.substr(0, pos);
+		commandHandler(token, _clients[index].getFd());
+		output.erase(0, pos + delimiter.length());
+	}
+	_clients[index].setCanRecv(false);
 }
