@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:00 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/14 10:28:45 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:43:55 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ class Server
 		void	modeHandlerUser(std::string &input, User &cUser, char &mode);
 		void	notAMode(std::string const &which, std::string const &input, User &cUser);
 
-		int		receive(std::string &output, int const &fd);
+		int		receive(int const &fd);
 		void	sendToClient(int &index);
 
 

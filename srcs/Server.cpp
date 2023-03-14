@@ -6,7 +6,7 @@
 /*   By: psaulnie <psaulnie@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 11:00:07 by psaulnie          #+#    #+#             */
-/*   Updated: 2023/03/14 10:40:12 by psaulnie         ###   ########.fr       */
+/*   Updated: 2023/03/14 10:44:09 by psaulnie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,9 +205,8 @@ void	Server::acceptClient()
 void	Server::manageClient(int &index)
 {
 	int			rvalue;
-	std::string	output;
 
-	rvalue = receive(output, _clients[index].getFd());
+	rvalue = receive(_clients[index].getFd());
 	if (rvalue == 0)
 	{
 		std::vector<std::string>	tmp;
@@ -294,7 +293,7 @@ void	Server::emit(std::string const &input, int const &fd) const
 	}
 }
 
-int		Server::receive(std::string &output, int const &fd)
+int		Server::receive(int const &fd)
 {
 	char	buffer[1024 + 1];
 	int		rvalue;
