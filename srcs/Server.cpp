@@ -12,7 +12,8 @@
 
 #include "../incs/Server.hpp"
 
-Server::Server(int port, std::string password) : _port(port), _password(password), _rep(*this), _connected_clients(0) { }
+
+Server::Server(int port, std::string password) : _rep(*this), _connected_clients(0), _port(port), _password(password) { }
 
 Server::~Server() { }
 
@@ -220,7 +221,6 @@ void		Server::commandHandler(std::string const &output, int const &current)
 	std::vector<std::string>	parsed_output;
 	std::string					tmp;
 	int							user_index;
-	int							size;
 
 	for (user_index = 0; user_index < MAX_CONNECTIONS; user_index++)
 		if (_clients[user_index].getFd() == current)

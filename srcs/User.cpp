@@ -199,8 +199,10 @@ std::string User::getModes()
 	std::string modes;
 	for (std::map<char, bool>::iterator mode = _mode.begin(); mode != _mode.end(); mode++)
 	{
-		if (mode->second)
-			modes.append(&"+" [mode->first]);
+		if (mode->second){
+			modes.append("+");
+			modes.append(1, mode->first);
+		}
 	}
 	if (modes.empty())
 		return "no modes yet";

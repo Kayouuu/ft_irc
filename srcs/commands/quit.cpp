@@ -14,6 +14,7 @@
 
 void	Server::quitCmd(std::vector<std::string> &input, User &cUser)
 {
+	(void)input;
 	std::vector<Channel> chanDel;
 	if (cUser.getChanConnected() != 0)
 	{

@@ -14,6 +14,7 @@
 
 void	Server::dieCmd(std::vector<std::string> &input, User &cUser)
 {
+	(void) input;
 	if (cUser.isIrcOp() == true)
 		throw	std::exception();
 	_rep.E481(cUser.getFd(), cUser.getNick());

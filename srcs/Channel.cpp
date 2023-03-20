@@ -22,7 +22,7 @@ Channel::~Channel()
 	_mode.clear();
 }
 
-Channel::Channel(const std::string &name, User &opUser) : _name(name), _usrNbMax(MAX_CONNECTIONS), _usrCon(1), _pw(""), _isTopic(false)
+Channel::Channel(const std::string &name, User &opUser) : _name(name), _isTopic(false), _usrNbMax(MAX_CONNECTIONS), _usrCon(1), _pw("")
 {
 	_users.insert(_users.begin(), opUser);
 	_opUsers.insert(_opUsers.begin(), opUser);
@@ -201,7 +201,7 @@ void Channel::addUser(User &user)
 void Channel::removeUser(User &user)
 {
 	std::vector<User>::iterator it = _users.begin();
-	for (it; it < _users.end(); it++)
+	for (; it < _users.end(); it++)
 	{
 		if (it->getNick() == user.getNick())
 			_users.erase(it);
@@ -211,7 +211,7 @@ void Channel::removeUser(User &user)
 void Channel::removeOpUser(User &user)
 {
 	std::vector<User>::iterator it = _opUsers.begin();
-	for (it; it < _opUsers.end(); it++)
+	for (; it < _opUsers.end(); it++)
 	{
 		if (it->getNick() == user.getNick())
 			_opUsers.erase(it);

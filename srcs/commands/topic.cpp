@@ -47,7 +47,7 @@ void	Server::topicCmd(std::vector<std::string> &input, User &cUser)
 
 			itSubject++;
 			itSubject++;
-			for (itSubject; itSubject != input.end(); itSubject++)
+			for (; itSubject != input.end(); itSubject++)
 			{
 				if (*itSubject != "")
 					subject.append(*itSubject);

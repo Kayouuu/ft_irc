@@ -56,7 +56,7 @@ void Server::kickCmd(std::vector<std::string> &input, User &cUser)
 						userNick = "@";
 					}
 					userNick.append(cUser.getNick());
-					for (int i = 3; i < input.size(); i++)
+					for (size_t i = 3; i < input.size(); i++)
 					{
 						msg.append(input[i]);
 						if (i != input.size() - 1)

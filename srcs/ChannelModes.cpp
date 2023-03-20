@@ -55,6 +55,7 @@ void Server::iMode(Channel &cChannel, bool set)
 
 void	Server::kMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
 {
+	(void)cUser;
 	char mode = 'k';
 
 	if (modeArg == "")
@@ -69,6 +70,7 @@ void	Server::kMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 
 void Server::lMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
 {
+	(void)cUser;
 	cChannel.setMode('l', set);
 	for (int i = 0; modeArg[i]; i++) // If the mode argument is not valid, displays an error
 	{
@@ -87,6 +89,7 @@ void Server::lMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 
 void Server::mMode(User &cUser, Channel &cChannel, bool set)
 {
+	(void)cUser;
 	char mode = 'm';
 
 	cChannel.setMode(mode, set);
@@ -94,6 +97,8 @@ void Server::mMode(User &cUser, Channel &cChannel, bool set)
 
 void Server::nMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
 {
+	(void)cUser;
+	(void)modeArg;
 	char mode = 'n';
 
 	cChannel.setMode(mode, set);
@@ -101,6 +106,7 @@ void Server::nMode(User &cUser, Channel &cChannel, std::string const &modeArg, b
 
 void Server::oMode(User &cUser, Channel &cChannel, std::string const &modeArg, bool set)
 {
+	(void)cUser;
 	if (set)
 	{
 		std::vector<User> chanUsers = cChannel.getUsers();
